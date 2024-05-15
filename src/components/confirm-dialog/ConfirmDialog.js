@@ -1,6 +1,12 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @mui
-import { Dialog, Button, DialogTitle, DialogActions, DialogContent } from '@mui/material';
+import {
+  Dialog,
+  Button,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+} from '@mui/material'
 
 // ----------------------------------------------------------------------
 
@@ -10,14 +16,23 @@ ConfirmDialog.propTypes = {
   action: PropTypes.node,
   content: PropTypes.node,
   onClose: PropTypes.func,
-};
+}
 
-export default function ConfirmDialog({ title, content, action, open, onClose, ...other }) {
+export default function ConfirmDialog({
+  title,
+  content,
+  action,
+  open,
+  onClose,
+  ...other
+}) {
   return (
-    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
+    <Dialog fullWidth maxWidth="lg" open={open} onClose={onClose} {...other}>
       <DialogTitle sx={{ pb: 2 }}>{title}</DialogTitle>
 
-      {content && <DialogContent sx={{ typography: 'body2' }}> {content} </DialogContent>}
+      {content && (
+        <DialogContent sx={{ typography: 'body2' }}> {content} </DialogContent>
+      )}
 
       <DialogActions>
         {action}
@@ -27,5 +42,5 @@ export default function ConfirmDialog({ title, content, action, open, onClose, .
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }

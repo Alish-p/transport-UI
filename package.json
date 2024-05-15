@@ -1,5 +1,5 @@
 {
-  "name": "@minimal/minimal-kit-react",
+  "name": "transport-plus",
   "author": "Minimals UI",
   "version": "4.1.0",
   "description": "Javascript Version",
@@ -82,11 +82,11 @@
     "react-map-gl": "^7.0.19",
     "react-markdown": "^8.0.3",
     "react-organizational-chart": "^2.2.0",
-    "react-quill": "^2.0.0-beta.4",
+    "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",
     "react-router": "^6.4.3",
     "react-router-dom": "^6.4.3",
-    "react-scripts": "^5.0.0",
+    "react-scripts": "^5.0.1",
     "react-slick": "^0.29.0",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
@@ -106,7 +106,6 @@
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/eslint-parser": "^7.19.1",
-    "eslint": "^8.28.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.0",

@@ -41,14 +41,14 @@ export default function EcommerceBestSalesman({
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} sx={{ mb: 3 }} />
 
-      <TableContainer sx={{ overflow: 'unset' }}>
+      <TableContainer sx={{ overflow: 'auto' }}>
         <Scrollbar>
           <Table sx={{ minWidth: 720 }}>
             <TableHeadCustom headLabel={tableLabels} />
 
             <TableBody>
-              {tableData.map((row) => (
-                <EcommerceBestSalesmanRow key={row.id} row={row} />
+              {tableData.map((row, index) => (
+                <EcommerceBestSalesmanRow key={index} row={row} />
               ))}
             </TableBody>
           </Table>
@@ -62,54 +62,36 @@ export default function EcommerceBestSalesman({
 
 EcommerceBestSalesmanRow.propTypes = {
   row: PropTypes.shape({
-    flag: PropTypes.string,
-    name: PropTypes.string,
-    rank: PropTypes.string,
-    email: PropTypes.string,
-    total: PropTypes.number,
-    avatar: PropTypes.string,
-    category: PropTypes.string,
+    vehicleNo: PropTypes.string,
+    vehicleType: PropTypes.string,
+    vehicleCompany: PropTypes.string,
+    modelType: PropTypes.string,
+    noOfTyres: PropTypes.number,
+    chasisNo: PropTypes.string,
+    engineType: PropTypes.string,
+    engineNo: PropTypes.string,
+    fuelTankCapacity: PropTypes.number,
+    joinDate: PropTypes.instanceOf(Date),
+    transportCompany: PropTypes.string,
   }),
 };
 
 function EcommerceBestSalesmanRow({ row }) {
   return (
     <TableRow>
-      <TableCell>
-        <Stack direction="row" alignItems="center">
-          <Avatar alt={row.name} src={row.avatar} />
-
-          <Box sx={{ ml: 2 }}>
-            <Typography variant="subtitle2"> {row.name} </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {row.email}
-            </Typography>
-          </Box>
-        </Stack>
-      </TableCell>
-
-      <TableCell>{row.category}</TableCell>
-
-      <TableCell>
-        <Image src={row.flag} alt="country flag" sx={{ maxWidth: 28, mx: 'auto' }} />
-      </TableCell>
-
-      <TableCell>{fCurrency(row.total)}</TableCell>
-
+      <TableCell>{row.vehicleNo}</TableCell>
+      <TableCell>{row.vehicleType}</TableCell>
+      <TableCell>{row.vehicleCompany}</TableCell>
+      <TableCell align="center">{row.modelType}</TableCell>
+      <TableCell align="right">{row.noOfTyres}</TableCell>
+      <TableCell align="right">{row.chasisNo || '-'}</TableCell>
+      <TableCell align="right">{row.engineType || '-'}</TableCell>
+      <TableCell align="right">{row.engineNo || '-'}</TableCell>
+      <TableCell align="right">{row.fuelTankCapacity}</TableCell>
       <TableCell align="right">
-        <Label
-          variant="soft"
-          color={
-            (row.rank === 'Top 1' && 'primary') ||
-            (row.rank === 'Top 2' && 'info') ||
-            (row.rank === 'Top 3' && 'success') ||
-            (row.rank === 'Top 4' && 'warning') ||
-            'error'
-          }
-        >
-          {row.rank}
-        </Label>
+        {row.joinDate ? new Date(row.joinDate).toLocaleDateString() : '-'}
       </TableCell>
+      <TableCell align="right">{row.transportCompany || '-'}</TableCell>
     </TableRow>
   );
 }

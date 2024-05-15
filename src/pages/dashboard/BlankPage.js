@@ -1,12 +1,12 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async'
 // @mui
-import { Container, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material'
 // components
-import { useSettingsContext } from '../../components/settings';
+import { useSettingsContext } from '../../components/settings'
 
 // ----------------------------------------------------------------------
 export default function BlankPage() {
-  const { themeStretch } = useSettingsContext();
+  const { themeStretch } = useSettingsContext()
 
   return (
     <>
@@ -18,5 +18,5 @@ export default function BlankPage() {
         <Typography variant="h6"> Blank </Typography>
       </Container>
     </>
-  );
+  )
 }

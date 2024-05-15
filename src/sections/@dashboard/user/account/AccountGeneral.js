@@ -1,176 +1,210 @@
 import * as Yup from 'yup';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
+// @mui
+import { Box, Grid, Card, Stack, Typography, Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-// @mui
-import { Box, Grid, Card, Stack, Typography } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+
 // auth
 import { useAuthContext } from '../../../../auth/useAuthContext';
-// utils
-import { fData } from '../../../../utils/formatNumber';
-// assets
-import { countries } from '../../../../assets/data';
+
 // components
-import { useSnackbar } from '../../../../components/snackbar';
 import FormProvider, {
   RHFSwitch,
   RHFSelect,
   RHFTextField,
   RHFUploadAvatar,
+  RHFDatePicker,
 } from '../../../../components/hook-form';
+// assets
+import {
+  engineType,
+  modelType,
+  transportCompany,
+  vehicleCompany,
+  vehicleTypes,
+} from '../../../../assets/data';
+// utils
+import { useSnackbar } from '../../../../components/snackbar';
+
+import ConfirmDialog from '../../../../components/confirm-dialog';
+import { _vehicleList } from '../../../../_mock/arrays';
+
+import { EcommerceBestSalesman } from '../../general/e-commerce';
+import VehicleListPage from './VehicleTable';
+import VehicleGeneral from '../vehicle/Vehicle';
 
 // ----------------------------------------------------------------------
 
-export default function AccountGeneral() {
-  const { enqueueSnackbar } = useSnackbar();
+const formFields = [
+  { name: 'vehicleNo', label: 'Vehicle No', type: 'text' },
+  { name: 'vehicleType', label: 'Vehicle Type', type: 'select', options: vehicleTypes },
+  {
+    name: 'modelType',
+    label: 'Model Type',
+    type: 'select',
+    options: modelType,
+  },
+  { name: 'vehicleCompany', label: 'Vehicle Company', type: 'select', options: vehicleCompany },
+  { name: 'noOfTyres', label: 'No Of Tyres', type: 'number' },
+  { name: 'chasisNo', label: 'Chasis No', type: 'text' },
+  { name: 'engineNo', label: 'Engine No', type: 'text' },
+  { name: 'manufacturingYear', label: 'Manufacturing Year', type: 'number' },
+  { name: 'loadingCapacity', label: 'Loading Capacity', type: 'number' },
+  { name: 'engineType', label: 'Engine Type', type: 'select', options: engineType },
+  { name: 'fuelTankCapacity', label: 'Fuel Tank Capacity', type: 'number' },
+  { name: 'fromDate', label: 'From Date', type: 'date' },
+  { name: 'toDate', label: 'To Date', type: 'date' },
+  {
+    name: 'transportCompany',
+    label: 'Transport Company',
+    type: 'select',
+    options: transportCompany,
+  },
+];
 
-  const { user } = useAuthContext();
+export default function VehicleGeneral1() {
+  // const { enqueueSnackbar } = useSnackbar();
+  // const { user, vehicle } = useAuthContext();
+  // const [showDialog, setShowDialog] = useState(false);
 
-  const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    photoURL: Yup.string().required('Avatar is required').nullable(true),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    country: Yup.string().required('Country is required'),
-    address: Yup.string().required('Address is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
-    zipCode: Yup.string().required('Zip code is required'),
-    about: Yup.string().required('About is required'),
-  });
+  // const schema = Yup.object().shape(
+  //   formFields.reduce((acc, field) => {
+  //     acc[field.name] =
+  //       field.type === 'number'
+  //         ? Yup.number().required(`${field.name} is required`).integer().positive()
+  //         : Yup.string().required(`${field.name} is required`);
+  //     return acc;
+  //   }, {})
+  // );
 
-  const defaultValues = {
-    displayName: user?.displayName || '',
-    email: user?.email || '',
-    photoURL: user?.photoURL || null,
-    phoneNumber: user?.phoneNumber || '',
-    country: user?.country || '',
-    address: user?.address || '',
-    state: user?.state || '',
-    city: user?.city || '',
-    zipCode: user?.zipCode || '',
-    about: user?.about || '',
-    isPublic: user?.isPublic || false,
-  };
+  // const defaultValues = formFields.reduce((acc, field) => {
+  //   acc[field.name] = vehicle?.[field.name] || (field.type === 'number' ? 0 : '');
+  //   return acc;
+  // }, {});
 
-  const methods = useForm({
-    resolver: yupResolver(UpdateUserSchema),
-    defaultValues,
-  });
+  // const methods = useForm({
+  //   resolver: yupResolver(schema),
+  //   defaultValues,
+  // });
 
-  const {
-    setValue,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  // const {
+  //   setValue,
+  //   handleSubmit,
+  //   reset,
+  //   formState: { isSubmitting },
+  // } = methods;
 
-  const onSubmit = async (data) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      enqueueSnackbar('Update success!');
-      console.log('DATA', data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const onSubmit = async (data) => {
+  //   try {
+  //     await new Promise((resolve) => setTimeout(resolve, 500));
+  //     enqueueSnackbar('Update success!');
+  //     console.log('DATA', data);
+  //     handleReset();
+  //     setShowDialog(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-
-      const newFile = Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      });
-
-      if (file) {
-        setValue('photoURL', newFile, { shouldValidate: true });
-      }
-    },
-    [setValue]
-  );
+  // const handleReset = () => {
+  //   reset(defaultValues);
+  // };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
-            <RHFUploadAvatar
-              name="photoURL"
-              maxSize={3145728}
-              onDrop={handleDrop}
-              helperText={
-                <Typography
-                  variant="caption"
-                  sx={{
-                    mt: 2,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.secondary',
-                  }}
-                >
-                  Allowed *.jpeg, *.jpg, *.png, *.gif
-                  <br /> max size of {fData(3145728)}
-                </Typography>
-              }
-            />
+    <>
+      <VehicleGeneral />
+      {/* <Button
+        onClick={() => setShowDialog(true)}
+        variant="contained"
+        color="primary"
+        sx={{ mb: 2 }}
+      >
+        Add Vehicle
+      </Button>
 
-            <RHFSwitch
-              name="isPublic"
-              labelPlacement="start"
-              label="Public Profile"
-              sx={{ mt: 5 }}
-            />
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} md={8}>
-          <Card sx={{ p: 3 }}>
+      <ConfirmDialog
+        open={showDialog}
+        onClose={() => setShowDialog(false)}
+        title="Add Vehicle"
+        content={
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Box
               rowGap={3}
               columnGap={2}
               display="grid"
               gridTemplateColumns={{
                 xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
+                sm: 'repeat(4, 1fr)',
               }}
             >
-              <RHFTextField name="displayName" label="Name" />
-
-              <RHFTextField name="email" label="Email Address" />
-
-              <RHFTextField name="phoneNumber" label="Phone Number" />
-
-              <RHFTextField name="address" label="Address" />
-
-              <RHFSelect native name="country" label="Country" placeholder="Country">
-                <option value="" />
-                {countries.map((country) => (
-                  <option key={country.code} value={country.label}>
-                    {country.label}
-                  </option>
-                ))}
-              </RHFSelect>
-
-              <RHFTextField name="state" label="State/Region" />
-
-              <RHFTextField name="city" label="City" />
-
-              <RHFTextField name="zipCode" label="Zip/Code" />
+              {formFields.map((field) => (
+                <FormField
+                  key={field.name}
+                  name={field.name}
+                  label={field.label}
+                  type={field.type}
+                  options={field.options}
+                />
+              ))}
             </Box>
+          </FormProvider>
+        }
+        action={
+          <Stack direction="row" spacing={1}>
+            <LoadingButton
+              type="button"
+              onClick={handleReset}
+              variant="outlined"
+              color="secondary"
+              loading={isSubmitting}
+            >
+              Reset
+            </LoadingButton>
+            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              Save Changes
+            </LoadingButton>
+          </Stack>
+        }
+      />
 
-            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-              <RHFTextField name="about" multiline rows={4} label="About" />
-
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                Save Changes
-              </LoadingButton>
-            </Stack>
-          </Card>
-        </Grid>
-      </Grid>
-    </FormProvider>
+      <Grid>
+        <VehicleListPage tableHead={formFields.map(({ name, label }) => ({ id: name, label }))} />
+      </Grid> */}
+    </>
   );
 }
+
+function FormField({ name, type, options, label }) {
+  switch (type) {
+    case 'select':
+      return (
+        <RHFSelect native name={name} label={label} placeholder={name}>
+          <option value="" />
+          {options.map(({ key, value }) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
+        </RHFSelect>
+      );
+    case 'date':
+      return <RHFDatePicker name={name} label={label} />;
+    default:
+      return <RHFTextField name={name} label={label} type={type} />;
+  }
+}
+FormField.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['text', 'select', 'number', 'date']).isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    })
+  ),
+};

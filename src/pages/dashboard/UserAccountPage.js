@@ -28,8 +28,8 @@ export default function UserAccountPage() {
 
   const TABS = [
     {
-      value: 'general',
-      label: 'General',
+      value: 'vehicle',
+      label: 'Vehicle',
       icon: <Iconify icon="ic:round-account-box" />,
       component: <AccountGeneral />,
     },
@@ -68,12 +68,12 @@ export default function UserAccountPage() {
   return (
     <>
       <Helmet>
-        <title> User: Account Settings | Minimal UI</title>
+        <title> Vehicle Page</title>
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Account"
+          heading="Vehicle"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'User', href: PATH_DASHBOARD.user.root },

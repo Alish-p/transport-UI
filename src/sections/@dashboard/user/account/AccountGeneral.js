@@ -35,7 +35,7 @@ import { _vehicleList } from '../../../../_mock/arrays';
 
 import { EcommerceBestSalesman } from '../../general/e-commerce';
 import VehicleListPage from './VehicleTable';
-import VehicleGeneral from '../vehicle/Vehicle';
+import VehicleGeneral from '../../vehicle/Vehicle';
 
 // ----------------------------------------------------------------------
 

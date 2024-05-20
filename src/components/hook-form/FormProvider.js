@@ -8,6 +8,7 @@ FormProvider.propTypes = {
   children: PropTypes.node,
   methods: PropTypes.object,
   onSubmit: PropTypes.func,
+  sx: PropTypes.object,
 };
 
 export default function FormProvider({ children, onSubmit, methods }) {

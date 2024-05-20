@@ -36,8 +36,8 @@ import Iconify from '../../../../components/iconify';
 import Scrollbar from '../../../../components/scrollbar';
 import CustomBreadcrumbs from '../../../../components/custom-breadcrumbs';
 import ConfirmDialog from '../../../../components/confirm-dialog';
-import VehicleListRow from '../vehicle/VehicleListRow';
-import VehicleTableToolbar from '../vehicle/VehicleTableToolbar';
+import VehicleListRow from '../../vehicle/VehicleListRow';
+import VehicleTableToolbar from '../../vehicle/VehicleTableToolbar';
 
 // ----------------------------------------------------------------------
 

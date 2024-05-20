@@ -43,12 +43,15 @@ export const PATH_DASHBOARD = {
   blank: path(ROOTS_DASHBOARD, '/blank'),
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
+    vehicle: path(ROOTS_DASHBOARD, '/vehicle'),
+    transporter: path(ROOTS_DASHBOARD, '/transporter'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),
     booking: path(ROOTS_DASHBOARD, '/booking'),
     file: path(ROOTS_DASHBOARD, '/file'),
   },
+
   mail: {
     root: path(ROOTS_DASHBOARD, '/mail'),
     all: path(ROOTS_DASHBOARD, '/mail/all'),

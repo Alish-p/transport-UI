@@ -1,6 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { _vehicleList } from "../../_mock/arrays";
-import axios from "../../utils/axios";
+import { createSlice } from '@reduxjs/toolkit';
+import axios from '../../utils/axios';
 
 const initialState = {
   isLoading: false,
@@ -10,7 +9,7 @@ const initialState = {
 };
 
 const vehicleSlice = createSlice({
-  name: "vehicle",
+  name: 'vehicle',
   initialState,
   reducers: {
     startLoading(state) {
@@ -28,9 +27,20 @@ const vehicleSlice = createSlice({
       state.isLoading = false;
       state.vehicle = action.payload;
     },
+    addVehicleSuccess(state, action) {
+      state.isLoading = false;
+      state.vehicles.push(action.payload);
+    },
     updateVehicleSuccess(state, action) {
       state.isLoading = false;
-      state.vehicle = action.payload;
+      const index = state.vehicles.findIndex((vehicle) => vehicle.id === action.payload.id);
+      if (index !== -1) {
+        state.vehicles[index] = action.payload;
+      }
+    },
+    deleteVehicleSuccess(state, action) {
+      state.isLoading = false;
+      state.vehicles = state.vehicles.filter((vehicle) => vehicle.id !== action.payload);
     },
     resetVehicle(state) {
       state.vehicle = null;
@@ -45,15 +55,17 @@ export const {
   getVehicleSuccess,
   resetVehicle,
   updateVehicleSuccess,
+  addVehicleSuccess,
+  deleteVehicleSuccess,
 } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;
 
 export const fetchVehicles = () => async (dispatch) => {
-  // dispatch(startLoading());
+  dispatch(startLoading());
   try {
-    // const response = await axios.get('/api/vehicles');
-    dispatch(getVehiclesSuccess(_vehicleList));
+    const response = await axios.get('/api/vehicles');
+    dispatch(getVehiclesSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -69,11 +81,31 @@ export const fetchVehicle = (id) => async (dispatch) => {
   }
 };
 
+export const addVehicle = (data) => async (dispatch) => {
+  dispatch(startLoading());
+  try {
+    const response = await axios.post(`/api/vehicles`, data);
+    dispatch(addVehicleSuccess(response.data.vehicle));
+  } catch (error) {
+    dispatch(hasError(error));
+  }
+};
+
 export const updateVehicle = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/vehicles/${id}`, data);
     dispatch(updateVehicleSuccess(response.data.vehicle));
+  } catch (error) {
+    dispatch(hasError(error));
+  }
+};
+
+export const deleteVehicle = (id) => async (dispatch) => {
+  dispatch(startLoading());
+  try {
+    await axios.delete(`/api/vehicles/${id}`);
+    dispatch(deleteVehicleSuccess(id));
   } catch (error) {
     dispatch(hasError(error));
   }

@@ -19,6 +19,7 @@ import {
   ResetPasswordPage,
   // Dashboard: General
   GeneralAppPage,
+  GeneralVehiclePage,
   GeneralFilePage,
   GeneralBankingPage,
   GeneralBookingPage,
@@ -169,13 +170,15 @@ export default function Router() {
     {
       path: 'dashboard',
       element: (
-        <AuthGuard>
-          <DashboardLayout />
-        </AuthGuard>
+        // <AuthGuard>
+        <DashboardLayout />
+        // </AuthGuard>
       ),
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'app', element: <GeneralAppPage /> },
+        { path: 'vehicle', element: <GeneralVehiclePage /> },
+        // { path: 'transporter', element: <GeneralAppPage /> },
         { path: 'ecommerce', element: <GeneralEcommercePage /> },
         { path: 'analytics', element: <GeneralAnalyticsPage /> },
         { path: 'banking', element: <GeneralBankingPage /> },

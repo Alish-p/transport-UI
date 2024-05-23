@@ -20,7 +20,7 @@ import FormProvider, {
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
 
-import { vehicleConfig } from './VehicleSchema';
+import { vehicleConfig } from './VehicleTableConfig';
 
 // const defaultValues = {
 //   vehicleNo: 'GJ08BH0566',

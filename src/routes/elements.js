@@ -78,6 +78,64 @@ export const UserAccountPage = Loadable(lazy(() => import('../pages/dashboard/Us
 export const UserCreatePage = Loadable(lazy(() => import('../pages/dashboard/UserCreatePage')));
 export const UserEditPage = Loadable(lazy(() => import('../pages/dashboard/UserEditPage')));
 
+// DASHBOARD: Vehicle
+export const VehicleListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/vehicle/VehicleList'))
+);
+export const VehicleCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/vehicle/VehicleCreatePage'))
+);
+export const VehicleEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/vehicle/VehicleEditPage'))
+);
+
+// DASHBOARD: Transporter
+export const TransporterListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/transporter/Transporter'))
+);
+export const TransporterCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/transporter/TransporterCreatePage'))
+);
+export const TransporterEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/transporter/TransporterEditPage'))
+);
+
+// DASHBOARD: Driver
+export const DriverListPage = Loadable(lazy(() => import('../sections/@dashboard/driver/Driver')));
+export const DriverCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/driver/DriverCreatePage'))
+);
+export const DriverEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/driver/DriverEditPage'))
+);
+
+// DASHBOARD: Route
+export const RouteListPage = Loadable(lazy(() => import('../sections/@dashboard/route/Route')));
+export const RouteCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/route/RouteCreatePage'))
+);
+export const RouteEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/route/RouteEditPage'))
+);
+
+// DASHBOARD: Pump
+export const PumpListPage = Loadable(lazy(() => import('../sections/@dashboard/pump/Pump')));
+export const PumpCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/pump/PumpCreatePage'))
+);
+export const PumpEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/pump/PumpEditPage'))
+);
+
+// DASHBOARD: Bank
+export const BankListPage = Loadable(lazy(() => import('../sections/@dashboard/bank/Bank')));
+export const BankCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/bank/BankCreatePage'))
+);
+export const BankEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/bank/BankEditPage'))
+);
+
 // DASHBOARD: BLOG
 export const BlogPostsPage = Loadable(lazy(() => import('../pages/dashboard/BlogPostsPage')));
 export const BlogPostPage = Loadable(lazy(() => import('../pages/dashboard/BlogPostPage')));

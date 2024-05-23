@@ -3,14 +3,12 @@ import { useState } from 'react';
 // @mui
 import { TableRow, MenuItem, TableCell, IconButton } from '@mui/material';
 // utils
-
 import { fDate } from '../../../utils/formatTime';
-
 // components
 import Iconify from '../../../components/iconify';
 import MenuPopover from '../../../components/menu-popover';
 import ConfirmDialog from '../../../components/confirm-dialog';
-import { vehicleConfig } from './VehicleSchema';
+import { vehicleConfig } from './VehicleTableConfig';
 
 // ----------------------------------------------------------------------
 
@@ -29,10 +27,30 @@ VehicleListRow.propTypes = {
     loadingCapacity: PropTypes.number,
     fromDate: PropTypes.instanceOf(Date),
     toDate: PropTypes.instanceOf(Date),
-    transportCompany: PropTypes.string,
-  }),
-  onDeleteRow: PropTypes.func,
-  onEditRow: PropTypes.func,
+    transporter: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        transportName: PropTypes.string,
+      }),
+    ]),
+  }).isRequired,
+  onDeleteRow: PropTypes.func.isRequired,
+  onEditRow: PropTypes.func.isRequired,
+};
+
+// Helper function to render table cell content
+const renderTableCellContent = (row, config) => {
+  const { id, type } = config;
+
+  if (id === 'transporter') {
+    return typeof row.transporter === 'string' ? row.transporter : row.transporter.transportName;
+  }
+
+  if (type === 'date') {
+    return fDate(row[id]);
+  }
+
+  return row[id];
 };
 
 export default function VehicleListRow({ row, onDeleteRow, onEditRow }) {
@@ -59,8 +77,8 @@ export default function VehicleListRow({ row, onDeleteRow, onEditRow }) {
     <>
       <TableRow>
         {vehicleConfig.map((config) => (
-          <TableCell key={config.id} align={config.type === 'number' ? 'right' : 'left'}>
-            {config.type === 'date' ? fDate(row[config.id]) : row[config.id]}
+          <TableCell key={config.id} align={config.type === 'number' ? 'center' : 'center'}>
+            {renderTableCellContent(row, config)}
           </TableCell>
         ))}
         <TableCell align="right">
@@ -69,7 +87,6 @@ export default function VehicleListRow({ row, onDeleteRow, onEditRow }) {
           </IconButton>
         </TableCell>
       </TableRow>
-
       <MenuPopover
         open={openPopover}
         onClose={handleClosePopover}

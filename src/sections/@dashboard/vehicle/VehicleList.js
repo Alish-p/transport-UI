@@ -28,11 +28,12 @@ import CustomBreadcrumbs from '../../../components/custom-breadcrumbs';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import VehicleListRow from './VehicleListRow';
 import VehicleTableToolbar from './VehicleTableToolbar';
-import { vehicleConfig } from './VehicleSchema';
+import { vehicleConfig } from './VehicleTableConfig';
+import Iconify from '../../../components/iconify/Iconify';
 
 // ----------------------------------------------------------------------
 
-export default function VehicleTable({ onEdit }) {
+export default function VehicleTable() {
   const {
     dense,
     page,
@@ -144,9 +145,10 @@ export default function VehicleTable({ onEdit }) {
     }
   };
 
-  // const handleEditRow = (id) => {
-  //   navigate(PATH_DASHBOARD.vehicles.edit(paramCase(id)));
-  // };
+  const handleEditRow = (id) => {
+    console.log({ id });
+    navigate(PATH_DASHBOARD.vehicle.edit(paramCase(id)));
+  };
 
   const handleResetFilter = () => {
     setFilterVehicleNo('');
@@ -161,19 +163,20 @@ export default function VehicleTable({ onEdit }) {
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        {/* <CustomBreadcrumbs
+        <CustomBreadcrumbs
           heading="Vehicle List"
+          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Vehicle List' }]}
           action={
             <Button
               component={RouterLink}
-              // to={PATH_DASHBOARD.vehicles.new}
+              to={PATH_DASHBOARD.vehicle.new}
               variant="contained"
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
               New Vehicle
             </Button>
           }
-        /> */}
+        />
 
         <Card>
           <VehicleTableToolbar
@@ -203,11 +206,11 @@ export default function VehicleTable({ onEdit }) {
                     .map((row, index) =>
                       row ? (
                         <VehicleListRow
-                          key={row.id}
+                          key={row._id}
                           row={row}
-                          selected={selected.includes(row.id)}
-                          onDeleteRow={() => handleDeleteRow(row.id)}
-                          onEditRow={() => onEdit(row)}
+                          selected={selected.includes(row._id)}
+                          onDeleteRow={() => handleDeleteRow(row._id)}
+                          onEditRow={() => handleEditRow(row._id)}
                         />
                       ) : (
                         !isNotFound && <TableSkeleton key={index} sx={{ height: denseHeight }} />
@@ -259,10 +262,6 @@ export default function VehicleTable({ onEdit }) {
     </>
   );
 }
-
-VehicleTable.propTypes = {
-  onEdit: PropTypes.func.isRequired,
-};
 
 // ----------------------------------------------------------------------
 

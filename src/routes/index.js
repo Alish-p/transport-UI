@@ -9,6 +9,7 @@ import CompactLayout from '../layouts/compact';
 import DashboardLayout from '../layouts/dashboard';
 // config
 import { PATH_AFTER_LOGIN } from '../config-global';
+
 //
 import {
   // Auth
@@ -39,6 +40,37 @@ import {
   EcommerceProductEditPage,
   EcommerceProductCreatePage,
   EcommerceProductDetailsPage,
+
+  // Dashboard:Vehicle
+  VehicleListPage,
+  VehicleCreatePage,
+  VehicleEditPage,
+
+  // Dashboard:Transporter
+  TransporterListPage,
+  TransporterCreatePage,
+  TransporterEditPage,
+
+  // Dashboard:Driver
+  DriverListPage,
+  DriverCreatePage,
+  DriverEditPage,
+
+  // Dashboard:Route
+  RouteListPage,
+  RouteCreatePage,
+  RouteEditPage,
+
+  // Dashboard:Pump
+  PumpListPage,
+  PumpCreatePage,
+  PumpEditPage,
+
+  // Dashboard:Bank
+  BankListPage,
+  BankCreatePage,
+  BankEditPage,
+
   // Dashboard: Invoice
   InvoiceListPage,
   InvoiceDetailsPage,
@@ -128,6 +160,7 @@ import {
   DemoUploadPage,
   DemoMarkdownPage,
 } from './elements';
+import { EcommerceNewProducts } from '../sections/@dashboard/general/e-commerce';
 
 // ----------------------------------------------------------------------
 
@@ -191,9 +224,63 @@ export default function Router() {
             { path: 'shop', element: <EcommerceShopPage /> },
             { path: 'product/:name', element: <EcommerceProductDetailsPage /> },
             { path: 'list', element: <EcommerceProductListPage /> },
-            { path: 'product/new', element: <EcommerceProductCreatePage /> },
+            { path: 'product/new', element: <EcommerceNewProducts /> },
             { path: 'product/:name/edit', element: <EcommerceProductEditPage /> },
             { path: 'checkout', element: <EcommerceCheckoutPage /> },
+          ],
+        },
+        {
+          path: 'vehicle',
+          children: [
+            { element: <Navigate to="/dashboard/vehicle/list" replace />, index: true },
+            { path: 'list', element: <VehicleListPage /> },
+            { path: 'new', element: <VehicleCreatePage /> },
+            { path: ':id/edit', element: <VehicleEditPage /> },
+          ],
+        },
+        {
+          path: 'transporter',
+          children: [
+            { element: <Navigate to="/dashboard/transporter/list" replace />, index: true },
+            { path: 'list', element: <TransporterListPage /> },
+            { path: 'new', element: <TransporterCreatePage /> },
+            { path: ':id/edit', element: <TransporterEditPage /> },
+          ],
+        },
+        {
+          path: 'driver',
+          children: [
+            { element: <Navigate to="/dashboard/driver/list" replace />, index: true },
+            { path: 'list', element: <DriverListPage /> },
+            { path: 'new', element: <DriverCreatePage /> },
+            { path: ':id/edit', element: <DriverEditPage /> },
+          ],
+        },
+        {
+          path: 'route',
+          children: [
+            { element: <Navigate to="/dashboard/route/list" replace />, index: true },
+            { path: 'list', element: <RouteListPage /> },
+            { path: 'new', element: <RouteCreatePage /> },
+            { path: ':id/edit', element: <RouteEditPage /> },
+          ],
+        },
+        {
+          path: 'pump',
+          children: [
+            { element: <Navigate to="/dashboard/pump/list" replace />, index: true },
+            { path: 'list', element: <PumpListPage /> },
+            { path: 'new', element: <PumpCreatePage /> },
+            { path: ':id/edit', element: <PumpEditPage /> },
+          ],
+        },
+        {
+          path: 'bank',
+          children: [
+            { element: <Navigate to="/dashboard/bank/list" replace />, index: true },
+            { path: 'list', element: <BankListPage /> },
+            { path: 'new', element: <BankCreatePage /> },
+            { path: ':id/edit', element: <BankEditPage /> },
           ],
         },
         {
@@ -204,7 +291,7 @@ export default function Router() {
             { path: 'cards', element: <UserCardsPage /> },
             { path: 'list', element: <UserListPage /> },
             { path: 'new', element: <UserCreatePage /> },
-            { path: ':name/edit', element: <UserEditPage /> },
+            { path: ':name/edit', element: <VehicleEditPage /> },
             { path: 'account', element: <UserAccountPage /> },
           ],
         },

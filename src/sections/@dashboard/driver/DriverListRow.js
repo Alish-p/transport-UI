@@ -7,6 +7,7 @@ import Iconify from '../../../components/iconify';
 import MenuPopover from '../../../components/menu-popover';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { driverConfig } from './DriverTableConfig';
+import { fDate } from '../../../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
@@ -50,11 +51,11 @@ export default function DriverTableRow({ row, onDeleteRow, onEditRow }) {
     <>
       <TableRow>
         {driverConfig.map((config) => (
-          <TableCell key={config.id} align={config.type === 'number' ? 'center' : 'center'}>
-            {row[config.id]}
+          <TableCell key={config.id} align="center">
+            {config.type === 'date' ? fDate(row[config.id]) : row[config.id]}
           </TableCell>
         ))}
-        <TableCell align="right">
+        <TableCell align="left">
           <IconButton color={openPopover ? 'primary' : 'default'} onClick={handleOpenPopover}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>

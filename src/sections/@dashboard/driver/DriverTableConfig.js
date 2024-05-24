@@ -5,13 +5,23 @@ export const driverLicenseTypes = [
 ];
 
 export const driverConfig = [
-  { id: 'driverName', name: 'driverName', label: 'Driver Name', type: 'text' },
-  { id: 'address', name: 'address', label: 'Address', type: 'text' },
-  { id: 'phoneNo', name: 'phoneNo', label: 'Phone No', type: 'text' },
-  { id: 'emailId', name: 'emailId', label: 'Email ID', type: 'text' },
-  { id: 'licenseNo', name: 'licenseNo', label: 'License No', type: 'text' },
-  { id: 'licenseType', name: 'licenseType', label: 'License Type', type: 'text' },
-  { id: 'issueDate', name: 'issueDate', label: 'Issue Date', type: 'date' },
-  { id: 'expiryDate', name: 'expiryDate', label: 'Expiry Date', type: 'date' },
-  { id: 'dob', name: 'dob', label: 'Date of Birth', type: 'date' },
+  { id: 'driverName', name: 'driverName', label: 'Driver Name', type: 'text', align: 'center' },
+  {
+    id: 'permanentAddress',
+    name: 'permanentAddress',
+    label: 'Address',
+    type: 'text',
+    align: 'center',
+  },
+  { id: 'driverCellNo', name: 'driverCellNo', label: 'Phone No', type: 'text', align: 'center' },
+  {
+    id: 'driverLicenceNo',
+    name: 'driverLicenceNo',
+    label: 'License No',
+    type: 'text',
+    align: 'center',
+  },
+  { id: 'licenseFrom', name: 'licenseFrom', label: 'Issue Date', type: 'date', align: 'center' },
+  { id: 'licenseTo', name: 'licenseTo', label: 'Expiry Date', type: 'date', align: 'center' },
+  { id: 'dob', name: 'dob', label: 'Date of Birth', type: 'date', align: 'center' },
 ];

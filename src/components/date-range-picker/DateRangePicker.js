@@ -11,7 +11,9 @@ import {
   DialogContent,
   FormHelperText,
 } from '@mui/material';
-import { DatePicker, CalendarPicker } from '@mui/x-date-pickers';
+import { DatePicker } from '@mui/x-date-pickers';
+import { CalendarPicker } from '@mui/lab';
+
 // hooks
 import useResponsive from '../../hooks/useResponsive';
 

@@ -42,6 +42,11 @@ import {
   EcommerceProductDetailsPage,
 
   // Dashboard:Vehicle
+  TripListPage,
+  TripCreatePage,
+  TripEditPage,
+
+  // Dashboard:Vehicle
   VehicleListPage,
   VehicleCreatePage,
   VehicleEditPage,
@@ -227,6 +232,15 @@ export default function Router() {
             { path: 'product/new', element: <EcommerceNewProducts /> },
             { path: 'product/:name/edit', element: <EcommerceProductEditPage /> },
             { path: 'checkout', element: <EcommerceCheckoutPage /> },
+          ],
+        },
+        {
+          path: 'trip',
+          children: [
+            { element: <Navigate to="/dashboard/trip/list" replace />, index: true },
+            { path: 'list', element: <TripListPage /> },
+            { path: 'new', element: <TripCreatePage /> },
+            { path: ':id/edit', element: <TripEditPage /> },
           ],
         },
         {

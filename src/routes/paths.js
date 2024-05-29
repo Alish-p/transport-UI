@@ -63,6 +63,14 @@ export const PATH_DASHBOARD = {
     view: (name) => path(ROOTS_DASHBOARD, `/chat/${name}`),
   },
 
+  trip: {
+    root: path(ROOTS_DASHBOARD, '/trip'),
+    new: path(ROOTS_DASHBOARD, '/trip/new'),
+    list: path(ROOTS_DASHBOARD, '/trip/list'),
+    edit: (name) => path(ROOTS_DASHBOARD, `/trip/${name}/edit`),
+    demoEdit: path(ROOTS_DASHBOARD, `/trip/abc/edit`),
+  },
+
   vehicle: {
     root: path(ROOTS_DASHBOARD, '/vehicle'),
     new: path(ROOTS_DASHBOARD, '/vehicle/new'),

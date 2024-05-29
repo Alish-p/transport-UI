@@ -136,6 +136,15 @@ export const BankEditPage = Loadable(
   lazy(() => import('../sections/@dashboard/bank/BankEditPage'))
 );
 
+// DASHBOARD: Trip
+export const TripListPage = Loadable(lazy(() => import('../sections/@dashboard/trip/Trip')));
+export const TripCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/trip/TripCreatePage'))
+);
+export const TripEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/trip/TripEditPage'))
+);
+
 // DASHBOARD: BLOG
 export const BlogPostsPage = Loadable(lazy(() => import('../pages/dashboard/BlogPostsPage')));
 export const BlogPostPage = Loadable(lazy(() => import('../pages/dashboard/BlogPostPage')));

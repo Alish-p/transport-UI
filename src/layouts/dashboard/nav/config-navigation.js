@@ -39,26 +39,33 @@ const ICONS = {
   route: icon('ic_map'),
   bank: icon('ic_bank'),
   pump: icon('ic_pump'),
+  expense: icon('ic_expense'),
+  trip: icon('ic_trip'),
+  lr: icon('ic_reciept'),
 };
 
 const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
-  // {
-  //   subheader: 'general',
-  //   items: [
-  //     { title: 'vehicle', path: PATH_DASHBOARD.general.vehicle, icon: ICONS.vehicle },
-  //     { title: 'driver', path: PATH_DASHBOARD.general.driver, icon: ICONS.driver },
-  //     { title: 'transporter', path: PATH_DASHBOARD.general.transporter, icon: ICONS.transporter },
-  //     { title: 'routes', path: PATH_DASHBOARD.general.transporter, icon: ICONS.map },
-  //     { title: 'account', path: PATH_DASHBOARD.user.account, icon: ICONS.dashboard },
-  //     { title: 'ecommerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
-  //     { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
-  //     { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
-  //     { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
-  //     { title: 'file', path: PATH_DASHBOARD.general.file, icon: ICONS.file },
-  //   ],
-  // },
+  {
+    subheader: 'general',
+    items: [
+      { title: 'Create Trip', path: PATH_DASHBOARD.trip.new, icon: ICONS.trip },
+      { title: 'Create LR', path: PATH_DASHBOARD.general.vehicle, icon: ICONS.lr },
+      { title: 'Add Expenses', path: PATH_DASHBOARD.general.vehicle, icon: ICONS.expense },
+
+      // { title: 'vehicle', path: PATH_DASHBOARD.general.vehicle, icon: ICONS.vehicle },
+      // { title: 'driver', path: PATH_DASHBOARD.general.driver, icon: ICONS.driver },
+      // { title: 'transporter', path: PATH_DASHBOARD.general.transporter, icon: ICONS.transporter },
+      // { title: 'routes', path: PATH_DASHBOARD.general.transporter, icon: ICONS.map },
+      // { title: 'account', path: PATH_DASHBOARD.user.account, icon: ICONS.dashboard },
+      // { title: 'ecommerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
+      // { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
+      // { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
+      // { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
+      // { title: 'file', path: PATH_DASHBOARD.general.file, icon: ICONS.file },
+    ],
+  },
 
   // MANAGEMENT
   // ----------------------------------------------------------------------
@@ -148,7 +155,7 @@ const navConfig = [
         ],
       },
 
-      // // E-COMMERCE
+      // E-COMMERCE
       // {
       //   title: 'ecommerce',
       //   path: PATH_DASHBOARD.eCommerce.root,
@@ -163,7 +170,7 @@ const navConfig = [
       //   ],
       // },
 
-      // // INVOICE
+      // INVOICE
       // {
       //   title: 'invoice',
       //   path: PATH_DASHBOARD.invoice.root,
@@ -176,7 +183,7 @@ const navConfig = [
       //   ],
       // },
 
-      // // BLOG
+      // BLOG
       // {
       //   title: 'blog',
       //   path: PATH_DASHBOARD.blog.root,

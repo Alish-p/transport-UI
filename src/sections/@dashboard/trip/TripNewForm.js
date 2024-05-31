@@ -2,164 +2,224 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-// form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-// @mui
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Grid, Stack, Typography, FormControlLabel } from '@mui/material';
-// utils
+import { Box, Card, Grid, Stack, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { fData } from '../../../utils/formatNumber';
-// routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
-// assets
-import {
-  engineType,
-  modelType,
-  transportCompany,
-  vehicleCompany,
-  vehicleTypes,
-} from '../vehicle/VehicleTableConfig';
-// components
 import { useSnackbar } from '../../../components/snackbar';
 import FormProvider, {
-  RHFEditor,
   RHFSelect,
   RHFTextField,
-  RHFUpload,
+  RHFDatePicker,
 } from '../../../components/hook-form';
-import RHFDatePickerField from '../../../components/hook-form/RHFDatePicker';
-import { addVehicle, updateVehicle } from '../../../redux/slices/vehicle';
-import { fetchTransporters } from '../../../redux/slices/transporter';
+import { addTrip } from '../../../redux/slices/trip';
+import { fetchDrivers } from '../../../redux/slices/driver';
+import { fetchVehicles } from '../../../redux/slices/vehicle';
+import { fetchRoutes } from '../../../redux/slices/route';
 import { useSelector } from '../../../redux/store';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 
-// ----------------------------------------------------------------------
-
-VehicleForm.propTypes = {
+TripForm.propTypes = {
   isEdit: PropTypes.bool,
-  currentVehicle: PropTypes.object,
+  currentTrip: PropTypes.object,
 };
 
-export default function VehicleForm({ isEdit = false, currentVehicle }) {
+export default function TripForm({ isEdit = false, currentTrip }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const NewVehicleSchema = Yup.object().shape({
-    vehicleNo: Yup.string().required('Vehicle No is required'),
-    images: Yup.mixed().nullable(true),
-    vehicleType: Yup.string().required('Vehicle Type is required'),
-    modelType: Yup.string().required('Model Type is required'),
-    vehicleCompany: Yup.string().required('Vehicle Company is required'),
-    noOfTyres: Yup.number().required('No Of Tyres is required').min(1),
-    chasisNo: Yup.string().required('Chasis No is required'),
-    engineNo: Yup.string().required('Engine No is required'),
-    manufacturingYear: Yup.number().required('Manufacturing Year is required').min(1900),
-    loadingCapacity: Yup.number().required('Loading Capacity is required').min(1),
-    engineType: Yup.string().required('Engine Type is required'),
-    fuelTankCapacity: Yup.number().required('Fuel Tank Capacity is required').min(1),
+  const NewTripSchema = Yup.object().shape({
+    // Trip Related fields
+    driverId: Yup.string().required('Driver is required'),
+    vehicleId: Yup.string().required('Vehicle is required'),
     fromDate: Yup.date().required('From Date is required'),
     toDate: Yup.date().required('To Date is required'),
-    transporter: Yup.string().required('Transport Company is required'),
+    tripType: Yup.string().required('Trip Type is required'),
+    tripStatus: Yup.string().required('Trip Status is required'),
+    totalDetTime: Yup.number().required('Total Detention Time is required'),
+    remarks: Yup.string(),
+    // Subtrip
+    routeCd: Yup.string().required('Route Code is required'),
+    customerId: Yup.string().required('Customer ID is required'),
+    loadingPoint: Yup.string().required('Loading Point is required'),
+    unloadingPoint: Yup.string().required('Unloading Point is required'),
+    loadingWeight: Yup.number().required('Loading Weight is required'),
+    unloadingWeight: Yup.number().required('Unloading Weight is required'),
+    startKm: Yup.number().required('Start Km is required'),
+    endKm: Yup.number().required('End Km is required'),
+    rate: Yup.number().required('Rate is required'),
+    subtripStartDate: Yup.date().required('Start Date is required'),
+    subtripEndDate: Yup.date().required('End Date is required'),
+    subtripStatus: Yup.string().required('Subtrip Status is required'),
+    invoiceNo: Yup.string().required('Invoice No is required'),
+    shipmentNo: Yup.string().required('Shipment No is required'),
+    orderNo: Yup.string().required('Order No is required'),
+    ewayBill: Yup.string().required('E-way Bill is required'),
+    ewayExpiryDate: Yup.date().required('E-way Expiry Date is required'),
+    materialType: Yup.string().required('Material Type is required'),
+    quantity: Yup.number().required('Quantity is required'),
+    grade: Yup.string().required('Grade is required'),
+    dieselLtr: Yup.number().required('Diesel Ltr is required'),
+    detentionTime: Yup.number().required('Detention Time is required'),
+    tds: Yup.number().required('TDS is required'),
+    deductedWeight: Yup.number().required('Deducted Weight is required'),
+    // Expense
+    expenseType: Yup.string().required('Expense Type is required'),
+    installment: Yup.number().required('Installment is required'),
+    amount: Yup.number().required('Amount is required'),
+    slipNo: Yup.string().required('Slip No is required'),
+    pumpCd: Yup.string(),
+    paidThrough: Yup.string().required('Paid Through is required'),
+    authorisedBy: Yup.string().required('Authorised By is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      vehicleNo: currentVehicle?.vehicleNo || '',
-      images: currentVehicle?.images || null,
-      vehicleType: currentVehicle?.vehicleType || '',
-      modelType: currentVehicle?.modelType || '',
-      vehicleCompany: currentVehicle?.vehicleCompany || '',
-      noOfTyres: currentVehicle?.noOfTyres || 0,
-      chasisNo: currentVehicle?.chasisNo || '',
-      engineNo: currentVehicle?.engineNo || '',
-      manufacturingYear: currentVehicle?.manufacturingYear || new Date().getFullYear(),
-      loadingCapacity: currentVehicle?.loadingCapacity || 0,
-      engineType: currentVehicle?.engineType || '',
-      fuelTankCapacity: currentVehicle?.fuelTankCapacity || 0,
-      fromDate: currentVehicle?.fromDate || new Date(),
-      toDate: currentVehicle?.toDate || new Date(),
-      transporter: currentVehicle?.transporter?._id || '',
+      // Trip Related fields
+      driverId: currentTrip?.driverId || '',
+      vehicleId: currentTrip?.vehicleId || '',
+      fromDate: currentTrip?.fromDate || new Date(),
+      toDate: currentTrip?.toDate || new Date(),
+      tripType: currentTrip?.tripType || '',
+      tripStatus: currentTrip?.tripStatus || '',
+      totalDetTime: currentTrip?.totalDetTime || 0,
+      remarks: currentTrip?.remarks || '',
+      // Subtrip
+      routeCd: currentTrip?.routeCd || '',
+      customerId: currentTrip?.customerId || '',
+      loadingPoint: currentTrip?.loadingPoint || '',
+      unloadingPoint: currentTrip?.unloadingPoint || '',
+      loadingWeight: currentTrip?.loadingWeight || 0,
+      unloadingWeight: currentTrip?.unloadingWeight || 0,
+      startKm: currentTrip?.startKm || 0,
+      endKm: currentTrip?.endKm || 0,
+      rate: currentTrip?.rate || 0,
+      subtripStartDate: currentTrip?.subtripStartDate || new Date(),
+      subtripEndDate: currentTrip?.subtripEndDate || new Date(),
+      subtripStatus: currentTrip?.subtripStatus || '',
+      invoiceNo: currentTrip?.invoiceNo || '',
+      shipmentNo: currentTrip?.shipmentNo || '',
+      orderNo: currentTrip?.orderNo || '',
+      ewayBill: currentTrip?.ewayBill || '',
+      ewayExpiryDate: currentTrip?.ewayExpiryDate || new Date(),
+      materialType: currentTrip?.materialType || '',
+      quantity: currentTrip?.quantity || 0,
+      grade: currentTrip?.grade || '',
+      dieselLtr: currentTrip?.dieselLtr || 0,
+      detentionTime: currentTrip?.detentionTime || 0,
+      tds: currentTrip?.tds || 0,
+      deductedWeight: currentTrip?.deductedWeight || 0,
+      // Expense
+      expenseType: currentTrip?.expenseType || '',
+      installment: currentTrip?.installment || 0,
+      amount: currentTrip?.amount || 0,
+      slipNo: currentTrip?.slipNo || '',
+      pumpCd: currentTrip?.pumpCd || '',
+      paidThrough: currentTrip?.paidThrough || '',
+      authorisedBy: currentTrip?.authorisedBy || '',
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentVehicle]
+    [currentTrip]
   );
 
-  console.log({ defaultValues });
+  const defaultValues1 = useMemo(
+    () => ({
+      // Expense fields
+      authorisedBy: currentTrip?.authorisedBy || '1',
+      paidThrough: currentTrip?.paidThrough || '1',
+      pumpCd: currentTrip?.pumpCd || '1',
+      slipNo: currentTrip?.slipNo || '1',
+      amount: currentTrip?.amount || 50000,
+      installment: currentTrip?.installment || 1,
+      expenseType: currentTrip?.expenseType || '1',
+
+      // Subtrip fields
+      deductedWeight: currentTrip?.deductedWeight || 1,
+      tds: currentTrip?.tds || 1,
+      detentionTime: currentTrip?.detentionTime || 1,
+      dieselLtr: currentTrip?.dieselLtr || 1,
+      grade: currentTrip?.grade || '1',
+      quantity: currentTrip?.quantity || 1,
+      materialType: currentTrip?.materialType || '1',
+      ewayExpiryDate: currentTrip?.ewayExpiryDate || new Date('2024-05-31T18:30:28.140Z'),
+      ewayBill: currentTrip?.ewayBill || '1',
+      orderNo: currentTrip?.orderNo || '1',
+      shipmentNo: currentTrip?.shipmentNo || '1',
+      invoiceNo: currentTrip?.invoiceNo || '1',
+      subtripStatus: currentTrip?.subtripStatus || '1',
+      subtripEndDate: currentTrip?.subtripEndDate || new Date('2024-05-31T18:30:28.140Z'),
+      subtripStartDate: currentTrip?.subtripStartDate || new Date('2024-05-31T18:30:28.140Z'),
+      rate: currentTrip?.rate || 1,
+      endKm: currentTrip?.endKm || 1,
+      startKm: currentTrip?.startKm || 1,
+      unloadingWeight: currentTrip?.unloadingWeight || 1,
+      loadingWeight: currentTrip?.loadingWeight || 1,
+      unloadingPoint: currentTrip?.unloadingPoint || '1',
+      loadingPoint: currentTrip?.loadingPoint || '1',
+      customerId: currentTrip?.customerId || '1',
+      routeCd: currentTrip?.routeCd || '664f8e687cbf8fac101843be',
+
+      // Trip fields
+      remarks: currentTrip?.remarks || '1',
+      totalDetTime: currentTrip?.totalDetTime || 1,
+      tripStatus: currentTrip?.tripStatus || '1',
+      tripType: currentTrip?.tripType || '1',
+      toDate: currentTrip?.toDate || new Date('2024-05-31T18:30:28.140Z'),
+      fromDate: currentTrip?.fromDate || new Date('2024-05-31T18:30:28.140Z'),
+      vehicleId: currentTrip?.vehicleId || '6645048280b569afe0161962',
+      driverId: currentTrip?.driverId || '664e5f40d81f6fee101219c4',
+    }),
+    [currentTrip]
+  );
 
   useEffect(() => {
-    dispatch(fetchTransporters());
+    dispatch(fetchDrivers());
+    dispatch(fetchVehicles());
+    dispatch(fetchRoutes());
   }, [dispatch]);
 
-  const { transporters } = useSelector((state) => state.transporter);
+  const { drivers } = useSelector((state) => state.driver);
+  const { vehicles } = useSelector((state) => state.vehicle);
+  const { routes } = useSelector((state) => state.route);
 
   const methods = useForm({
-    resolver: yupResolver(NewVehicleSchema),
-    defaultValues,
+    resolver: yupResolver(NewTripSchema),
+    defaultValues1,
   });
 
   const {
     reset,
     watch,
     control,
-    setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
-  const values = watch();
-
   useEffect(() => {
-    if (isEdit && currentVehicle) {
-      reset(defaultValues);
+    if (isEdit && currentTrip) {
+      reset(defaultValues1);
     }
     if (!isEdit) {
-      reset(defaultValues);
+      reset(defaultValues1);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit, currentVehicle]);
+  }, [isEdit, currentTrip, reset, defaultValues1]);
 
   const onSubmit = async (data) => {
     try {
-      if (!isEdit) {
-        await dispatch(addVehicle(data));
-      } else {
-        await dispatch(updateVehicle(currentVehicle._id, data));
-      }
+      console.log(data);
+      await dispatch(addTrip(data));
       reset();
-      enqueueSnackbar(!isEdit ? 'Vehicle added successfully!' : 'Vehicle edited successfully!');
-      navigate(PATH_DASHBOARD.vehicle.list);
+      enqueueSnackbar(!isEdit ? 'Trip created successfully!' : 'Trip edited successfully!');
+      // navigate(PATH_DASHBOARD.trip.list);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const files = values.images || [];
-
-      const newFiles = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      );
-
-      setValue('images', [...files, ...newFiles], { shouldValidate: true });
-    },
-    [setValue, values.images]
-  );
-  const handleRemoveFile = (inputFile) => {
-    const filtered = values.images && values.images?.filter((file) => file !== inputFile);
-    setValue('images', filtered);
-  };
-
-  const handleRemoveAllFiles = () => {
-    setValue('images', []);
-  };
-
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      {/* Vehicle & Driver Details */}
       <Grid container spacing={3} sx={{ pt: 10 }}>
         <Grid item xs={12} md={3}>
           <Box sx={{ pt: 2, pb: 5, px: 3 }}>
@@ -174,226 +234,142 @@ export default function VehicleForm({ isEdit = false, currentVehicle }) {
 
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
-            <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(1, 1fr)',
-              }}
-            >
-              <RHFTextField name="vehicleNo" label="Vehicle No" />
-              <RHFTextField name="vehicleNo" label="Driver No" />
-            </Box>
+            <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
+              <RHFSelect native name="driverId" label="Driver">
+                <option value="" />
+                {drivers.map((driver) => (
+                  <option key={driver._id} value={driver._id}>
+                    {driver.driverName}
+                  </option>
+                ))}
+              </RHFSelect>
 
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!isEdit ? 'Assign Driver' : 'Save Changes'}
-              </LoadingButton>
-            </Stack>
+              <RHFSelect native name="vehicleId" label="Vehicle">
+                <option value="" />
+                {vehicles.map((vehicle) => (
+                  <option key={vehicle._id} value={vehicle._id}>
+                    {vehicle.vehicleNo}
+                  </option>
+                ))}
+              </RHFSelect>
+            </Box>
           </Card>
         </Grid>
       </Grid>
 
+      {/* Trip Info */}
       <Grid container spacing={3} sx={{ pt: 10 }}>
         <Grid item xs={12} md={3}>
           <Box sx={{ pt: 2, pb: 5, px: 3 }}>
             <Typography variant="h6" sx={{ color: 'text.primary' }}>
-              Trip Details
+              Trip Info
             </Typography>
             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mt: 1 }}>
-              Please Select the details of the Trip.
+              Please provide the details of the trip.
             </Typography>
           </Box>
         </Grid>
 
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
-            <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
-              }}
-            >
-              <RHFTextField name="vehicleNo" label="Trip No" />
-              <RHFDatePickerField name="fromDate" label="Trip Creation Date" type="date" />
-
-              {/* Adjusting gridColumn for RHFEditor */}
-              <Box
-                sx={{
-                  gridColumn: { xs: '1 / -1', sm: 'span 2' },
-                }}
-              >
-                <RHFEditor native name="vehicleType" label="Remarks" />
-              </Box>
-
-              <RHFTextField name="totalDetTime" label="Total Detention Time" type="number" />
-
-              <RHFSelect native name="tripType" label="Trip Type">
-                <option value="" />
-                {engineType.map(({ key, value }) => (
-                  <option key={key} value={key}>
-                    {value}
-                  </option>
-                ))}
-              </RHFSelect>
-              <RHFSelect native name="tripStatus" label="Trip Status">
-                <option value="" />
-                {transporters.map((transporter) => (
-                  <option key={transporter._id} value={transporter._id}>
-                    {transporter.transportName}
-                  </option>
-                ))}
-              </RHFSelect>
+            <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
+              <RHFDatePicker name="fromDate" label="From Date" />
+              <RHFDatePicker name="toDate" label="To Date" />
+              <RHFTextField name="tripType" label="Trip Type" />
+              <RHFTextField name="tripStatus" label="Trip Status" />
+              <RHFTextField name="totalDetTime" label="Total Detention Time" />
+              <RHFTextField name="remarks" label="Remarks" />
             </Box>
-
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!isEdit ? 'Create Trip' : 'Save Changes'}
-              </LoadingButton>
-            </Stack>
           </Card>
         </Grid>
       </Grid>
 
+      {/* Subtrip Info */}
       <Grid container spacing={3} sx={{ pt: 10 }}>
         <Grid item xs={12} md={3}>
           <Box sx={{ pt: 2, pb: 5, px: 3 }}>
             <Typography variant="h6" sx={{ color: 'text.primary' }}>
-              Expense Details
+              Subtrip Info
             </Typography>
             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mt: 1 }}>
-              Please Select the details of the Trip.
+              Please provide the details of the subtrip.
             </Typography>
           </Box>
         </Grid>
 
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
-            <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
-              }}
-            >
-              <RHFTextField name="subtripNo" label="Subtrip No" />
-              <RHFSelect native name="routeCd" label="Route Code">
+            <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
+              <RHFSelect native name="routeCd" label="Route">
                 <option value="" />
-                <option value="Pending">Mudhol - Pune</option>
-                <option value="Pending">Pune - Ahmedabad</option>
+                {routes.map((route) => (
+                  <option key={route._id} value={route._id}>
+                    {route.routeCd}
+                  </option>
+                ))}
               </RHFSelect>
+
               <RHFTextField name="customerId" label="Customer ID" />
               <RHFTextField name="loadingPoint" label="Loading Point" />
               <RHFTextField name="unloadingPoint" label="Unloading Point" />
-              <RHFTextField name="loadingWeight" label="Loading Weight" type="number" />
-              <RHFTextField name="rate" label="Rate" type="number" />
-              <RHFDatePickerField name="startDate" label="Start Date" type="date" />
-              <RHFTextField name="startKm" label="Start Km" type="number" />
-              <RHFTextField name="tripPartNo" label="Trip Part No" type="number" />
-              <RHFSelect native name="subtripStatus" label="Subtrip Status">
-                <option value="billed">Billed</option>
-                <option value="Clear">Clear</option>
-                <option value="Pending">Pending</option>
-                <option value="Received">Received</option>
-              </RHFSelect>
-              <RHFTextField name="endKm" label="End Km" type="number" />
-              <RHFDatePickerField name="endDate" label="End Date" type="date" />
+              <RHFTextField name="loadingWeight" label="Loading Weight" />
+              <RHFTextField name="unloadingWeight" label="Unloading Weight" />
+              <RHFTextField name="startKm" label="Start Km" />
+              <RHFTextField name="endKm" label="End Km" />
+              <RHFTextField name="rate" label="Rate" />
+              <RHFDatePicker name="subtripStartDate" label="Start Date" />
+              <RHFDatePicker name="subtripEndDate" label="End Date" />
+              <RHFTextField name="subtripStatus" label="Subtrip Status" />
               <RHFTextField name="invoiceNo" label="Invoice No" />
               <RHFTextField name="shipmentNo" label="Shipment No" />
               <RHFTextField name="orderNo" label="Order No" />
               <RHFTextField name="ewayBill" label="E-way Bill" />
-              <RHFDatePickerField name="ewayExpiryDate" label="E-way Expiry Date" type="date" />
+              <RHFDatePicker name="ewayExpiryDate" label="E-way Expiry Date" />
               <RHFTextField name="materialType" label="Material Type" />
-              <RHFTextField name="quantity" label="Quantity" type="number" />
+              <RHFTextField name="quantity" label="Quantity" />
               <RHFTextField name="grade" label="Grade" />
-              <RHFTextField name="dieselLtr" label="Diesel Ltr" type="number" />
-              <RHFTextField name="detentionTime" label="Detention Time" type="number" />
-              <RHFTextField name="unloadingWeight" label="Unloading Weight" type="number" />
-              <RHFTextField name="tds" label="TDS" type="number" />
-              <RHFTextField name="deductedWeight" label="Deducted Weight" type="number" />
+              <RHFTextField name="dieselLtr" label="Diesel Ltr" />
+              <RHFTextField name="detentionTime" label="Detention Time" />
+              <RHFTextField name="tds" label="TDS" />
+              <RHFTextField name="deductedWeight" label="Deducted Weight" />
             </Box>
-
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!isEdit ? 'Create Trip' : 'Save Changes'}
-              </LoadingButton>
-            </Stack>
           </Card>
         </Grid>
       </Grid>
+
+      {/* Expense Info */}
       <Grid container spacing={3} sx={{ pt: 10 }}>
         <Grid item xs={12} md={3}>
           <Box sx={{ pt: 2, pb: 5, px: 3 }}>
             <Typography variant="h6" sx={{ color: 'text.primary' }}>
-              LR Details
+              Expense Info
             </Typography>
             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mt: 1 }}>
-              Please Add any advance Expenses
+              Please provide the details of the expenses.
             </Typography>
           </Box>
         </Grid>
 
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
-            <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
-              }}
-            >
-              <RHFDatePickerField name="date" label="Date" type="date" />
-              <RHFSelect native name="expenseType" label="Expense Type">
-                <option value="" />
-                {[
-                  'Advance for trip',
-                  'Extra Advance for trip',
-                  'Diesel',
-                  'Toll',
-                  'Puncher',
-                  'Police',
-                  'Rto',
-                  'Repair',
-                ].map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </RHFSelect>
-              <RHFTextField name="installment" label="Installment" type="number" />
-              <RHFSelect native name="vehicleNo" label="Vehicle No">
-                {['GJ01BH12345', 'GJ02BH12345', 'GJ03BH12345', 'GJ04BH12345'].map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </RHFSelect>
-              <RHFTextField name="amount" label="Amount" type="number" />
+            <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
+              <RHFTextField name="expenseType" label="Expense Type" />
+              <RHFTextField name="installment" label="Installment" />
+              <RHFTextField name="amount" label="Amount" />
               <RHFTextField name="slipNo" label="Slip No" />
               <RHFTextField name="pumpCd" label="Pump Code" />
-              <RHFTextField name="remarks" label="Remarks" />
-              <RHFTextField name="dieselLtr" label="Diesel Liters" type="number" />
               <RHFTextField name="paidThrough" label="Paid Through" />
               <RHFTextField name="authorisedBy" label="Authorised By" />
             </Box>
-
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!isEdit ? 'Create Trip' : 'Save Changes'}
-              </LoadingButton>
-            </Stack>
           </Card>
         </Grid>
       </Grid>
+
+      <Stack alignItems="flex-end" sx={{ mt: 3, mb: 5 }}>
+        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+          {!isEdit ? 'Create Trip' : 'Save Changes'}
+        </LoadingButton>
+      </Stack>
     </FormProvider>
   );
 }

@@ -33,14 +33,14 @@ const bankSlice = createSlice({
     },
     updateBankSuccess(state, action) {
       state.isLoading = false;
-      const index = state.banks.findIndex((bank) => bank.id === action.payload.id);
+      const index = state.banks.findIndex((bank) => bank._id === action.payload.id);
       if (index !== -1) {
         state.banks[index] = action.payload;
       }
     },
     deleteBankSuccess(state, action) {
       state.isLoading = false;
-      state.banks = state.banks.filter((bank) => bank.id !== action.payload);
+      state.banks = state.banks.filter((bank) => bank._id !== action.payload);
     },
     resetBank(state) {
       state.bank = null;
@@ -75,7 +75,7 @@ export const fetchBank = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.get(`/api/banks/${id}`);
-    dispatch(getBankSuccess(response.data.bank));
+    dispatch(getBankSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -85,7 +85,7 @@ export const addBank = (data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.post(`/api/banks`, data);
-    dispatch(addBankSuccess(response.data.bank));
+    dispatch(addBankSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -95,7 +95,7 @@ export const updateBank = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/banks/${id}`, data);
-    dispatch(updateBankSuccess(response.data.bank));
+    dispatch(updateBankSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

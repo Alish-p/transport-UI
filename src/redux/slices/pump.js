@@ -33,14 +33,14 @@ const pumpSlice = createSlice({
     },
     updatePumpSuccess(state, action) {
       state.isLoading = false;
-      const index = state.pumps.findIndex((pump) => pump.id === action.payload.id);
+      const index = state.pumps.findIndex((pump) => pump._id === action.payload.id);
       if (index !== -1) {
         state.pumps[index] = action.payload;
       }
     },
     deletePumpSuccess(state, action) {
       state.isLoading = false;
-      state.pumps = state.pumps.filter((pump) => pump.id !== action.payload);
+      state.pumps = state.pumps.filter((pump) => pump._id !== action.payload);
     },
     resetPump(state) {
       state.pump = null;
@@ -75,7 +75,7 @@ export const fetchPump = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.get(`/api/pumps/${id}`);
-    dispatch(getPumpSuccess(response.data.pump));
+    dispatch(getPumpSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -85,7 +85,7 @@ export const addPump = (data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.post(`/api/pumps`, data);
-    dispatch(addPumpSuccess(response.data.pump));
+    dispatch(addPumpSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -95,7 +95,7 @@ export const updatePump = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/pumps/${id}`, data);
-    dispatch(updatePumpSuccess(response.data.pump));
+    dispatch(updatePumpSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

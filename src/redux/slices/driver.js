@@ -76,7 +76,7 @@ export const fetchDriver = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.get(`/api/drivers/${id}`);
-    dispatch(getDriverSuccess(response.data.driver));
+    dispatch(getDriverSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -96,7 +96,7 @@ export const updateDriver = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/drivers/${id}`, data);
-    dispatch(updateDriverSuccess(response.data.driver));
+    dispatch(updateDriverSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

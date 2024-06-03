@@ -33,14 +33,14 @@ const vehicleSlice = createSlice({
     },
     updateVehicleSuccess(state, action) {
       state.isLoading = false;
-      const index = state.vehicles.findIndex((vehicle) => vehicle.id === action.payload.id);
+      const index = state.vehicles.findIndex((vehicle) => vehicle._id === action.payload._id);
       if (index !== -1) {
         state.vehicles[index] = action.payload;
       }
     },
     deleteVehicleSuccess(state, action) {
       state.isLoading = false;
-      state.vehicles = state.vehicles.filter((vehicle) => vehicle.id !== action.payload);
+      state.vehicles = state.vehicles.filter((vehicle) => vehicle._id !== action.payload);
     },
     resetVehicle(state) {
       state.vehicle = null;
@@ -75,7 +75,7 @@ export const fetchVehicle = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.get(`/api/vehicles/${id}`);
-    dispatch(getVehicleSuccess(response.data.vehicle));
+    dispatch(getVehicleSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -85,7 +85,7 @@ export const addVehicle = (data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.post(`/api/vehicles`, data);
-    dispatch(addVehicleSuccess(response.data.vehicle));
+    dispatch(addVehicleSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -95,7 +95,7 @@ export const updateVehicle = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/vehicles/${id}`, data);
-    dispatch(updateVehicleSuccess(response.data.vehicle));
+    dispatch(updateVehicleSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

@@ -33,14 +33,14 @@ const subtripSlice = createSlice({
     },
     updateSubtripSuccess(state, action) {
       state.isLoading = false;
-      const index = state.subtrips.findIndex((subtrip) => subtrip.id === action.payload.id);
+      const index = state.subtrips.findIndex((subtrip) => subtrip._id === action.payload.id);
       if (index !== -1) {
         state.subtrips[index] = action.payload;
       }
     },
     deleteSubtripSuccess(state, action) {
       state.isLoading = false;
-      state.subtrips = state.subtrips.filter((subtrip) => subtrip.id !== action.payload);
+      state.subtrips = state.subtrips.filter((subtrip) => subtrip._id !== action.payload);
     },
     resetSubtrip(state) {
       state.subtrip = null;
@@ -75,7 +75,7 @@ export const fetchSubtrip = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.get(`/api/subtrips/${id}`);
-    dispatch(getSubtripSuccess(response.data.subtrip));
+    dispatch(getSubtripSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -85,7 +85,7 @@ export const addSubtrip = (data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.post(`/api/subtrips`, data);
-    dispatch(addSubtripSuccess(response.data.subtrip));
+    dispatch(addSubtripSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -95,7 +95,7 @@ export const updateSubtrip = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/subtrips/${id}`, data);
-    dispatch(updateSubtripSuccess(response.data.subtrip));
+    dispatch(updateSubtripSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

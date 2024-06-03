@@ -33,21 +33,46 @@ export default function TransporterForm({ isEdit = false, currentTransporter }) 
     transportName: Yup.string().required('Transport Name is required'),
     address: Yup.string().required('Address is required'),
     place: Yup.string().required('Place is required'),
-    pinNo: Yup.string().required('Pin No is required'),
-    cellNo: Yup.string().required('Cell No is required'),
+    pinNo: Yup.number()
+      .required('Pin No is required')
+      .typeError('Pin No must be a number')
+      .test('len', 'Pin No must be exactly 6 digits', (val) => val && val.toString().length === 6),
+    cellNo: Yup.number()
+      .required('Cell No is required')
+      .typeError('Cell No must be a number')
+      .test(
+        'len',
+        'Cell No must be exactly 10 digits',
+        (val) => val && val.toString().length === 10
+      ),
     bankCd: Yup.string().required('Bank Code is required'),
     ifscCode: Yup.string().required('IFSC Code is required'),
     accNo: Yup.string().required('Account No is required'),
     paymentMode: Yup.string().required('Payment Mode is required'),
-    panNo: Yup.string().required('PAN No is required'),
+    panNo: Yup.string()
+      .required('PAN No is required')
+      .matches(
+        /[A-Z]{5}[0-9]{4}[A-Z]{1}/,
+        'PAN No must be in the format: five letters followed by four digits and one letter'
+      ),
     ownerName: Yup.string().required('Owner Name is required'),
     gstNo: Yup.string().required('GST No is required'),
     bankBranch: Yup.string().required('Bank Branch is required'),
-    emailId: Yup.string().required('Email ID is required'),
-    phoneNo: Yup.string().required('Phone No is required'),
+    emailId: Yup.string().required('Email ID is required').email('Email ID must be a valid email'),
+    phoneNo: Yup.number()
+      .required('Phone No is required')
+      .typeError('Phone No must be a number')
+      .test(
+        'len',
+        'Phone No must be exactly 10 digits',
+        (val) => val && val.toString().length === 10
+      ),
     transportType: Yup.string().required('Transport Type is required'),
     agreementNo: Yup.string().required('Agreement No is required'),
-    tdsPercentage: Yup.number().required('TDS Percentage is required').min(0),
+    tdsPercentage: Yup.number()
+      .required('TDS Percentage is required')
+      .min(0, 'TDS Percentage must be at least 0')
+      .max(100, 'TDS Percentage must be at most 100'),
   });
 
   const defaultValues = useMemo(

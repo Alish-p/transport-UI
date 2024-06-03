@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { paramCase } from 'change-case';
 import { Card, Table, Button, TableBody, Container, TableContainer } from '@mui/material';
 import { useDispatch, useSelector } from '../../../redux/store';
-import { fetchTransporters } from '../../../redux/slices/transporter';
+import { deleteTransporter, fetchTransporters } from '../../../redux/slices/transporter';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import { useSettingsContext } from '../../../components/settings';
 import {
@@ -95,32 +95,7 @@ export default function TransporterList() {
   };
 
   const handleDeleteRow = (id) => {
-    const deleteRow = tableData.filter((row) => row.id !== id);
-    setSelected([]);
-    setTableData(deleteRow);
-
-    if (page > 0) {
-      if (dataInPage.length < 2) {
-        setPage(page - 1);
-      }
-    }
-  };
-
-  const handleDeleteRows = (selectedRows) => {
-    const deleteRows = tableData.filter((row) => !selectedRows.includes(row.id));
-    setSelected([]);
-    setTableData(deleteRows);
-
-    if (page > 0) {
-      if (selectedRows.length === dataInPage.length) {
-        setPage(page - 1);
-      } else if (selectedRows.length === dataFiltered.length) {
-        setPage(0);
-      } else if (selectedRows.length > dataInPage.length) {
-        const newPage = Math.ceil((tableData.length - selectedRows.length) / rowsPerPage) - 1;
-        setPage(newPage);
-      }
-    }
+    dispatch(deleteTransporter(id));
   };
 
   const handleEditRow = (id) => {
@@ -213,25 +188,6 @@ export default function TransporterList() {
           />
         </Card>
       </Container>
-
-      <ConfirmDialog
-        open={openConfirm}
-        onClose={handleCloseConfirm}
-        title="Delete"
-        content={`Are you sure you want to delete ${selected.length} items?`}
-        action={
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              handleDeleteRows(selected);
-              handleCloseConfirm();
-            }}
-          >
-            Delete
-          </Button>
-        }
-      />
     </>
   );
 }

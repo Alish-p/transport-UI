@@ -33,14 +33,14 @@ const routeSlice = createSlice({
     },
     updateRouteSuccess(state, action) {
       state.isLoading = false;
-      const index = state.routes.findIndex((route) => route.id === action.payload.id);
+      const index = state.routes.findIndex((route) => route._id === action.payload.id);
       if (index !== -1) {
         state.routes[index] = action.payload;
       }
     },
     deleteRouteSuccess(state, action) {
       state.isLoading = false;
-      state.routes = state.routes.filter((route) => route.id !== action.payload);
+      state.routes = state.routes.filter((route) => route._id !== action.payload);
     },
     resetRoute(state) {
       state.route = null;
@@ -75,7 +75,7 @@ export const fetchRoute = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.get(`/api/routes/${id}`);
-    dispatch(getRouteSuccess(response.data.route));
+    dispatch(getRouteSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -85,7 +85,7 @@ export const addRoute = (data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.post(`/api/routes`, data);
-    dispatch(addRouteSuccess(response.data.route));
+    dispatch(addRouteSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -95,7 +95,7 @@ export const updateRoute = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/routes/${id}`, data);
-    dispatch(updateRouteSuccess(response.data.route));
+    dispatch(updateRouteSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

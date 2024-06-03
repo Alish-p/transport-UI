@@ -33,14 +33,14 @@ const expenseSlice = createSlice({
     },
     updateExpenseSuccess(state, action) {
       state.isLoading = false;
-      const index = state.expenses.findIndex((expense) => expense.id === action.payload.id);
+      const index = state.expenses.findIndex((expense) => expense._id === action.payload.id);
       if (index !== -1) {
         state.expenses[index] = action.payload;
       }
     },
     deleteExpenseSuccess(state, action) {
       state.isLoading = false;
-      state.expenses = state.expenses.filter((expense) => expense.id !== action.payload);
+      state.expenses = state.expenses.filter((expense) => expense._id !== action.payload);
     },
     resetExpense(state) {
       state.expense = null;
@@ -75,7 +75,7 @@ export const fetchExpense = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.get(`/api/expenses/${id}`);
-    dispatch(getExpenseSuccess(response.data.expense));
+    dispatch(getExpenseSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -85,7 +85,7 @@ export const addExpense = (data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.post(`/api/expenses`, data);
-    dispatch(addExpenseSuccess(response.data.expense));
+    dispatch(addExpenseSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -95,7 +95,7 @@ export const updateExpense = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/expenses/${id}`, data);
-    dispatch(updateExpenseSuccess(response.data.expense));
+    dispatch(updateExpenseSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

@@ -29,12 +29,13 @@ const transporterSlice = createSlice({
     },
     addTransporterSuccess(state, action) {
       state.isLoading = false;
+      console.log(action.payload);
       state.transporters.push(action.payload);
     },
     updateTransporterSuccess(state, action) {
       state.isLoading = false;
       const index = state.transporters.findIndex(
-        (transporter) => transporter.id === action.payload.id
+        (transporter) => transporter._id === action.payload.id
       );
       if (index !== -1) {
         state.transporters[index] = action.payload;
@@ -43,7 +44,7 @@ const transporterSlice = createSlice({
     deleteTransporterSuccess(state, action) {
       state.isLoading = false;
       state.transporters = state.transporters.filter(
-        (transporter) => transporter.id !== action.payload
+        (transporter) => transporter._id !== action.payload
       );
     },
     resetTransporter(state) {
@@ -79,7 +80,7 @@ export const fetchTransporter = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.get(`/api/transporters/${id}`);
-    dispatch(getTransporterSuccess(response.data.transporter));
+    dispatch(getTransporterSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -89,7 +90,7 @@ export const addTransporter = (data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.post(`/api/transporters`, data);
-    dispatch(addTransporterSuccess(response.data.transporter));
+    dispatch(addTransporterSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -99,7 +100,7 @@ export const updateTransporter = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/transporters/${id}`, data);
-    dispatch(updateTransporterSuccess(response.data.transporter));
+    dispatch(updateTransporterSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

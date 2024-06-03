@@ -7,18 +7,18 @@ import Iconify from '../../../components/iconify';
 DriverTableToolbar.propTypes = {
   isFiltered: PropTypes.bool,
   filterDriverName: PropTypes.string,
-  filterLicenseType: PropTypes.string,
+  filterLicenseNo: PropTypes.string,
   onFilterDriverName: PropTypes.func,
-  onFilterLicenseType: PropTypes.func,
+  onFilterLicenseNo: PropTypes.func,
   onResetFilter: PropTypes.func,
 };
 
 export default function DriverTableToolbar({
   isFiltered,
   filterDriverName,
-  filterLicenseType,
+  filterLicenseNo,
   onFilterDriverName,
-  onFilterLicenseType,
+  onFilterLicenseNo,
   onResetFilter,
 }) {
   return (
@@ -47,9 +47,9 @@ export default function DriverTableToolbar({
 
       <TextField
         fullWidth
-        value={filterLicenseType}
-        onChange={onFilterLicenseType}
-        placeholder="Search License Type"
+        value={filterLicenseNo}
+        onChange={onFilterLicenseNo}
+        placeholder="Search License No"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

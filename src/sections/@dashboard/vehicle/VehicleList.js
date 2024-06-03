@@ -5,7 +5,7 @@ import { paramCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
-import { Card, Table, Button, TableBody, Container, TableContainer } from '@mui/material';
+import { Card, Table, Button, TableBody, Container, TableContainer, MenuItem } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../../redux/store';
 import { fetchVehicles } from '../../../redux/slices/vehicle';
@@ -247,7 +247,7 @@ export default function VehicleTable() {
         title="Delete"
         content={`Are you sure you want to delete ${selected.length} items?`}
         action={
-          <Button
+          <MenuItem
             variant="contained"
             color="error"
             onClick={() => {
@@ -256,7 +256,7 @@ export default function VehicleTable() {
             }}
           >
             Delete
-          </Button>
+          </MenuItem>
         }
       />
     </>

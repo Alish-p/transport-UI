@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, Grid, Stack, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
+import { paramCase } from 'change-case';
 import { useSnackbar } from '../../../components/snackbar';
 import FormProvider, {
   RHFSelect,
@@ -19,6 +20,7 @@ import { fetchVehicles } from '../../../redux/slices/vehicle';
 import { fetchRoutes } from '../../../redux/slices/route';
 import { useSelector } from '../../../redux/store';
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import { subtripStatus, tripStatus } from './TripTableConfig';
 
 TripForm.propTypes = {
   isEdit: PropTypes.bool,
@@ -36,7 +38,6 @@ export default function TripForm({ isEdit = false, currentTrip }) {
     vehicleId: Yup.string().required('Vehicle is required'),
     fromDate: Yup.date().required('From Date is required'),
     toDate: Yup.date().required('To Date is required'),
-    tripType: Yup.string().required('Trip Type is required'),
     tripStatus: Yup.string().required('Trip Status is required'),
     totalDetTime: Yup.number().required('Total Detention Time is required'),
     remarks: Yup.string(),
@@ -82,8 +83,7 @@ export default function TripForm({ isEdit = false, currentTrip }) {
       vehicleId: currentTrip?.vehicleId || '',
       fromDate: currentTrip?.fromDate || new Date(),
       toDate: currentTrip?.toDate || new Date(),
-      tripType: currentTrip?.tripType || '',
-      tripStatus: currentTrip?.tripStatus || '',
+      tripStatus: currentTrip?.tripStatus || 'Pending',
       totalDetTime: currentTrip?.totalDetTime || 0,
       remarks: currentTrip?.remarks || '',
       // Subtrip
@@ -147,7 +147,7 @@ export default function TripForm({ isEdit = false, currentTrip }) {
       orderNo: currentTrip?.orderNo || '1',
       shipmentNo: currentTrip?.shipmentNo || '1',
       invoiceNo: currentTrip?.invoiceNo || '1',
-      subtripStatus: currentTrip?.subtripStatus || '1',
+      subtripStatus: currentTrip?.subtripStatus || 'pending',
       subtripEndDate: currentTrip?.subtripEndDate || new Date('2024-05-31T18:30:28.140Z'),
       subtripStartDate: currentTrip?.subtripStartDate || new Date('2024-05-31T18:30:28.140Z'),
       rate: currentTrip?.rate || 1,
@@ -163,8 +163,7 @@ export default function TripForm({ isEdit = false, currentTrip }) {
       // Trip fields
       remarks: currentTrip?.remarks || '1',
       totalDetTime: currentTrip?.totalDetTime || 1,
-      tripStatus: currentTrip?.tripStatus || '1',
-      tripType: currentTrip?.tripType || '1',
+      tripStatus: currentTrip?.tripStatus || 'pending',
       toDate: currentTrip?.toDate || new Date('2024-05-31T18:30:28.140Z'),
       fromDate: currentTrip?.fromDate || new Date('2024-05-31T18:30:28.140Z'),
       vehicleId: currentTrip?.vehicleId || '6645048280b569afe0161962',
@@ -208,10 +207,11 @@ export default function TripForm({ isEdit = false, currentTrip }) {
   const onSubmit = async (data) => {
     try {
       console.log(data);
-      await dispatch(addTrip(data));
+      const createdTrip = await dispatch(addTrip(data));
+      console.log({ createdTrip });
       reset();
       enqueueSnackbar(!isEdit ? 'Trip created successfully!' : 'Trip edited successfully!');
-      // navigate(PATH_DASHBOARD.trip.list);
+      navigate(PATH_DASHBOARD.trip.detail(paramCase(createdTrip._id)));
     } catch (error) {
       console.error(error);
     }
@@ -275,8 +275,14 @@ export default function TripForm({ isEdit = false, currentTrip }) {
             <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
               <RHFDatePicker name="fromDate" label="From Date" />
               <RHFDatePicker name="toDate" label="To Date" />
-              <RHFTextField name="tripType" label="Trip Type" />
-              <RHFTextField name="tripStatus" label="Trip Status" />
+              <RHFSelect native name="tripStatus" label="Trip Status">
+                <option value="" />
+                {subtripStatus.map((item) => (
+                  <option key={item.key} value={item.key}>
+                    {item.value}
+                  </option>
+                ))}
+              </RHFSelect>
               <RHFTextField name="totalDetTime" label="Total Detention Time" />
               <RHFTextField name="remarks" label="Remarks" />
             </Box>
@@ -304,7 +310,7 @@ export default function TripForm({ isEdit = false, currentTrip }) {
                 <option value="" />
                 {routes.map((route) => (
                   <option key={route._id} value={route._id}>
-                    {route.routeCd}
+                    {route.routeName}
                   </option>
                 ))}
               </RHFSelect>
@@ -319,6 +325,14 @@ export default function TripForm({ isEdit = false, currentTrip }) {
               <RHFTextField name="rate" label="Rate" />
               <RHFDatePicker name="subtripStartDate" label="Start Date" />
               <RHFDatePicker name="subtripEndDate" label="End Date" />
+              <RHFSelect native name="subtripStatus" label="Subtrip Status">
+                <option value="" />
+                {tripStatus.map((item) => (
+                  <option key={item.key} value={item.key}>
+                    {item.value}
+                  </option>
+                ))}
+              </RHFSelect>
               <RHFTextField name="subtripStatus" label="Subtrip Status" />
               <RHFTextField name="invoiceNo" label="Invoice No" />
               <RHFTextField name="shipmentNo" label="Shipment No" />

@@ -258,7 +258,7 @@ export default function GeneralFilePage() {
               onDrop={handleDrop}
               placeholder={
                 <Stack spacing={0.5} alignItems="center" sx={{ color: 'text.disabled' }}>
-                  <Iconify icon="eva:cloud-upload-fill" width={40} />
+                  <Iconify icon="eva:" width={40} />
                   <Typography variant="body2">Upload file</Typography>
                 </Stack>
               }

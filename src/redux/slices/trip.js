@@ -40,7 +40,7 @@ const tripDetailsSlice = createSlice({
     },
     deleteTripSuccess(state, action) {
       state.isLoading = false;
-      state.trips = state.trips.filter((trip) => trip.id !== action.payload);
+      state.trips = state.trips.filter((trip) => trip._id !== action.payload);
     },
     resetTrip(state) {
       state.trip = null;
@@ -75,8 +75,8 @@ export const fetchTrips = () => async (dispatch) => {
 export const fetchTrip = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
-    const response = await axios.get(`/api/trips/${id}`);
-    dispatch(getTripSuccess(response.data.trip));
+    const response = await axios.get(`/api/trips/${id}/totals`);
+    dispatch(getTripSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -86,7 +86,7 @@ export const addTrip = (data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.post(`/api/trips`, data);
-    dispatch(addTripSuccess(response.data.trip));
+    dispatch(addTripSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -96,7 +96,7 @@ export const updateTrip = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/trips/${id}`, data);
-    dispatch(updateTripSuccess(response.data.trip));
+    dispatch(updateTripSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

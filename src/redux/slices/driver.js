@@ -33,14 +33,15 @@ const driverSlice = createSlice({
     },
     updateDriverSuccess(state, action) {
       state.isLoading = false;
-      const index = state.drivers.findIndex((driver) => driver.id === action.payload.id);
+      const index = state.drivers.findIndex((driver) => driver._id === action.payload._id);
       if (index !== -1) {
         state.drivers[index] = action.payload;
       }
     },
     deleteDriverSuccess(state, action) {
       state.isLoading = false;
-      state.drivers = state.drivers.filter((driver) => driver.id !== action.payload);
+      console.log({ action, drivers: state.drivers });
+      state.drivers = state.drivers.filter((driver) => driver._id !== action.payload);
     },
     resetDriver(state) {
       state.driver = null;
@@ -85,7 +86,7 @@ export const addDriver = (data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.post(`/api/drivers`, data);
-    dispatch(addDriverSuccess(response.data.driver));
+    dispatch(addDriverSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }

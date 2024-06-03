@@ -13,6 +13,9 @@ import driverReducer from './slices/driver';
 import pumpReducer from './slices/pump';
 import routeReducer from './slices/route';
 import bankReducer from './slices/bank';
+import tripReducer from './slices/trip';
+import subtripReducer from './slices/subtrip';
+import expenseReducer from './slices/expense';
 
 // ----------------------------------------------------------------------
 
@@ -42,6 +45,9 @@ const rootReducer = combineReducers({
   pump: pumpReducer,
   bank: bankReducer,
   route: routeReducer,
+  trip: tripReducer,
+  subtrip: subtripReducer,
+  expense: expenseReducer,
 });
 
 export default rootReducer;

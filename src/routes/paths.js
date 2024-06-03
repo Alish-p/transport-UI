@@ -68,7 +68,26 @@ export const PATH_DASHBOARD = {
     new: path(ROOTS_DASHBOARD, '/trip/new'),
     list: path(ROOTS_DASHBOARD, '/trip/list'),
     edit: (name) => path(ROOTS_DASHBOARD, `/trip/${name}/edit`),
+    detail: (name) => path(ROOTS_DASHBOARD, `/trip/${name}`),
     demoEdit: path(ROOTS_DASHBOARD, `/trip/abc/edit`),
+  },
+
+  subtrip: {
+    root: path(ROOTS_DASHBOARD, '/subtrip'),
+    new: path(ROOTS_DASHBOARD, '/subtrip/new'),
+    list: path(ROOTS_DASHBOARD, '/subtrip/list'),
+    edit: (name) => path(ROOTS_DASHBOARD, `/subtrip/${name}/edit`),
+    detail: (name) => path(ROOTS_DASHBOARD, `/subtrip/${name}`),
+    demoEdit: path(ROOTS_DASHBOARD, `/subtrip/abc/edit`),
+  },
+
+  expense: {
+    root: path(ROOTS_DASHBOARD, '/expense'),
+    new: path(ROOTS_DASHBOARD, '/expense/new'),
+    list: path(ROOTS_DASHBOARD, '/expense/list'),
+    edit: (name) => path(ROOTS_DASHBOARD, `/expense/${name}/edit`),
+    detail: (name) => path(ROOTS_DASHBOARD, `/expense/${name}`),
+    demoEdit: path(ROOTS_DASHBOARD, `/expense/abc/edit`),
   },
 
   vehicle: {

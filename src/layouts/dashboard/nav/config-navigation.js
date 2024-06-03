@@ -41,7 +41,7 @@ const ICONS = {
   pump: icon('ic_pump'),
   expense: icon('ic_expense'),
   trip: icon('ic_trip'),
-  lr: icon('ic_reciept'),
+  subtrip: icon('ic_reciept'),
 };
 
 const navConfig = [
@@ -58,12 +58,12 @@ const navConfig = [
       // { title: 'driver', path: PATH_DASHBOARD.general.driver, icon: ICONS.driver },
       // { title: 'transporter', path: PATH_DASHBOARD.general.transporter, icon: ICONS.transporter },
       // { title: 'routes', path: PATH_DASHBOARD.general.transporter, icon: ICONS.map },
-      // { title: 'account', path: PATH_DASHBOARD.user.account, icon: ICONS.dashboard },
-      // { title: 'ecommerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
-      // { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
-      // { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
-      // { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
-      // { title: 'file', path: PATH_DASHBOARD.general.file, icon: ICONS.file },
+      { title: 'account', path: PATH_DASHBOARD.user.account, icon: ICONS.dashboard },
+      { title: 'ecommerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
+      { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
+      { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
+      { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
+      { title: 'file', path: PATH_DASHBOARD.general.file, icon: ICONS.file },
     ],
   },
 
@@ -85,6 +85,42 @@ const navConfig = [
       //     { title: 'edit', path: PATH_DASHBOARD.user.demoEdit },
       //   ],
       // },
+
+      // Trip
+      {
+        title: 'trip',
+        path: PATH_DASHBOARD.trip.root,
+        icon: ICONS.trip,
+        children: [
+          { title: 'list', path: PATH_DASHBOARD.trip.list },
+          { title: 'create', path: PATH_DASHBOARD.trip.new },
+          { title: 'edit', path: PATH_DASHBOARD.trip.demoEdit },
+        ],
+      },
+
+      // subtrip
+      {
+        title: 'subtrip',
+        path: PATH_DASHBOARD.subtrip.root,
+        icon: ICONS.subtrip,
+        children: [
+          { title: 'list', path: PATH_DASHBOARD.subtrip.list },
+          { title: 'create', path: PATH_DASHBOARD.subtrip.new },
+          { title: 'edit', path: PATH_DASHBOARD.subtrip.demoEdit },
+        ],
+      },
+
+      // expense
+      {
+        title: 'expense',
+        path: PATH_DASHBOARD.expense.root,
+        icon: ICONS.expense,
+        children: [
+          { title: 'list', path: PATH_DASHBOARD.expense.list },
+          { title: 'create', path: PATH_DASHBOARD.expense.new },
+          { title: 'edit', path: PATH_DASHBOARD.expense.demoEdit },
+        ],
+      },
 
       // Vehicle
       {
@@ -156,80 +192,80 @@ const navConfig = [
       },
 
       // E-COMMERCE
-      // {
-      //   title: 'ecommerce',
-      //   path: PATH_DASHBOARD.eCommerce.root,
-      //   icon: ICONS.cart,
-      //   children: [
-      //     { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
-      //     { title: 'product', path: PATH_DASHBOARD.eCommerce.demoView },
-      //     { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
-      //     { title: 'create', path: PATH_DASHBOARD.eCommerce.new },
-      //     { title: 'edit', path: PATH_DASHBOARD.eCommerce.demoEdit },
-      //     { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
-      //   ],
-      // },
+      {
+        title: 'ecommerce',
+        path: PATH_DASHBOARD.eCommerce.root,
+        icon: ICONS.cart,
+        children: [
+          { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
+          { title: 'product', path: PATH_DASHBOARD.eCommerce.demoView },
+          { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
+          { title: 'create', path: PATH_DASHBOARD.eCommerce.new },
+          { title: 'edit', path: PATH_DASHBOARD.eCommerce.demoEdit },
+          { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
+        ],
+      },
 
       // INVOICE
-      // {
-      //   title: 'invoice',
-      //   path: PATH_DASHBOARD.invoice.root,
-      //   icon: ICONS.invoice,
-      //   children: [
-      //     { title: 'list', path: PATH_DASHBOARD.invoice.list },
-      //     { title: 'details', path: PATH_DASHBOARD.invoice.demoView },
-      //     { title: 'create', path: PATH_DASHBOARD.invoice.new },
-      //     { title: 'edit', path: PATH_DASHBOARD.invoice.demoEdit },
-      //   ],
-      // },
+      {
+        title: 'invoice',
+        path: PATH_DASHBOARD.invoice.root,
+        icon: ICONS.invoice,
+        children: [
+          { title: 'list', path: PATH_DASHBOARD.invoice.list },
+          { title: 'details', path: PATH_DASHBOARD.invoice.demoView },
+          { title: 'create', path: PATH_DASHBOARD.invoice.new },
+          { title: 'edit', path: PATH_DASHBOARD.invoice.demoEdit },
+        ],
+      },
 
       // BLOG
-      // {
-      //   title: 'blog',
-      //   path: PATH_DASHBOARD.blog.root,
-      //   icon: ICONS.blog,
-      //   children: [
-      //     { title: 'posts', path: PATH_DASHBOARD.blog.posts },
-      //     { title: 'post', path: PATH_DASHBOARD.blog.demoView },
-      //     { title: 'create', path: PATH_DASHBOARD.blog.new },
-      //   ],
-      // },
-      // {
-      //   title: 'File manager',
-      //   path: PATH_DASHBOARD.fileManager,
-      //   icon: ICONS.folder,
-      // },
+      {
+        title: 'blog',
+        path: PATH_DASHBOARD.blog.root,
+        icon: ICONS.blog,
+        children: [
+          { title: 'posts', path: PATH_DASHBOARD.blog.posts },
+          { title: 'post', path: PATH_DASHBOARD.blog.demoView },
+          { title: 'create', path: PATH_DASHBOARD.blog.new },
+        ],
+      },
+      {
+        title: 'File manager',
+        path: PATH_DASHBOARD.fileManager,
+        icon: ICONS.folder,
+      },
     ],
   },
 
   // APP
   // ----------------------------------------------------------------------
-  // {
-  //   subheader: 'app',
-  //   items: [
-  //     {
-  //       title: 'mail',
-  //       path: PATH_DASHBOARD.mail.root,
-  //       icon: ICONS.mail,
-  //       info: <Label color="error">+32</Label>,
-  //     },
-  //     {
-  //       title: 'chat',
-  //       path: PATH_DASHBOARD.chat.root,
-  //       icon: ICONS.chat,
-  //     },
-  //     {
-  //       title: 'calendar',
-  //       path: PATH_DASHBOARD.calendar,
-  //       icon: ICONS.calendar,
-  //     },
-  //     {
-  //       title: 'kanban',
-  //       path: PATH_DASHBOARD.kanban,
-  //       icon: ICONS.kanban,
-  //     },
-  //   ],
-  // },
+  {
+    subheader: 'app',
+    items: [
+      {
+        title: 'mail',
+        path: PATH_DASHBOARD.mail.root,
+        icon: ICONS.mail,
+        info: <Label color="error">+32</Label>,
+      },
+      {
+        title: 'chat',
+        path: PATH_DASHBOARD.chat.root,
+        icon: ICONS.chat,
+      },
+      {
+        title: 'calendar',
+        path: PATH_DASHBOARD.calendar,
+        icon: ICONS.calendar,
+      },
+      {
+        title: 'kanban',
+        path: PATH_DASHBOARD.kanban,
+        icon: ICONS.kanban,
+      },
+    ],
+  },
 
   // DEMO MENU STATES
   // {

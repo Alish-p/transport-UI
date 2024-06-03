@@ -1,31 +1,31 @@
 import { Helmet } from 'react-helmet-async';
-import { Container, Box, Stack, Button } from '@mui/material';
+import { Container } from '@mui/material';
 
-import TripNewForm from './ExpenseNewForm';
+import ExpenseNewForm from './ExpenseNewForm'; // Import the new expense form component
 import { useSettingsContext } from '../../../components/settings';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 
-export default function NewTripPage() {
+export default function NewExpensePage() {
   const { themeStretch } = useSettingsContext();
 
   return (
     <>
       <Helmet>
-        <title>Add New Trip</title>
+        <title>Add New Expense</title>
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Add New Trip"
+          heading="Add New Expense"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Trips List', href: PATH_DASHBOARD.trip.list },
-            { name: 'Add New Trip' },
+            { name: 'Expenses List', href: PATH_DASHBOARD.expense.list },
+            { name: 'Add New Expense' },
           ]}
         />
 
-        <TripNewForm />
+        <ExpenseNewForm />
       </Container>
     </>
   );

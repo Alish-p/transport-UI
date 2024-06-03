@@ -41,10 +41,23 @@ import {
   EcommerceProductCreatePage,
   EcommerceProductDetailsPage,
 
-  // Dashboard:Vehicle
+  // Dashboard:Trip
   TripListPage,
   TripCreatePage,
+  TripDetailPage,
   TripEditPage,
+
+  // Dashboard:Subtrip
+  SubtripListPage,
+  SubtripDetailPage,
+  SubtripCreatePage,
+  SubtripEditPage,
+
+  // Dashboard:Expense
+  ExpenseListPage,
+  ExpenseDetailPage,
+  ExpenseCreatePage,
+  ExpenseEditPage,
 
   // Dashboard:Vehicle
   VehicleListPage,
@@ -239,8 +252,29 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/trip/list" replace />, index: true },
             { path: 'list', element: <TripListPage /> },
+            { path: ':id', element: <TripDetailPage /> },
             { path: 'new', element: <TripCreatePage /> },
             { path: ':id/edit', element: <TripEditPage /> },
+          ],
+        },
+        {
+          path: 'subtrip',
+          children: [
+            { element: <Navigate to="/dashboard/subtrip/list" replace />, index: true },
+            { path: 'list', element: <SubtripListPage /> },
+            { path: ':id', element: <SubtripDetailPage /> },
+            { path: 'new', element: <SubtripCreatePage /> },
+            { path: ':id/edit', element: <SubtripEditPage /> },
+          ],
+        },
+        {
+          path: 'expense',
+          children: [
+            { element: <Navigate to="/dashboard/expense/list" replace />, index: true },
+            { path: 'list', element: <ExpenseListPage /> },
+            { path: ':id', element: <ExpenseDetailPage /> },
+            { path: 'new', element: <ExpenseCreatePage /> },
+            { path: ':id/edit', element: <ExpenseEditPage /> },
           ],
         },
         {

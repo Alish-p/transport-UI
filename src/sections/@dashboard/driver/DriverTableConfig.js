@@ -21,7 +21,7 @@ export const driverConfig = [
     type: 'text',
     align: 'center',
   },
-  { id: 'licenseFrom', name: 'licenseFrom', label: 'Issue Date', type: 'date', align: 'center' },
-  { id: 'licenseTo', name: 'licenseTo', label: 'Expiry Date', type: 'date', align: 'center' },
+  // { id: 'licenseFrom', name: 'licenseFrom', label: 'Issue Date', type: 'date', align: 'center' },
+  // { id: 'licenseTo', name: 'licenseTo', label: 'Expiry Date', type: 'date', align: 'center' },
   { id: 'dob', name: 'dob', label: 'Date of Birth', type: 'date', align: 'center' },
 ];

@@ -36,19 +36,40 @@ export default function DriverForm({ isEdit = false, currentDriver }) {
   const NewDriverSchema = Yup.object().shape({
     driverName: Yup.string().required('Driver Name is required'),
     images: Yup.mixed().nullable(true),
-    driverLicenceNo: Yup.string().required('Driver Licence No is required'),
+    driverLicenceNo: Yup.string()
+      .required('Driver Licence No is required')
+      .matches(
+        /^[A-Za-z]{2}[0-9]{13}$/,
+        'Driver Licence No must be in the format: two letters followed by 13 digits'
+      ),
     driverPresentAddress: Yup.string().required('Driver Present Address is required'),
-    driverCellNo: Yup.string().required('Driver Cell No is required'),
+    driverCellNo: Yup.string()
+      .required('Driver Cell No is required')
+      .matches(/^[0-9]{10}$/, 'Driver Cell No must be exactly 10 digits'),
     licenseFrom: Yup.date().required('License From date is required'),
+    // .max(Yup.ref('licenseTo'), 'License From must be before License To'),
     licenseTo: Yup.date().required('License To date is required'),
-    aadharNo: Yup.string().required('Aadhar No is required'),
+    // .min(Yup.ref('licenseFrom'), 'License To must be after License From'),
+    aadharNo: Yup.string()
+      .required('Aadhar No is required')
+      .matches(
+        /(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/,
+        'Aadhar No must be a valid format'
+      ),
     guarantorName: Yup.string().required('Guarantor Name is required'),
-    guarantorCellNo: Yup.string().required('Guarantor Cell No is required'),
-    experience: Yup.number().required('Experience is required').min(0),
+    guarantorCellNo: Yup.string()
+      .required('Guarantor Cell No is required')
+      .matches(/^[0-9]{10}$/, 'Guarantor Cell No must be exactly 10 digits'),
+    experience: Yup.number()
+      .required('Experience is required')
+      .min(0, 'Experience must be at least 0 years'),
     dob: Yup.date().required('Date of Birth is required'),
+    // .max(new Date(), 'Date of Birth must be in the past'),
     permanentAddress: Yup.string().required('Permanent Address is required'),
     bankCd: Yup.string().required('Bank Code is required'),
-    accNo: Yup.string().required('Account No is required'),
+    accNo: Yup.string()
+      .required('Account No is required')
+      .matches(/^[0-9]{9,18}$/, 'Account No must be between 9 and 18 digits'),
   });
 
   const defaultValues = useMemo(
@@ -58,18 +79,17 @@ export default function DriverForm({ isEdit = false, currentDriver }) {
       driverLicenceNo: currentDriver?.driverLicenceNo || '',
       driverPresentAddress: currentDriver?.driverPresentAddress || '',
       driverCellNo: currentDriver?.driverCellNo || '',
-      licenseFrom: currentDriver?.licenseFrom || '',
-      licenseTo: currentDriver?.licenseTo || '',
+      licenseFrom: currentDriver?.licenseFrom ? new Date(currentDriver.licenseFrom) : new Date(),
+      licenseTo: currentDriver?.licenseTo ? new Date(currentDriver.licenseTo) : new Date(),
       aadharNo: currentDriver?.aadharNo || '',
       guarantorName: currentDriver?.guarantorName || '',
       guarantorCellNo: currentDriver?.guarantorCellNo || '',
       experience: currentDriver?.experience || 0,
-      dob: currentDriver?.dob || '',
+      dob: currentDriver?.dob ? new Date(currentDriver.dob) : new Date(),
       permanentAddress: currentDriver?.permanentAddress || '',
       bankCd: currentDriver?.bankCd || '',
       accNo: currentDriver?.accNo || '',
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentDriver]
   );
 
@@ -142,15 +162,6 @@ export default function DriverForm({ isEdit = false, currentDriver }) {
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Card sx={{ pt: 10, pb: 5, px: 3 }}>
-            {/* {isEdit && (
-              <Label
-                color={values.status === 'active' ? 'success' : 'error'}
-                sx={{ textTransform: 'uppercase', position: 'absolute', top: 24, right: 24 }}
-              >
-                {values.status}
-              </Label>
-            )} */}
-
             <Box sx={{ mb: 5 }}>
               <Stack spacing={1}>
                 <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>

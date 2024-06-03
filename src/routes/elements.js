@@ -137,12 +137,43 @@ export const BankEditPage = Loadable(
 );
 
 // DASHBOARD: Trip
-export const TripListPage = Loadable(lazy(() => import('../sections/@dashboard/trip/Trip')));
+export const TripDetailPage = Loadable(lazy(() => import('../sections/@dashboard/trip/Trip')));
+export const TripListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/trip/TripListPage'))
+);
 export const TripCreatePage = Loadable(
   lazy(() => import('../sections/@dashboard/trip/TripCreatePage'))
 );
 export const TripEditPage = Loadable(
   lazy(() => import('../sections/@dashboard/trip/TripEditPage'))
+);
+
+// DASHBOARD: Subtrip
+export const SubtripDetailPage = Loadable(
+  lazy(() => import('../sections/@dashboard/subtrip/Subtrip'))
+);
+export const SubtripListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/subtrip/SubtripListPage'))
+);
+export const SubtripCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/subtrip/SubtripCreatePage'))
+);
+export const SubtripEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/subtrip/SubtripEditPage'))
+);
+
+// DASHBOARD: Expense
+export const ExpenseDetailPage = Loadable(
+  lazy(() => import('../sections/@dashboard/expense/Expense'))
+);
+export const ExpenseListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/expense/ExpenseListPage'))
+);
+export const ExpenseCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/expense/ExpenseCreatePage'))
+);
+export const ExpenseEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/expense/ExpenseEditPage'))
 );
 
 // DASHBOARD: BLOG

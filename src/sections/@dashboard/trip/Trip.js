@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import { Grid, Container, Typography, Card, CardHeader } from '@mui/material';
 // mock data
 import { useState, useEffect } from 'react';
 // components
@@ -19,6 +19,7 @@ import {
 import { fetchTrip } from '../../../redux/slices/trip';
 import SubtripDetails from '../subtrip/SubtripListPage';
 import DriverCard from '../driver/DriverCard';
+import { TripListPage } from '../../../routes/elements';
 
 // ----------------------------------------------------------------------
 
@@ -125,31 +126,14 @@ export default function TripDashBoardPage() {
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
-            <AnalyticsWebsiteVisits
-              title="Trip Details"
-              subheader="Detailed information about each trip"
-              chart={{
-                labels: tripData?.subtrips?.map((trip) => trip.dateOfCreation),
-                series: [
-                  {
-                    name: 'Expenses',
-                    type: 'column',
-                    fill: 'solid',
-                    data: tripData?.subtrips?.map((trip) => trip.totalExpenses),
-                  },
-                  {
-                    name: 'Income',
-                    type: 'area',
-                    fill: 'gradient',
-                    data: tripData?.subtrips?.map((trip) => trip.totalIncome),
-                  },
-                ],
-              }}
-            />
+            <Card>
+              <CardHeader title="Subtrip List" subheader="Detail of Subtrip" sx={{ mb: 3 }} />
+              <TripListPage />
+            </Card>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <AnalyticsCurrentVisits
-              title="Trip Status"
+              title="SubTrip Status"
               chart={{
                 series: [
                   {

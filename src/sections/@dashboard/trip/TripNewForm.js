@@ -8,11 +8,13 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Card, Grid, Stack, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { paramCase } from 'change-case';
+import { options } from 'numeral';
 import { useSnackbar } from '../../../components/snackbar';
 import FormProvider, {
   RHFSelect,
   RHFTextField,
   RHFDatePicker,
+  RHFAutocomplete,
 } from '../../../components/hook-form';
 import { addTrip } from '../../../redux/slices/trip';
 import { fetchDrivers } from '../../../redux/slices/driver';
@@ -78,14 +80,13 @@ export default function TripForm({ isEdit = false, currentTrip }) {
 
   const defaultValues = useMemo(
     () => ({
-      // Trip Related fields
-      driverId: currentTrip?.driverId || '',
-      vehicleId: currentTrip?.vehicleId || '',
-      fromDate: currentTrip?.fromDate || new Date(),
-      toDate: currentTrip?.toDate || new Date(),
+      driverId: currentTrip?.driverId?.driverName || null,
+      vehicleId: currentTrip?.vehicleId?.vehicleNo || null,
+      fromDate: currentTrip?.fromDate ? new Date(currentTrip?.fromDate) : new Date(),
+      toDate: currentTrip?.toDate ? new Date(currentTrip?.toDate) : new Date(),
       tripStatus: currentTrip?.tripStatus || 'Pending',
-      totalDetTime: currentTrip?.totalDetTime || 0,
-      remarks: currentTrip?.remarks || '',
+      totalDetTime: currentTrip?.totalDetTime || 3,
+      remarks: currentTrip?.remarks || 'Remarks',
       // Subtrip
       routeCd: currentTrip?.routeCd || '',
       customerId: currentTrip?.customerId || '',
@@ -96,14 +97,20 @@ export default function TripForm({ isEdit = false, currentTrip }) {
       startKm: currentTrip?.startKm || 0,
       endKm: currentTrip?.endKm || 0,
       rate: currentTrip?.rate || 0,
-      subtripStartDate: currentTrip?.subtripStartDate || new Date(),
-      subtripEndDate: currentTrip?.subtripEndDate || new Date(),
+      subtripStartDate: currentTrip?.subtripStartDate
+        ? new Date(currentTrip?.subtripStartDate)
+        : new Date(),
+      subtripEndDate: currentTrip?.subtripEndDate
+        ? new Date(currentTrip?.subtripEndDate)
+        : new Date(),
       subtripStatus: currentTrip?.subtripStatus || '',
       invoiceNo: currentTrip?.invoiceNo || '',
       shipmentNo: currentTrip?.shipmentNo || '',
       orderNo: currentTrip?.orderNo || '',
       ewayBill: currentTrip?.ewayBill || '',
-      ewayExpiryDate: currentTrip?.ewayExpiryDate || new Date(),
+      ewayExpiryDate: currentTrip?.ewayExpiryDate
+        ? new Date(currentTrip?.ewayExpiryDate)
+        : new Date(),
       materialType: currentTrip?.materialType || '',
       quantity: currentTrip?.quantity || 0,
       grade: currentTrip?.grade || '',
@@ -123,55 +130,6 @@ export default function TripForm({ isEdit = false, currentTrip }) {
     [currentTrip]
   );
 
-  const defaultValues1 = useMemo(
-    () => ({
-      // Expense fields
-      authorisedBy: currentTrip?.authorisedBy || '1',
-      paidThrough: currentTrip?.paidThrough || '1',
-      pumpCd: currentTrip?.pumpCd || '1',
-      slipNo: currentTrip?.slipNo || '1',
-      amount: currentTrip?.amount || 50000,
-      installment: currentTrip?.installment || 1,
-      expenseType: currentTrip?.expenseType || '1',
-
-      // Subtrip fields
-      deductedWeight: currentTrip?.deductedWeight || 1,
-      tds: currentTrip?.tds || 1,
-      detentionTime: currentTrip?.detentionTime || 1,
-      dieselLtr: currentTrip?.dieselLtr || 1,
-      grade: currentTrip?.grade || '1',
-      quantity: currentTrip?.quantity || 1,
-      materialType: currentTrip?.materialType || '1',
-      ewayExpiryDate: currentTrip?.ewayExpiryDate || new Date('2024-05-31T18:30:28.140Z'),
-      ewayBill: currentTrip?.ewayBill || '1',
-      orderNo: currentTrip?.orderNo || '1',
-      shipmentNo: currentTrip?.shipmentNo || '1',
-      invoiceNo: currentTrip?.invoiceNo || '1',
-      subtripStatus: currentTrip?.subtripStatus || 'pending',
-      subtripEndDate: currentTrip?.subtripEndDate || new Date('2024-05-31T18:30:28.140Z'),
-      subtripStartDate: currentTrip?.subtripStartDate || new Date('2024-05-31T18:30:28.140Z'),
-      rate: currentTrip?.rate || 1,
-      endKm: currentTrip?.endKm || 1,
-      startKm: currentTrip?.startKm || 1,
-      unloadingWeight: currentTrip?.unloadingWeight || 1,
-      loadingWeight: currentTrip?.loadingWeight || 1,
-      unloadingPoint: currentTrip?.unloadingPoint || '1',
-      loadingPoint: currentTrip?.loadingPoint || '1',
-      customerId: currentTrip?.customerId || '1',
-      routeCd: currentTrip?.routeCd || '664f8e687cbf8fac101843be',
-
-      // Trip fields
-      remarks: currentTrip?.remarks || '1',
-      totalDetTime: currentTrip?.totalDetTime || 1,
-      tripStatus: currentTrip?.tripStatus || 'pending',
-      toDate: currentTrip?.toDate || new Date('2024-05-31T18:30:28.140Z'),
-      fromDate: currentTrip?.fromDate || new Date('2024-05-31T18:30:28.140Z'),
-      vehicleId: currentTrip?.vehicleId || '6645048280b569afe0161962',
-      driverId: currentTrip?.driverId || '664e5f40d81f6fee101219c4',
-    }),
-    [currentTrip]
-  );
-
   useEffect(() => {
     dispatch(fetchDrivers());
     dispatch(fetchVehicles());
@@ -184,7 +142,7 @@ export default function TripForm({ isEdit = false, currentTrip }) {
 
   const methods = useForm({
     resolver: yupResolver(NewTripSchema),
-    defaultValues1,
+    defaultValues,
   });
 
   const {
@@ -197,12 +155,12 @@ export default function TripForm({ isEdit = false, currentTrip }) {
 
   useEffect(() => {
     if (isEdit && currentTrip) {
-      reset(defaultValues1);
+      reset(defaultValues);
     }
     if (!isEdit) {
-      reset(defaultValues1);
+      reset(defaultValues);
     }
-  }, [isEdit, currentTrip, reset, defaultValues1]);
+  }, [isEdit, currentTrip, reset, defaultValues]);
 
   const onSubmit = async (data) => {
     try {
@@ -216,7 +174,6 @@ export default function TripForm({ isEdit = false, currentTrip }) {
       console.error(error);
     }
   };
-
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       {/* Vehicle & Driver Details */}

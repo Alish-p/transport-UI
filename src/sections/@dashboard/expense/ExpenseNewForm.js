@@ -56,7 +56,7 @@ export default function ExpenseForm({
       tripId: currentExpense?.tripId || '',
       subtripId: currentExpense?.subtripId || '',
       vehicleId: currentExpense?.vehicleId || '',
-      date: currentExpense?.date || new Date(),
+      date: currentExpense?.date ? new Date(currentExpense?.date) : new Date(),
       expenseType: currentExpense?.expenseType || '',
       installment: currentExpense?.installment || 0,
       amount: currentExpense?.amount || 0,

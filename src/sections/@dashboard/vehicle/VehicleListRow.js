@@ -43,7 +43,7 @@ const renderTableCellContent = (row, config) => {
   const { id, type } = config;
 
   if (id === 'transporter') {
-    return typeof row.transporter === 'string' ? row.transporter : row.transporter.transportName;
+    return typeof row.transporter === 'string' ? row.transporter : row.transporter?.transportName;
   }
 
   if (type === 'date') {

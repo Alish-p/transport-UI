@@ -18,10 +18,11 @@ import {
 } from '../general/analytics';
 import { fetchTrip } from '../../../redux/slices/trip';
 import SubtripDetails from '../subtrip/SubtripListPage';
+import DriverCard from '../driver/DriverCard';
 
 // ----------------------------------------------------------------------
 
-export default function TripsAnalyticsPage() {
+export default function TripDashBoardPage() {
   const theme = useTheme();
   const { themeStretch } = useSettingsContext();
   const navigate = useNavigate();
@@ -34,16 +35,22 @@ export default function TripsAnalyticsPage() {
     dispatch(fetchTrip(id));
   }, [dispatch, id]);
 
-  const { trips: tripData, isLoading } = useSelector((state) => state.trip);
+  const { trip: tripData, isLoading } = useSelector((state) => state.trip);
 
   if (!tripData) return <div>Loading...</div>;
 
-  const totalTrips = tripData.length;
-  const totalExpenses = tripData.reduce((sum, trip) => sum + trip.totalExpenses, 0);
-  const totalIncome = tripData.reduce((sum, trip) => sum + trip.totalIncome, 0);
-  const totalKm = tripData.reduce((sum, trip) => sum + trip.totalKm, 0);
-  const totalDieselAmt = tripData.reduce((sum, trip) => sum + (trip.totalDieselAmt || 0), 0);
-  const totalAdblueAmt = tripData.reduce((sum, trip) => sum + (trip.totalAdblueAmt || 0), 0);
+  const totalTrips = tripData?.subtrips?.length;
+  const totalExpenses = tripData?.subtrips?.reduce((sum, trip) => sum + trip.totalExpenses, 0);
+  const totalIncome = tripData?.subtrips?.reduce((sum, trip) => sum + trip.totalIncome, 0);
+  const totalKm = tripData?.subtrips?.reduce((sum, trip) => sum + trip.totalKm, 0);
+  const totalDieselAmt = tripData?.subtrips?.reduce(
+    (sum, trip) => sum + (trip.totalDieselAmt || 0),
+    0
+  );
+  const totalAdblueAmt = tripData?.subtrips?.reduce(
+    (sum, trip) => sum + (trip.totalAdblueAmt || 0),
+    0
+  );
 
   // subtrips table
   // total expense
@@ -65,15 +72,14 @@ export default function TripsAnalyticsPage() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AnalyticsWidgetSummary
               title="Total Trips"
               total={totalTrips}
               icon="ant-design:car-filled"
             />
           </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AnalyticsWidgetSummary
               title="Total Expenses"
               total={1000}
@@ -81,8 +87,7 @@ export default function TripsAnalyticsPage() {
               icon="ant-design:dollar-circle-filled"
             />
           </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AnalyticsWidgetSummary
               title="Total Income"
               total={totalIncome}
@@ -90,8 +95,7 @@ export default function TripsAnalyticsPage() {
               icon="ant-design:euro-circle-filled"
             />
           </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AnalyticsWidgetSummary
               title="Total Kilometers"
               total={totalKm}
@@ -99,8 +103,7 @@ export default function TripsAnalyticsPage() {
               icon="ant-design:environment-filled"
             />
           </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AnalyticsWidgetSummary
               title="Total Diesel Amount"
               total={totalDieselAmt}
@@ -108,8 +111,7 @@ export default function TripsAnalyticsPage() {
               icon="ant-design:fire-filled"
             />
           </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AnalyticsWidgetSummary
               title="Total AdBlue Amount"
               total={totalAdblueAmt}
@@ -118,30 +120,33 @@ export default function TripsAnalyticsPage() {
             />
           </Grid>
 
+          <Grid item xs={12} md={4}>
+            <DriverCard driver={tripData.driverId} />
+          </Grid>
+
           <Grid item xs={12} md={6} lg={8}>
             <AnalyticsWebsiteVisits
               title="Trip Details"
               subheader="Detailed information about each trip"
               chart={{
-                labels: tripData.map((trip) => trip.dateOfCreation),
+                labels: tripData?.subtrips?.map((trip) => trip.dateOfCreation),
                 series: [
                   {
                     name: 'Expenses',
                     type: 'column',
                     fill: 'solid',
-                    data: tripData.map((trip) => trip.totalExpenses),
+                    data: tripData?.subtrips?.map((trip) => trip.totalExpenses),
                   },
                   {
                     name: 'Income',
                     type: 'area',
                     fill: 'gradient',
-                    data: tripData.map((trip) => trip.totalIncome),
+                    data: tripData?.subtrips?.map((trip) => trip.totalIncome),
                   },
                 ],
               }}
             />
           </Grid>
-
           <Grid item xs={12} md={6} lg={4}>
             <AnalyticsCurrentVisits
               title="Trip Status"
@@ -149,24 +154,23 @@ export default function TripsAnalyticsPage() {
                 series: [
                   {
                     label: 'Completed',
-                    value: tripData.filter((trip) => trip.tripStatus === '1').length,
+                    value: tripData?.subtrips?.filter((trip) => trip.tripStatus === '1').length,
                   },
                   {
                     label: 'In Progress',
-                    value: tripData.filter((trip) => trip.tripStatus !== '1').length,
+                    value: tripData?.subtrips?.filter((trip) => trip.tripStatus !== '1').length,
                   },
                 ],
                 colors: [theme.palette.primary.main, theme.palette.info.main],
               }}
             />
           </Grid>
-
           <Grid item xs={12}>
-            <SubtripDetails
+            {/* <SubtripDetails
               title="Subtrip Details"
               // tableData={subtrips}
               // tableLabels={tableLabels}
-            />
+            /> */}
           </Grid>
         </Grid>
       </Container>

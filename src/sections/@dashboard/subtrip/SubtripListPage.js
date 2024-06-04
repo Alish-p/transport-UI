@@ -1,199 +1,211 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { format } from 'date-fns';
-import { sentenceCase } from 'change-case';
-// @mui
-import { useTheme } from '@mui/material/styles';
+import { useState, useEffect } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Card, Table, Button, TableBody, Container, TableContainer, Grid } from '@mui/material';
+import { paramCase } from 'change-case';
+import { useDispatch, useSelector } from '../../../redux/store';
+import { fetchSubtrips, deleteSubtrip } from '../../../redux/slices/subtrip';
+import { PATH_DASHBOARD } from '../../../routes/paths';
+import { useSettingsContext } from '../../../components/settings';
 import {
-  Box,
-  Card,
-  Stack,
-  Table,
-  Button,
-  Divider,
-  MenuItem,
-  TableRow,
-  TableBody,
-  TableCell,
-  CardHeader,
-  Typography,
-  IconButton,
-  TableContainer,
-} from '@mui/material';
-// components
-import Label from '../../../components/label';
-import Iconify from '../../../components/iconify';
+  useTable,
+  getComparator,
+  emptyRows,
+  TableNoData,
+  TableSkeleton,
+  TableEmptyRows,
+  TableHeadCustom,
+  TablePaginationCustom,
+} from '../../../components/table';
 import Scrollbar from '../../../components/scrollbar';
-import MenuPopover from '../../../components/menu-popover';
-import { TableHeadCustom } from '../../../components/table';
+import CustomBreadcrumbs from '../../../components/custom-breadcrumbs';
+import SubtripListRow from './SubtripListRow';
+import SubtripTableToolbar from './SubtripTableToolbar';
+import { subtripConfig } from './SubtripTableConfig';
+import Iconify from '../../../components/iconify/Iconify';
 
-// ----------------------------------------------------------------------
+export default function SubtripList() {
+  const {
+    dense,
+    page,
+    order,
+    orderBy,
+    rowsPerPage,
+    setPage,
+    selected,
+    setSelected,
+    onSort,
+    onChangeDense,
+    onChangePage,
+    onChangeRowsPerPage,
+  } = useTable({
+    defaultOrderBy: 'routeCd',
+  });
 
-SubtripDetails.propTypes = {
-  title: PropTypes.string,
-  tableData: PropTypes.array,
-  subheader: PropTypes.string,
-  tableLabels: PropTypes.array,
-};
+  const { themeStretch } = useSettingsContext();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { subtrips, isLoading } = useSelector((state) => state.subtrip);
+  const [tableData, setTableData] = useState([]);
+  const [filterCustomerId, setFilterCustomerId] = useState('');
+  const [filterInvoiceNo, setFilterInvoiceNo] = useState('');
 
-export default function SubtripDetails({ title, subheader, tableLabels, tableData, ...other }) {
-  return (
-    <Card {...other}>
-      <CardHeader title={title} subheader={subheader} sx={{ mb: 3 }} />
+  useEffect(() => {
+    dispatch(fetchSubtrips());
+  }, [dispatch]);
 
-      <TableContainer sx={{ overflow: 'unset' }}>
-        <Scrollbar>
-          <Table sx={{ minWidth: 960 }}>
-            <TableHeadCustom headLabel={tableLabels} />
+  useEffect(() => {
+    if (subtrips.length) {
+      setTableData(subtrips);
+    }
+  }, [subtrips]);
 
-            <TableBody>
-              {tableData.map((row) => (
-                <SubtripDetailsRow key={row._id} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-        </Scrollbar>
-      </TableContainer>
+  const dataFiltered = applyFilter({
+    inputData: tableData,
+    comparator: getComparator(order, orderBy),
+    filterCustomerId,
+    filterInvoiceNo,
+  });
 
-      <Divider />
+  const dataInPage = dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-      <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button
-          size="small"
-          color="inherit"
-          endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
-        >
-          View All
-        </Button>
-      </Box>
-    </Card>
-  );
-}
+  const denseHeight = dense ? 60 : 80;
 
-// ----------------------------------------------------------------------
+  const isFiltered = filterCustomerId !== '' || filterInvoiceNo !== '';
 
-SubtripDetailsRow.propTypes = {
-  row: PropTypes.shape({
-    _id: PropTypes.string,
-    routeCd: PropTypes.string,
-    subtripStatus: PropTypes.string,
-    loadingPoint: PropTypes.string,
-    unloadingPoint: PropTypes.string,
-  }),
-};
+  const isNotFound =
+    (!dataFiltered.length && !!filterCustomerId) ||
+    (!isLoading && !dataFiltered.length && isFiltered);
 
-function SubtripDetailsRow({ row }) {
-  const theme = useTheme();
-
-  const isLight = theme.palette.mode === 'light';
-
-  const [openPopover, setOpenPopover] = useState(null);
-
-  const handleOpenPopover = (event) => {
-    setOpenPopover(event.currentTarget);
+  const handleFilterCustomerId = (event) => {
+    setPage(0);
+    setFilterCustomerId(event.target.value);
   };
 
-  const handleClosePopover = () => {
-    setOpenPopover(null);
+  const handleFilterInvoiceNo = (event) => {
+    setPage(0);
+    setFilterInvoiceNo(event.target.value);
   };
 
-  const handleDownload = () => {
-    handleClosePopover();
-    console.log('DOWNLOAD', row._id);
+  const handleDeleteRow = (id) => {
+    dispatch(deleteSubtrip(id));
   };
 
-  const handlePrint = () => {
-    handleClosePopover();
-    console.log('PRINT', row._id);
+  const handleEditRow = (id) => {
+    navigate(PATH_DASHBOARD.subtrip.edit(paramCase(id)));
   };
 
-  const handleEdit = () => {
-    handleClosePopover();
-    console.log('EDIT', row._id);
-    // Navigate to SubtripEditPage
-    // e.g., navigate(`/subtrip/edit/${row._id}`);
-  };
-
-  const handleViewDetails = () => {
-    console.log('VIEW DETAILS', row._id);
-    // Navigate to SubtripDetailPage
-    // e.g., navigate(`/subtrip/details/${row._id}`);
+  const handleResetFilter = () => {
+    setFilterCustomerId('');
+    setFilterInvoiceNo('');
   };
 
   return (
     <>
-      <TableRow hover onClick={handleViewDetails} sx={{ cursor: 'pointer' }}>
-        <TableCell>{row.routeCd}</TableCell>
-        <TableCell>
-          <Label
-            variant={isLight ? 'soft' : 'filled'}
-            color={
-              (row.subtripStatus === '1' && 'success') ||
-              (row.subtripStatus === '2' && 'warning') ||
-              'error'
-            }
-          >
-            {sentenceCase(row.subtripStatus)}
-          </Label>
-        </TableCell>
-        <TableCell>{row.loadingPoint}</TableCell>
-        <TableCell>{row.unloadingPoint}</TableCell>
+      <Helmet>
+        <title>Subtrip List | Dashboard</title>
+      </Helmet>
 
-        <TableCell align="right">
-          <IconButton color={openPopover ? 'inherit' : 'default'} onClick={handleOpenPopover}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
-        </TableCell>
-      </TableRow>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
+        <CustomBreadcrumbs
+          heading="Subtrip List"
+          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Subtrip List' }]}
+          action={
+            <Button
+              component={RouterLink}
+              to={PATH_DASHBOARD.subtrip.new}
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+            >
+              New Subtrip
+            </Button>
+          }
+        />
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Card>
+              <SubtripTableToolbar
+                filterCustomerId={filterCustomerId}
+                filterInvoiceNo={filterInvoiceNo}
+                onFilterCustomerId={handleFilterCustomerId}
+                onFilterInvoiceNo={handleFilterInvoiceNo}
+                isFiltered={isFiltered}
+                onResetFilter={handleResetFilter}
+              />
 
-      <MenuPopover
-        open={openPopover}
-        onClose={handleClosePopover}
-        arrow="right-top"
-        sx={{ width: 160 }}
-      >
-        <MenuItem onClick={handleDownload}>
-          <Iconify icon="eva:download-fill" />
-          Download
-        </MenuItem>
+              <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+                <Scrollbar>
+                  <Table size={dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                    <TableHeadCustom
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={subtripConfig}
+                      onSort={onSort}
+                    />
 
-        <MenuItem onClick={handlePrint}>
-          <Iconify icon="eva:printer-fill" />
-          Print
-        </MenuItem>
+                    <TableBody>
+                      {(isLoading ? [...Array(rowsPerPage)] : dataFiltered)
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row, index) =>
+                          row ? (
+                            <SubtripListRow
+                              key={row._id}
+                              row={row}
+                              selected={selected.includes(row._id)}
+                              onDeleteRow={() => handleDeleteRow(row._id)}
+                              onEditRow={() => handleEditRow(row._id)}
+                            />
+                          ) : (
+                            !isNotFound && (
+                              <TableSkeleton key={index} sx={{ height: denseHeight }} />
+                            )
+                          )
+                        )}
 
-        <MenuItem onClick={handleEdit}>
-          <Iconify icon="eva:edit-fill" />
-          Edit
-        </MenuItem>
+                      <TableEmptyRows
+                        height={denseHeight}
+                        emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                      />
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+                      <TableNoData isNotFound={isNotFound} />
+                    </TableBody>
+                  </Table>
+                </Scrollbar>
+              </TableContainer>
 
-        <MenuItem onClick={handleClosePopover} sx={{ color: 'error.main' }}>
-          <Iconify icon="eva:trash-2-outline" />
-          Delete
-        </MenuItem>
-      </MenuPopover>
+              <TablePaginationCustom
+                count={dataFiltered.length}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                onPageChange={onChangePage}
+                onRowsPerPageChange={onChangeRowsPerPage}
+                dense={dense}
+                onChangeDense={onChangeDense}
+              />
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
     </>
   );
 }
 
-// Sample Usage of SubtripDetails Component
-const subtrips = [
-  {
-    _id: '665a1ed91917f37011da27d9',
-    routeCd: '664f8e687cbf8fac101843be',
-    subtripStatus: '1',
-    loadingPoint: '1',
-    unloadingPoint: '1',
-  },
-  // More subtrip objects...
-];
+// ----------------------------------------------------------------------
 
-const tableLabels = [
-  { id: 'routeCd', label: 'Route' },
-  { id: 'subtripStatus', label: 'Status' },
-  { id: 'loadingPoint', label: 'Loading Point' },
-  { id: 'unloadingPoint', label: 'Unloading Point' },
-  { id: '' }, // Empty cell for action buttons
-];
+function applyFilter({ inputData, comparator, filterCustomerId, filterInvoiceNo }) {
+  let filteredData = [...inputData];
+
+  if (filterCustomerId) {
+    filteredData = filteredData.filter((subtrip) =>
+      subtrip.customerId.toLowerCase().includes(filterCustomerId.toLowerCase())
+    );
+  }
+
+  if (filterInvoiceNo) {
+    filteredData = filteredData.filter((subtrip) =>
+      subtrip.invoiceNo.toLowerCase().includes(filterInvoiceNo.toLowerCase())
+    );
+  }
+
+  return filteredData.sort(comparator);
+}

@@ -8,6 +8,7 @@ import MenuPopover from '../../../components/menu-popover';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { expenseConfig } from './ExpenseTableConfig'; // Assuming you have a config file for table columns
 import Button from '../../../theme/overrides/Button';
+import { fDate } from '../../../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
@@ -56,7 +57,14 @@ export default function ExpenseListRow({ row, onDeleteRow, onEditRow }) {
       <TableRow>
         {expenseConfig.map((config) => (
           <TableCell key={config.id} align={config.type === 'number' ? 'center' : 'center'}>
-            {row[config.id]}
+            {(() => {
+              switch (config.id) {
+                case 'date':
+                  return fDate(row[config.id]);
+                default:
+                  return row[config.id];
+              }
+            })()}
           </TableCell>
         ))}
         <TableCell align="right">

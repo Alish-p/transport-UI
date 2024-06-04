@@ -3,10 +3,13 @@ import { paramCase } from 'change-case';
 import { useParams } from 'react-router-dom';
 import { Container } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import { useSettingsContext } from '../../../components/settings';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs';
 import TripForm from './TripNewForm';
+import { dispatch } from '../../../redux/store';
+import { fetchTrip } from '../../../redux/slices/trip';
 
 // ----------------------------------------------------------------------
 
@@ -14,9 +17,11 @@ export default function TripEditPage() {
   const { themeStretch } = useSettingsContext();
   const { id } = useParams();
 
-  const currentTrip = useSelector((state) =>
-    state.trip.trips.find((trip) => paramCase(trip._id) === id)
-  );
+  useEffect(() => {
+    dispatch(fetchTrip(id));
+  }, [id]);
+
+  const currentTrip = useSelector((state) => state.trip.trip);
 
   return (
     <>

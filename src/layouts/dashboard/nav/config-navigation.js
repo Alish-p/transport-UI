@@ -95,6 +95,7 @@ const navConfig = [
           { title: 'list', path: PATH_DASHBOARD.trip.list },
           { title: 'create', path: PATH_DASHBOARD.trip.new },
           { title: 'edit', path: PATH_DASHBOARD.trip.demoEdit },
+          { title: 'view', path: PATH_DASHBOARD.trip.demoDetail },
         ],
       },
 

@@ -79,8 +79,8 @@ export default function VehicleForm({ isEdit = false, currentVehicle }) {
       loadingCapacity: currentVehicle?.loadingCapacity || 0,
       engineType: currentVehicle?.engineType || '',
       fuelTankCapacity: currentVehicle?.fuelTankCapacity || 0,
-      fromDate: currentVehicle?.fromDate || new Date(),
-      toDate: currentVehicle?.toDate || new Date(),
+      fromDate: currentVehicle?.fromDate ? new Date(currentVehicle?.fromDate) : new Date(),
+      toDate: currentVehicle?.toDate ? new Date(currentVehicle?.toDate) : new Date(),
       transporter: currentVehicle?.transporter?._id || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -69,6 +69,7 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/trip/list'),
     edit: (name) => path(ROOTS_DASHBOARD, `/trip/${name}/edit`),
     detail: (name) => path(ROOTS_DASHBOARD, `/trip/${name}`),
+    demoDetail: path(ROOTS_DASHBOARD, `/trip/665e0156caf0402edec2ff0f/`),
     demoEdit: path(ROOTS_DASHBOARD, `/trip/abc/edit`),
   },
 

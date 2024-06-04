@@ -87,8 +87,10 @@ export const addTrip = (data) => async (dispatch) => {
   try {
     const response = await axios.post(`/api/trips`, data);
     dispatch(addTripSuccess(response.data));
+    return response.data;
   } catch (error) {
     dispatch(hasError(error));
+    throw error;
   }
 };
 

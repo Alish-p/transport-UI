@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography, Card, CardHeader } from '@mui/material';
+import { Grid, Container, Typography, Card, CardHeader, Box, Button } from '@mui/material';
 // mock data
 import { useState, useEffect } from 'react';
 // components
@@ -17,9 +17,9 @@ import {
   AnalyticsWebsiteVisits,
 } from '../general/analytics';
 import { fetchTrip } from '../../../redux/slices/trip';
-import SubtripDetails from '../subtrip/SubtripListPage';
 import DriverCard from '../driver/DriverCard';
-import { TripListPage } from '../../../routes/elements';
+import SimpleSubtripList from './subtrip/SubtripTable';
+import VehicleCard from '../vehicle/VehicleCard';
 
 // ----------------------------------------------------------------------
 
@@ -124,13 +124,30 @@ export default function TripDashBoardPage() {
           <Grid item xs={12} md={4}>
             <DriverCard driver={tripData.driverId} />
           </Grid>
+          <Grid item xs={12} md={4}>
+            <VehicleCard vehicle={tripData.vehicleId} />
+          </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
-            <Card>
-              <CardHeader title="Subtrip List" subheader="Detail of Subtrip" sx={{ mb: 3 }} />
-              <TripListPage />
+            <Card sx={{ minHeight: 400 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  mb: 3,
+                  px: 3,
+                }}
+              >
+                <CardHeader title="Subtrip List" subheader="Detail of Subtrip" />
+                <Button variant="contained" onClick={() => navigate(`/subtrip/new/${id}`)}>
+                  New Subtrip
+                </Button>
+              </Box>
+              <SimpleSubtripList subtrips={tripData.subtrips} />
             </Card>
           </Grid>
+
           <Grid item xs={12} md={6} lg={4}>
             <AnalyticsCurrentVisits
               title="SubTrip Status"
@@ -148,13 +165,6 @@ export default function TripDashBoardPage() {
                 colors: [theme.palette.primary.main, theme.palette.info.main],
               }}
             />
-          </Grid>
-          <Grid item xs={12}>
-            {/* <SubtripDetails
-              title="Subtrip Details"
-              // tableData={subtrips}
-              // tableLabels={tableLabels}
-            /> */}
           </Grid>
         </Grid>
       </Container>

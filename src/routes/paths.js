@@ -79,6 +79,7 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/subtrip/list'),
     edit: (name) => path(ROOTS_DASHBOARD, `/subtrip/${name}/edit`),
     detail: (name) => path(ROOTS_DASHBOARD, `/subtrip/${name}`),
+    demoDetail: path(ROOTS_DASHBOARD, `/subtrip/665e0156caf0402edec2ff0f/`),
     demoEdit: path(ROOTS_DASHBOARD, `/subtrip/abc/edit`),
   },
 

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { TableRow, MenuItem, TableCell, IconButton } from '@mui/material';
+import { paramCase } from 'change-case';
+import { useNavigate } from 'react-router';
 import Iconify from '../../../components/iconify';
 import MenuPopover from '../../../components/menu-popover';
 import ConfirmDialog from '../../../components/confirm-dialog';
@@ -8,6 +10,7 @@ import { tripConfig } from './TripTableConfig';
 import Button from '../../../theme/overrides/Button';
 import { fDate } from '../../../utils/formatTime';
 import Label from '../../../components/label';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 
 TripListRow.propTypes = {
   row: PropTypes.shape({
@@ -19,6 +22,7 @@ TripListRow.propTypes = {
     }),
     tripStatus: PropTypes.string,
     fromDate: PropTypes.string,
+    _id: PropTypes.string,
     // other fields...
   }),
   onDeleteRow: PropTypes.func,
@@ -28,6 +32,7 @@ TripListRow.propTypes = {
 
 export default function TripListRow({ row, selected, onDeleteRow, onEditRow }) {
   const [openConfirm, setOpenConfirm] = useState(false);
+  const navigate = useNavigate();
 
   const handleCloseConfirm = () => {
     setOpenConfirm(false);
@@ -47,9 +52,13 @@ export default function TripListRow({ row, selected, onDeleteRow, onEditRow }) {
     setOpenPopover(null);
   };
 
+  const handleNavigateToDashboard = () => {
+    navigate(PATH_DASHBOARD.trip.detail(paramCase(row._id)));
+  };
+
   return (
     <>
-      <TableRow hover selected={selected}>
+      <TableRow hover selected={selected} onClick={handleNavigateToDashboard}>
         {tripConfig.map((column) => (
           <TableCell key={column.id} align={column.align || 'left'}>
             {(() => {

@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import { Stack } from '@mui/system';
 import { useSettingsContext } from '../../../components/settings';
 
 // sections
@@ -20,6 +21,9 @@ import { fetchTrip } from '../../../redux/slices/trip';
 import DriverCard from '../driver/DriverCard';
 import SimpleSubtripList from './subtrip/SubtripTable';
 import VehicleCard from '../vehicle/VehicleCard';
+import { PATH_DASHBOARD } from '../../../routes/paths';
+import CustomBreadcrumbs from '../../../components/custom-breadcrumbs/CustomBreadcrumbs';
+import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -68,10 +72,23 @@ export default function TripDashBoardPage() {
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'xl'}>
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back Elis
-        </Typography>
-
+        <CustomBreadcrumbs
+          heading="Trips Dashboard"
+          links={[
+            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trips List', href: PATH_DASHBOARD.trip.list },
+            { name: 'Trip Dashboard' },
+          ]}
+          action={
+            <Button
+              to={PATH_DASHBOARD.driver.new}
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+            >
+              New Driver
+            </Button>
+          }
+        />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={2}>
             <AnalyticsWidgetSummary
@@ -140,7 +157,10 @@ export default function TripDashBoardPage() {
                 }}
               >
                 <CardHeader title="Subtrip List" subheader="Detail of Subtrip" />
-                <Button variant="contained" onClick={() => navigate(`/subtrip/new/${id}`)}>
+                <Button
+                  variant="contained"
+                  onClick={() => navigate(PATH_DASHBOARD.subtrip.new(tripData._id))}
+                >
                   New Subtrip
                 </Button>
               </Box>

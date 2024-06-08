@@ -263,7 +263,7 @@ export default function Router() {
             { element: <Navigate to="/dashboard/subtrip/list" replace />, index: true },
             { path: 'list', element: <SubtripListPage /> },
             { path: ':id', element: <SubtripDetailPage /> },
-            { path: 'new', element: <SubtripCreatePage /> },
+            { path: ':id/new', element: <SubtripCreatePage /> },
             { path: ':id/edit', element: <SubtripEditPage /> },
           ],
         },

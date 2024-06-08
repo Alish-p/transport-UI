@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import { Card, Typography, Stack, Box } from '@mui/material';
 // utils
+import { paramCase } from 'change-case';
 import { fCurrency, fPercent } from '../../../../utils/formatNumber';
 // components
 import Iconify from '../../../../components/iconify';
@@ -10,18 +11,20 @@ import Chart, { useChart } from '../../../../components/chart';
 
 // ----------------------------------------------------------------------
 
-BankingWidgetSummary.propTypes = {
+IncomeWidgetSummary.propTypes = {
   sx: PropTypes.object,
   chart: PropTypes.object,
   color: PropTypes.string,
   title: PropTypes.string,
+  type: PropTypes.string,
   total: PropTypes.number,
   percent: PropTypes.number,
   icon: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
 };
 
-export default function BankingWidgetSummary({
+export default function IncomeWidgetSummary({
   title,
+  type,
   total,
   icon,
   percent,
@@ -105,7 +108,7 @@ export default function BankingWidgetSummary({
 
         <Typography variant="h3">{fCurrency(total)}</Typography>
 
-        <TrendingInfo percent={percent} />
+        <TrendingInfo type={type} />
       </Stack>
 
       <Chart type="area" series={[{ data: series }]} options={chartOptions} height={120} />
@@ -116,17 +119,17 @@ export default function BankingWidgetSummary({
 // ----------------------------------------------------------------------
 
 TrendingInfo.propTypes = {
-  percent: PropTypes.number,
+  type: PropTypes.string,
 };
 
-function TrendingInfo({ percent }) {
+function TrendingInfo({ type }) {
   return (
     <Stack direction="row" alignItems="center" flexWrap="wrap" spacing={0.5}>
-      <Iconify icon={percent < 0 ? 'eva:trending-down-fill' : 'eva:trending-up-fill'} />
+      <Iconify icon={type === 'expense' ? 'eva:trending-down-fill' : 'eva:trending-up-fill'} />
 
       <Typography variant="subtitle2" component="span">
         <Box component="span" sx={{ opacity: 0.72, typography: 'body2' }}>
-          {' Total Income of Subtrip.'}
+          {`  Total ${type} of Subtrip. `}
         </Box>
       </Typography>
     </Stack>

@@ -33,7 +33,7 @@ const subtripSlice = createSlice({
     },
     updateSubtripSuccess(state, action) {
       state.isLoading = false;
-      const index = state.subtrips.findIndex((subtrip) => subtrip._id === action.payload.id);
+      const index = state.subtrips.findIndex((subtrip) => subtrip._id === action.payload._id);
       if (index !== -1) {
         state.subtrips[index] = action.payload;
       }
@@ -44,6 +44,12 @@ const subtripSlice = createSlice({
     },
     resetSubtrip(state) {
       state.subtrip = null;
+    },
+    addExpenseSuccess(state, action) {
+      state.isLoading = false;
+      if (state.subtrip && state.subtrip._id === action.payload.subtripId) {
+        state.subtrip.expenses.push(action.payload.expense);
+      }
     },
   },
 });
@@ -57,6 +63,7 @@ export const {
   updateSubtripSuccess,
   addSubtripSuccess,
   deleteSubtripSuccess,
+  addExpenseSuccess,
 } = subtripSlice.actions;
 
 export default subtripSlice.reducer;
@@ -66,6 +73,28 @@ export const fetchSubtrips = () => async (dispatch) => {
   try {
     const response = await axios.get('/api/subtrips');
     dispatch(getSubtripsSuccess(response.data));
+  } catch (error) {
+    dispatch(hasError(error));
+  }
+};
+
+// Add Material Info
+export const addMaterialInfo = (id, data) => async (dispatch) => {
+  dispatch(startLoading());
+  try {
+    const response = await axios.put(`/api/subtrips/${id}/material-info`, data);
+    dispatch(updateSubtripSuccess(response.data));
+  } catch (error) {
+    dispatch(hasError(error));
+  }
+};
+
+// Close LR
+export const closeLR = (id, data) => async (dispatch) => {
+  dispatch(startLoading());
+  try {
+    const response = await axios.put(`/api/subtrips/${id}/close`, data);
+    dispatch(updateSubtripSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));
   }
@@ -81,13 +110,15 @@ export const fetchSubtrip = (id) => async (dispatch) => {
   }
 };
 
-export const addSubtrip = (data) => async (dispatch) => {
+export const addSubtrip = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
-    const response = await axios.post(`/api/subtrips`, data);
+    const response = await axios.post(`/api/subtrips/${id}`, data);
     dispatch(addSubtripSuccess(response.data));
+    return response.data;
   } catch (error) {
     dispatch(hasError(error));
+    throw error;
   }
 };
 
@@ -106,6 +137,17 @@ export const deleteSubtrip = (id) => async (dispatch) => {
   try {
     await axios.delete(`/api/subtrips/${id}`);
     dispatch(deleteSubtripSuccess(id));
+  } catch (error) {
+    dispatch(hasError(error));
+  }
+};
+
+// Add Expense
+export const addExpense = (subtripId, expenseData) => async (dispatch) => {
+  dispatch(startLoading());
+  try {
+    const response = await axios.post(`/api/subtrips/${subtripId}/expense`, expenseData);
+    dispatch(addExpenseSuccess({ subtripId, expense: response.data }));
   } catch (error) {
     dispatch(hasError(error));
   }

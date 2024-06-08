@@ -128,8 +128,8 @@ export default function InvoiceToolbar({ invoice }) {
             </Tooltip>
           </DialogActions>
 
-          <Box sx={{ flexGrow: 1, height: '100%', overflow: 'hidden' }}>
-            <PDFViewer width="100%" height="100%" style={{ border: 'none' }}>
+          <Box sx={{ flexGrow: 1, height: '50%', overflow: 'hidden' }}>
+            <PDFViewer width="50%" height="50%" style={{ border: 'none' }}>
               <InvoicePDF invoice={invoice} />
             </PDFViewer>
           </Box>

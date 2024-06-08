@@ -106,7 +106,7 @@ const navConfig = [
         icon: ICONS.subtrip,
         children: [
           { title: 'list', path: PATH_DASHBOARD.subtrip.list },
-          { title: 'create', path: PATH_DASHBOARD.subtrip.new },
+          { title: 'create', path: PATH_DASHBOARD.subtrip.new('123') },
           { title: 'edit', path: PATH_DASHBOARD.subtrip.demoEdit },
         ],
       },

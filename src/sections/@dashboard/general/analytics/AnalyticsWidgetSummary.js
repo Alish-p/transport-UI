@@ -31,7 +31,7 @@ export default function AnalyticsWidgetSummary({
   return (
     <Card
       sx={{
-        py: 5,
+        py: 3,
         boxShadow: 0,
         textAlign: 'center',
         color: theme.palette[color].darker,
@@ -43,7 +43,7 @@ export default function AnalyticsWidgetSummary({
       <Iconify
         icon={icon}
         sx={{
-          mb: 3,
+          mb: 1,
           p: 2.5,
           width: 64,
           height: 64,

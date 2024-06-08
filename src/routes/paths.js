@@ -75,7 +75,8 @@ export const PATH_DASHBOARD = {
 
   subtrip: {
     root: path(ROOTS_DASHBOARD, '/subtrip'),
-    new: path(ROOTS_DASHBOARD, '/subtrip/new'),
+    // new: path(ROOTS_DASHBOARD, '/subtrip/new'),
+    new: (name) => path(ROOTS_DASHBOARD, `/subtrip/${name}/new`),
     list: path(ROOTS_DASHBOARD, '/subtrip/list'),
     edit: (name) => path(ROOTS_DASHBOARD, `/subtrip/${name}/edit`),
     detail: (name) => path(ROOTS_DASHBOARD, `/subtrip/${name}`),

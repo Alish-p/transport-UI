@@ -16,7 +16,6 @@ import { addMaterialInfo } from '../../../redux/slices/subtrip';
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
   loadingWeight: Yup.number().required('Loading Weight is required').positive().integer(),
-  startDate: Yup.date().required('Start Date is required'),
   startKm: Yup.number().positive().integer(),
   rate: Yup.number().positive().integer(),
   invoiceNo: Yup.string(),
@@ -32,7 +31,6 @@ const validationSchema = Yup.object().shape({
 
 const defaultValues = {
   loadingWeight: 0,
-  startDate: new Date(),
   startKm: 0,
   rate: 0,
   invoiceNo: '',
@@ -102,7 +100,6 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId
               }}
             >
               <RHFTextField name="loadingWeight" label="Loading Weight" type="number" />
-              <RHFDatePicker name="startDate" label="Start Date" />
               <RHFTextField name="startKm" label="Start Km" type="number" />
               <RHFTextField name="rate" label="Rate" type="number" />
               <RHFTextField name="invoiceNo" label="Invoice No" />

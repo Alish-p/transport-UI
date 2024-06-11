@@ -87,12 +87,8 @@ export default function SubtripDashBoardPage() {
             { name: 'SubTrip Dashboard' },
           ]}
           action={
-            <Button
-              to={PATH_DASHBOARD.driver.new}
-              variant="contained"
-              startIcon={<Iconify icon="eva:plus-fill" />}
-            >
-              New Driver
+            <Button to={PATH_DASHBOARD.driver.new} variant="text">
+              <Iconify icon="tdesign:edit" />
             </Button>
           }
         />
@@ -170,10 +166,10 @@ export default function SubtripDashBoardPage() {
 
           <Grid item xs={12} md={5}>
             <AppWelcome
-              title="LR-123"
+              title={subtripData._id}
               description={
                 <>
-                  Current Status
+                  Current Status : {subtripData.subtripStatus}
                   {/* <Label color="" variant="outlined">
                     Pending
                   </Label> */}

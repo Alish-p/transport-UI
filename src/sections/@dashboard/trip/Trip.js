@@ -79,15 +79,6 @@ export default function TripDashBoardPage() {
             { name: 'Trips List', href: PATH_DASHBOARD.trip.list },
             { name: 'Trip Dashboard' },
           ]}
-          action={
-            <Button
-              to={PATH_DASHBOARD.driver.new}
-              variant="contained"
-              startIcon={<Iconify icon="eva:plus-fill" />}
-            >
-              New Driver
-            </Button>
-          }
         />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={2}>
@@ -100,7 +91,7 @@ export default function TripDashBoardPage() {
           <Grid item xs={12} sm={6} md={2}>
             <AnalyticsWidgetSummary
               title="Total Expenses"
-              total={1000}
+              total={totalExpenses}
               color="error"
               icon="ant-design:dollar-circle-filled"
             />

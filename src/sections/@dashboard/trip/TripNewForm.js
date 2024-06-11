@@ -117,6 +117,14 @@ export default function TripForm({ isEdit = false, currentTrip }) {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
+              <RHFSelect native name="vehicleId" label="Vehicle">
+                <option value="" />
+                {vehicles.map((vehicle) => (
+                  <option key={vehicle._id} value={vehicle._id}>
+                    {vehicle.vehicleNo}
+                  </option>
+                ))}
+              </RHFSelect>
               <RHFSelect native name="driverId" label="Driver">
                 <option value="" />
                 {drivers.map((driver) => (
@@ -126,45 +134,7 @@ export default function TripForm({ isEdit = false, currentTrip }) {
                 ))}
               </RHFSelect>
 
-              <RHFSelect native name="vehicleId" label="Vehicle">
-                <option value="" />
-                {vehicles.map((vehicle) => (
-                  <option key={vehicle._id} value={vehicle._id}>
-                    {vehicle.vehicleNo}
-                  </option>
-                ))}
-              </RHFSelect>
-            </Box>
-          </Card>
-        </Grid>
-      </Grid>
-
-      {/* Trip Info */}
-      <Grid container spacing={3} sx={{ pt: 10 }}>
-        <Grid item xs={12} md={3}>
-          <Box sx={{ pt: 2, pb: 5, px: 3 }}>
-            <Typography variant="h6" sx={{ color: 'text.primary' }}>
-              Trip Info
-            </Typography>
-            <Typography variant="subtitle1" sx={{ color: 'text.secondary', mt: 1 }}>
-              Please provide the details of the trip.
-            </Typography>
-          </Box>
-        </Grid>
-
-        <Grid item xs={12} md={8}>
-          <Card sx={{ p: 3 }}>
-            <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
               <RHFDatePicker name="fromDate" label="From Date" />
-              <RHFDatePicker name="toDate" label="To Date" />
-              <RHFSelect native name="tripStatus" label="Trip Status">
-                <option value="" />
-                {subtripStatus.map((item) => (
-                  <option key={item.key} value={item.key}>
-                    {item.value}
-                  </option>
-                ))}
-              </RHFSelect>
               <RHFTextField name="remarks" label="Remarks" />
             </Box>
           </Card>

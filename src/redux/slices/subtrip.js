@@ -31,8 +31,18 @@ const subtripSlice = createSlice({
       state.isLoading = false;
       state.subtrips.push(action.payload);
     },
+    addMaterialInfoSuccess(state, action) {
+      state.isLoading = false;
+      state.subtrip = action.payload;
+      const index = state.subtrips.findIndex((subtrip) => subtrip._id === action.payload._id);
+      if (index !== -1) {
+        state.subtrips[index] = action.payload;
+      }
+    },
     updateSubtripSuccess(state, action) {
       state.isLoading = false;
+      state.subtrip = {};
+      state.subtrip = action.payload;
       const index = state.subtrips.findIndex((subtrip) => subtrip._id === action.payload._id);
       if (index !== -1) {
         state.subtrips[index] = action.payload;
@@ -78,28 +88,6 @@ export const fetchSubtrips = () => async (dispatch) => {
   }
 };
 
-// Add Material Info
-export const addMaterialInfo = (id, data) => async (dispatch) => {
-  dispatch(startLoading());
-  try {
-    const response = await axios.put(`/api/subtrips/${id}/material-info`, data);
-    dispatch(updateSubtripSuccess(response.data));
-  } catch (error) {
-    dispatch(hasError(error));
-  }
-};
-
-// Close LR
-export const closeLR = (id, data) => async (dispatch) => {
-  dispatch(startLoading());
-  try {
-    const response = await axios.put(`/api/subtrips/${id}/close`, data);
-    dispatch(updateSubtripSuccess(response.data));
-  } catch (error) {
-    dispatch(hasError(error));
-  }
-};
-
 export const fetchSubtrip = (id) => async (dispatch) => {
   dispatch(startLoading());
   try {
@@ -119,6 +107,28 @@ export const addSubtrip = (id, data) => async (dispatch) => {
   } catch (error) {
     dispatch(hasError(error));
     throw error;
+  }
+};
+
+// Add Material Info
+export const addMaterialInfo = (id, data) => async (dispatch) => {
+  dispatch(startLoading());
+  try {
+    const response = await axios.put(`/api/subtrips/${id}/material-info`, data);
+    dispatch(updateSubtripSuccess(response.data));
+  } catch (error) {
+    dispatch(hasError(error));
+  }
+};
+
+// Close LR
+export const closeLR = (id, data) => async (dispatch) => {
+  dispatch(startLoading());
+  try {
+    const response = await axios.put(`/api/subtrips/${id}/close`, data);
+    dispatch(updateSubtripSuccess(response.data));
+  } catch (error) {
+    dispatch(hasError(error));
   }
 };
 

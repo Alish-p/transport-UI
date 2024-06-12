@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { TableRow, MenuItem, TableCell, IconButton } from '@mui/material';
+import { TableRow, MenuItem, TableCell, IconButton, Link } from '@mui/material';
 import { paramCase } from 'change-case';
 import { useNavigate } from 'react-router';
 import Iconify from '../../../components/iconify';
@@ -18,6 +18,7 @@ SubtripListRow.propTypes = {
     subtripStatus: PropTypes.string,
     fromDate: PropTypes.string,
     _id: PropTypes.string,
+    routeCd: PropTypes.object,
     // other fields...
   }),
   onDeleteRow: PropTypes.func,
@@ -54,8 +55,20 @@ export default function SubtripListRow({ row, selected, onDeleteRow, onEditRow }
           <TableCell key={column.id} align={column.align || 'left'}>
             {(() => {
               switch (column.id) {
+                case '_id':
+                  return (
+                    <Link
+                      onClick={() => {
+                        navigate(PATH_DASHBOARD.subtrip.detail(paramCase(row._id)));
+                      }}
+                    >
+                      {row._id}
+                    </Link>
+                  );
                 case 'customerId':
                   return row.customerId;
+                case 'routeName':
+                  return row.routeCd.routeName;
                 case 'invoiceNo':
                   return row.invoiceNo;
                 case 'startDate':

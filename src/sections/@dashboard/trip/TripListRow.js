@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { TableRow, MenuItem, TableCell, IconButton } from '@mui/material';
+import { TableRow, MenuItem, TableCell, IconButton, Link } from '@mui/material';
 import { paramCase } from 'change-case';
 import { useNavigate } from 'react-router';
 import Iconify from '../../../components/iconify';
@@ -52,17 +52,23 @@ export default function TripListRow({ row, selected, onDeleteRow, onEditRow }) {
     setOpenPopover(null);
   };
 
-  const handleNavigateToDashboard = () => {
-    navigate(PATH_DASHBOARD.trip.detail(paramCase(row._id)));
-  };
-
   return (
     <>
-      <TableRow hover selected={selected} onClick={handleNavigateToDashboard}>
+      <TableRow hover selected={selected}>
         {tripConfig.map((column) => (
           <TableCell key={column.id} align={column.align || 'left'}>
             {(() => {
               switch (column.id) {
+                case '_id':
+                  return (
+                    <Link
+                      onClick={() => {
+                        navigate(PATH_DASHBOARD.trip.detail(paramCase(row._id)));
+                      }}
+                    >
+                      {row._id}
+                    </Link>
+                  );
                 case 'driverName':
                   return row.driverId?.driverName;
                 case 'vehicleNo':

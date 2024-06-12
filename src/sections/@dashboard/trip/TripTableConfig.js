@@ -1,4 +1,5 @@
 export const tripConfig = [
+  { id: '_id', label: 'ID', align: 'left', type: 'string' },
   { id: 'driverName', label: 'Driver Name', type: 'string' },
   { id: 'vehicleNo', label: 'Vehicle Number', type: 'string' },
   { id: 'tripStatus', label: 'Trip Status', type: 'string' },

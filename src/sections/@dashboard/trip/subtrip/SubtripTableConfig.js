@@ -1,6 +1,7 @@
 export const subtripConfig = [
-  { id: 'routeCd', label: 'Route Code', type: 'text' },
-  { id: 'customerId', label: 'Customer ID', type: 'text' },
+  { id: '_id', label: 'ID', align: 'left', type: 'string' },
+  { id: 'routeName', label: 'Route', type: 'text' },
+  { id: 'customerId', label: 'Customer', type: 'text' },
   { id: 'loadingPoint', label: 'Loading Point', type: 'text' },
   { id: 'unloadingPoint', label: 'Unloading Point', type: 'text' },
   // { id: 'loadingWeight', label: 'Loading Weight', type: 'number' },

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { TableRow, MenuItem, TableCell, IconButton } from '@mui/material';
+import { TableRow, MenuItem, TableCell, IconButton, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { paramCase } from 'change-case';
 import Iconify from '../../../../components/iconify';
@@ -9,6 +9,7 @@ import ConfirmDialog from '../../../../components/confirm-dialog';
 import { subtripConfig } from './SubtripTableConfig';
 import { fDate } from '../../../../utils/formatTime';
 import { PATH_DASHBOARD } from '../../../../routes/paths';
+import Label from '../../../../components/label';
 
 // ----------------------------------------------------------------------
 
@@ -71,10 +72,50 @@ export default function SubtripListRow({ row, onDeleteRow, onEditRow }) {
 
   return (
     <>
-      <TableRow onClick={handleRowClick} style={{ cursor: 'pointer' }}>
-        {subtripConfig.map((config) => (
-          <TableCell key={config.id} align={config.type === 'number' ? 'center' : 'center'}>
-            {config.type === 'date' ? fDate(row[config.id]) : row[config.id]}
+      <TableRow>
+        {subtripConfig.map((column) => (
+          <TableCell key={column.id} align={column.align || 'left'}>
+            {(() => {
+              switch (column.id) {
+                case '_id':
+                  return (
+                    <Link
+                      onClick={() => {
+                        navigate(PATH_DASHBOARD.subtrip.detail(paramCase(row._id)));
+                      }}
+                    >
+                      {row._id}
+                    </Link>
+                  );
+                case 'customerId':
+                  return row.customerId;
+                case 'routeName':
+                  return row.routeCd.routeName;
+                case 'invoiceNo':
+                  return row.invoiceNo;
+                case 'startDate':
+                  return fDate(row[column.id]);
+                case 'subtripStatus':
+                  return (
+                    <Label
+                      variant="soft"
+                      color={
+                        (row[column.id] === 'In-queue' && 'primary') ||
+                        (row[column.id] === 'Loaded' && 'secondary') ||
+                        (row[column.id] === 'pending' && 'info') ||
+                        // (row[column.id] === 'pending' && 'success') ||
+                        // (row[column.id] === 'pending' && 'warning') ||
+                        'default'
+                      }
+                    >
+                      {row[column.id]}
+                    </Label>
+                  );
+
+                default:
+                  return row[column.id];
+              }
+            })()}
           </TableCell>
         ))}
         <TableCell align="right">

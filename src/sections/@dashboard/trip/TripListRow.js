@@ -66,7 +66,7 @@ export default function TripListRow({ row, selected, onDeleteRow, onEditRow }) {
                         navigate(PATH_DASHBOARD.trip.detail(paramCase(row._id)));
                       }}
                     >
-                      {row._id}
+                      # {row._id}
                     </Link>
                   );
                 case 'driverName':

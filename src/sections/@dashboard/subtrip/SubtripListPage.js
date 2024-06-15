@@ -1,7 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Card, Table, Button, TableBody, Container, TableContainer, Grid } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import {
+  Card,
+  Table,
+  Button,
+  TableBody,
+  Container,
+  TableContainer,
+  Grid,
+  Tab,
+  Tabs,
+} from '@mui/material';
 import { paramCase } from 'change-case';
 import { useDispatch, useSelector } from '../../../redux/store';
 import { fetchSubtrips, deleteSubtrip } from '../../../redux/slices/subtrip';
@@ -23,6 +34,16 @@ import SubtripListRow from './SubtripListRow';
 import SubtripTableToolbar from './SubtripTableToolbar';
 import { subtripConfig } from './SubtripTableConfig';
 import Iconify from '../../../components/iconify/Iconify';
+
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'loaded', label: 'Loaded' },
+  { value: 'in-queue', label: 'In Queue' },
+  { value: 'recieved', label: 'Recieved' },
+  { value: 'error', label: 'Error' },
+  { value: 'closed', label: 'Closed' },
+  { value: 'billed', label: 'Billed' },
+];
 
 export default function SubtripList() {
   const {
@@ -48,7 +69,8 @@ export default function SubtripList() {
   const { subtrips, isLoading } = useSelector((state) => state.subtrip);
   const [tableData, setTableData] = useState([]);
   const [filterCustomerId, setFilterCustomerId] = useState('');
-  const [filterInvoiceNo, setFilterInvoiceNo] = useState('');
+  const [filterId, setFilterId] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
 
   useEffect(() => {
     dispatch(fetchSubtrips());
@@ -64,14 +86,13 @@ export default function SubtripList() {
     inputData: tableData,
     comparator: getComparator(order, orderBy),
     filterCustomerId,
-    filterInvoiceNo,
+    filterId,
+    filterStatus,
   });
-
-  const dataInPage = dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const denseHeight = dense ? 60 : 80;
 
-  const isFiltered = filterCustomerId !== '' || filterInvoiceNo !== '';
+  const isFiltered = filterCustomerId !== '' || filterId !== '' || filterStatus !== 'all';
 
   const isNotFound =
     (!dataFiltered.length && !!filterCustomerId) ||
@@ -82,9 +103,14 @@ export default function SubtripList() {
     setFilterCustomerId(event.target.value);
   };
 
-  const handleFilterInvoiceNo = (event) => {
+  const handleFilterId = (event) => {
     setPage(0);
-    setFilterInvoiceNo(event.target.value);
+    setFilterId(event.target.value);
+  };
+
+  const handleFilterStatus = (event, newValue) => {
+    setPage(0);
+    setFilterStatus(newValue);
   };
 
   const handleDeleteRow = (id) => {
@@ -97,7 +123,8 @@ export default function SubtripList() {
 
   const handleResetFilter = () => {
     setFilterCustomerId('');
-    setFilterInvoiceNo('');
+    setFilterId('');
+    setFilterStatus('all');
   };
 
   return (
@@ -113,8 +140,7 @@ export default function SubtripList() {
           action={
             <Button
               component={RouterLink}
-              // todo
-              to={PATH_DASHBOARD.subtrip.new('123')}
+              to={PATH_DASHBOARD.subtrip.new}
               variant="contained"
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
@@ -125,11 +151,23 @@ export default function SubtripList() {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Card>
+              <Tabs
+                value={filterStatus}
+                onChange={handleFilterStatus}
+                sx={{
+                  px: 2.5,
+                  boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
+                }}
+              >
+                {STATUS_OPTIONS.map((tab) => (
+                  <Tab key={tab.value} value={tab.value} label={tab.label} />
+                ))}
+              </Tabs>
               <SubtripTableToolbar
                 filterCustomerId={filterCustomerId}
-                filterInvoiceNo={filterInvoiceNo}
+                filterId={filterId}
                 onFilterCustomerId={handleFilterCustomerId}
-                onFilterInvoiceNo={handleFilterInvoiceNo}
+                onFilterId={handleFilterId}
                 isFiltered={isFiltered}
                 onResetFilter={handleResetFilter}
               />
@@ -193,7 +231,7 @@ export default function SubtripList() {
 
 // ----------------------------------------------------------------------
 
-function applyFilter({ inputData, comparator, filterCustomerId, filterInvoiceNo }) {
+function applyFilter({ inputData, comparator, filterCustomerId, filterId, filterStatus }) {
   let filteredData = [...inputData];
 
   if (filterCustomerId) {
@@ -202,9 +240,15 @@ function applyFilter({ inputData, comparator, filterCustomerId, filterInvoiceNo 
     );
   }
 
-  if (filterInvoiceNo) {
+  if (filterId) {
     filteredData = filteredData.filter((subtrip) =>
-      subtrip.invoiceNo.toLowerCase().includes(filterInvoiceNo.toLowerCase())
+      subtrip._id.toLowerCase().includes(filterId.toLowerCase())
+    );
+  }
+
+  if (filterStatus !== 'all') {
+    filteredData = filteredData.filter(
+      (subtrip) => subtrip.subtripStatus.toLowerCase() === filterStatus.toLowerCase()
     );
   }
 

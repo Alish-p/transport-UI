@@ -62,7 +62,7 @@ export default function SubtripListRow({ row, selected, onDeleteRow, onEditRow }
                         navigate(PATH_DASHBOARD.subtrip.detail(paramCase(row._id)));
                       }}
                     >
-                      {row._id}
+                      # {row._id}
                     </Link>
                   );
                 case 'customerId':

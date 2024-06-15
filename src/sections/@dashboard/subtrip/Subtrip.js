@@ -19,7 +19,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { Stack } from '@mui/system';
+import { Stack, width } from '@mui/system';
 import { useSettingsContext } from '../../../components/settings';
 import { fetchSubtrip } from '../../../redux/slices/subtrip';
 import AnalyticsWidgetSummary from '../general/analytics/AnalyticsWidgetSummary';
@@ -37,7 +37,7 @@ import Iconify from '../../../components/iconify';
 import LRPDF from './lr/LRPdf';
 import { BankingWidgetSummary } from '../general/banking';
 import IncomeWidgetSummary from './widgets/IncomeWidgets';
-import LRInfo from './widgets/LRInfoCard';
+import LRInfo from './widgets/LRInfoCard2';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs/CustomBreadcrumbs';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 
@@ -93,6 +93,7 @@ export default function SubtripDashBoardPage() {
           }
         />
 
+        {/* Toolbar */}
         <Stack
           flexShrink={0}
           direction="row"
@@ -139,137 +140,99 @@ export default function SubtripDashBoardPage() {
         </Stack>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} md={7}>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
-              <IncomeWidgetSummary
-                title="Income"
-                type="income"
-                color="primary"
-                icon="eva:diagonal-arrow-right-up-fill"
-                total={subtripData.rate * subtripData.loadingWeight}
-                chart={{
-                  series: [7, 208, 76, 48, 74, 54, 157, 84],
-                }}
-              />
-              <IncomeWidgetSummary
-                title="Expenses"
-                type="expense"
-                color="warning"
-                icon="eva:diagonal-arrow-right-up-fill"
-                total={-totalExpenses}
-                chart={{
-                  series: [7, 208, 76, 48, 74, 54, 157, 84],
-                }}
-              />
+          <Grid item xs={12} md={8}>
+            <Stack spacing={3} direction={{ xs: 'column', md: 'column' }}>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
+                <IncomeWidgetSummary
+                  title="Income"
+                  type="income"
+                  color="primary"
+                  icon="eva:diagonal-arrow-right-up-fill"
+                  total={subtripData.rate * subtripData.loadingWeight}
+                  chart={{
+                    series: [7, 208, 76, 48, 74, 54, 157, 84],
+                  }}
+                />
+                <IncomeWidgetSummary
+                  title="Expenses"
+                  type="expense"
+                  color="warning"
+                  icon="eva:diagonal-arrow-right-up-fill"
+                  total={-totalExpenses}
+                  chart={{
+                    series: [7, 208, 76, 48, 74, 54, 157, 84],
+                  }}
+                />
+              </Stack>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
+                <AnalyticsWidgetSummary
+                  title="Total Diesel Liters"
+                  total={totalDieselLtr || 0}
+                  color="warning"
+                  icon="ant-design:fire-filled"
+                  sx={{ flexGrow: { xs: 0, sm: 1 }, flexBasis: { xs: 'auto', sm: 0 } }}
+                />
+                <AnalyticsWidgetSummary
+                  title="Total Detention Time"
+                  total={totalDetentionTime}
+                  color="info"
+                  icon="ant-design:clock-circle-filled"
+                  sx={{ flexGrow: { xs: 0, sm: 1 }, flexBasis: { xs: 'auto', sm: 0 } }}
+                />
+                <AnalyticsWidgetSummary
+                  title="Subtrip Status"
+                  total={subtripData.subtripStatus}
+                  color={subtripData.subtripStatus === 'completed' ? 'success' : 'warning'}
+                  icon="ant-design:check-circle-filled"
+                  sx={{ flexGrow: { xs: 0, sm: 1 }, flexBasis: { xs: 'auto', sm: 0 } }}
+                />
+              </Stack>
+              <Grid item>
+                <Card sx={{ minHeight: 400 }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      mb: 3,
+                      px: 3,
+                    }}
+                  >
+                    <CardHeader title="Expense List" subheader="Detail of Expenses" />
+                    <Button variant="contained" onClick={() => setShowExpenseDialog(true)}>
+                      New Expense
+                    </Button>
+                  </Box>
+                  <SimpleExpenseList expenses={subtripData.expenses} />
+                </Card>
+              </Grid>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
+                <AnalyticsCurrentVisits
+                  title="Expense Details"
+                  chart={{
+                    series: expenseChartData,
+                    colors: [
+                      theme.palette.primary.main,
+                      theme.palette.info.main,
+                      theme.palette.error.main,
+                      theme.palette.warning.main,
+                      theme.palette.success.main,
+                      theme.palette.secondary.main,
+                      theme.palette.info.dark,
+                      theme.palette.error.light,
+                    ],
+                  }}
+                  sx={{ flexGrow: { xs: 0, sm: 1 }, flexBasis: { xs: 'auto', sm: 0 } }}
+                />
+              </Stack>
             </Stack>
           </Grid>
 
-          <Grid item xs={12} md={5}>
-            <AppWelcome
-              title={subtripData._id}
-              description={
-                <>
-                  Current Status : {subtripData.subtripStatus}
-                  {/* <Label color="" variant="outlined">
-                    Pending
-                  </Label> */}
-                </>
-              }
-              img={
-                <MotivationIllustration
-                  sx={{
-                    p: 3,
-                    width: 360,
-                    margin: { xs: 'auto', md: 'inherit' },
-                  }}
-                />
-              }
-              action={
-                <Grid container spacing={4}>
-                  <Grid item>
-                    <Button variant="contained" onClick={() => setShowMaterialDialog(true)}>
-                      Add Material Details
-                    </Button>
-                  </Grid>
-
-                  <Grid item>
-                    <Button variant="contained" onClick={() => setShowRecieveDialog(true)}>
-                      Recieve
-                    </Button>
-                  </Grid>
-                </Grid>
-              }
-            />
+          <Grid item xs={12} md={4}>
+            <LRInfo subtrip={subtripData} />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
-            <AnalyticsWidgetSummary
-              title="Total Diesel Liters"
-              total={totalDieselLtr}
-              color="warning"
-              icon="ant-design:fire-filled"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <AnalyticsWidgetSummary
-              title="Total Detention Time"
-              total={totalDetentionTime}
-              color="info"
-              icon="ant-design:clock-circle-filled"
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={3}>
-            <AnalyticsWidgetSummary
-              title="Subtrip Status"
-              total={subtripData.subtripStatus}
-              color={subtripData.subtripStatus === 'completed' ? 'success' : 'warning'}
-              icon="ant-design:check-circle-filled"
-            />
-          </Grid>
-
-          <Grid item xs={12} md={3}>
-            <LRInfo />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AnalyticsCurrentVisits
-              title="Expense Details"
-              chart={{
-                series: expenseChartData,
-                colors: [
-                  theme.palette.primary.main,
-                  theme.palette.info.main,
-                  theme.palette.error.main,
-                  theme.palette.warning.main,
-                  theme.palette.success.main,
-                  theme.palette.secondary.main,
-                  theme.palette.info.dark,
-                  theme.palette.error.light,
-                ],
-              }}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={8}>
-            <Card sx={{ minHeight: 400 }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  mb: 3,
-                  px: 3,
-                }}
-              >
-                <CardHeader title="Expense List" subheader="Detail of Expenses" />
-                <Button variant="contained" onClick={() => setShowExpenseDialog(true)}>
-                  New Expense
-                </Button>
-              </Box>
-              <SimpleExpenseList expenses={subtripData.expenses} />
-            </Card>
-          </Grid>
+          <Grid item xs={12} md={6} lg={4} />
         </Grid>
       </Container>
 

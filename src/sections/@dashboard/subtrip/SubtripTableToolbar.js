@@ -4,18 +4,18 @@ import Iconify from '../../../components/iconify/Iconify';
 
 SubtripTableToolbar.propTypes = {
   filterCustomerId: PropTypes.string,
-  filterInvoiceNo: PropTypes.string,
+  filterId: PropTypes.string,
   onFilterCustomerId: PropTypes.func,
-  onFilterInvoiceNo: PropTypes.func,
+  onFilterId: PropTypes.func,
   isFiltered: PropTypes.bool,
   onResetFilter: PropTypes.func,
 };
 
 export default function SubtripTableToolbar({
   filterCustomerId,
-  filterInvoiceNo,
+  filterId,
   onFilterCustomerId,
-  onFilterInvoiceNo,
+  onFilterId,
   isFiltered,
   onResetFilter,
 }) {
@@ -45,9 +45,9 @@ export default function SubtripTableToolbar({
         />
         <TextField
           fullWidth
-          label="Invoice No"
-          value={filterInvoiceNo}
-          onChange={onFilterInvoiceNo}
+          label="Subtrip ID"
+          value={filterId}
+          onChange={onFilterId}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

@@ -22,7 +22,6 @@ import { fetchVehicles } from '../../../redux/slices/vehicle';
 import { fetchRoutes } from '../../../redux/slices/route';
 import { useSelector } from '../../../redux/store';
 import { PATH_DASHBOARD } from '../../../routes/paths';
-import { subtripStatus, tripStatus } from './SubtripTableConfig';
 
 TripForm.propTypes = {
   isEdit: PropTypes.bool,

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { TableRow, MenuItem, TableCell, IconButton, Link } from '@mui/material';
 import { paramCase } from 'change-case';
 import { useNavigate } from 'react-router';
+import { useTheme } from '@emotion/react';
 import Iconify from '../../../components/iconify';
 import MenuPopover from '../../../components/menu-popover';
 import ConfirmDialog from '../../../components/confirm-dialog';
@@ -29,6 +30,8 @@ SubtripListRow.propTypes = {
 export default function SubtripListRow({ row, selected, onDeleteRow, onEditRow }) {
   const [openConfirm, setOpenConfirm] = useState(false);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isLight = theme.palette.mode === 'light';
 
   const handleCloseConfirm = () => {
     setOpenConfirm(false);
@@ -76,7 +79,7 @@ export default function SubtripListRow({ row, selected, onDeleteRow, onEditRow }
                 case 'subtripStatus':
                   return (
                     <Label
-                      variant="soft"
+                      variant={isLight ? 'soft' : 'filled'}
                       color={
                         (row[column.id] === 'In-queue' && 'primary') ||
                         (row[column.id] === 'Loaded' && 'secondary') ||

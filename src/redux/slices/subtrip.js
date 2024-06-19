@@ -41,7 +41,6 @@ const subtripSlice = createSlice({
     },
     updateSubtripSuccess(state, action) {
       state.isLoading = false;
-      state.subtrip = {};
       state.subtrip = action.payload;
       const index = state.subtrips.findIndex((subtrip) => subtrip._id === action.payload._id);
       if (index !== -1) {
@@ -122,7 +121,18 @@ export const addMaterialInfo = (id, data) => async (dispatch) => {
 };
 
 // Close LR
-export const closeLR = (id, data) => async (dispatch) => {
+export const recieveLR = (id, data) => async (dispatch) => {
+  dispatch(startLoading());
+  try {
+    const response = await axios.put(`/api/subtrips/${id}/recieve`, data);
+    dispatch(updateSubtripSuccess(response.data));
+  } catch (error) {
+    dispatch(hasError(error));
+  }
+};
+
+// Close LR
+export const closeTrip = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
     const response = await axios.put(`/api/subtrips/${id}/close`, data);

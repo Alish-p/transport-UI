@@ -11,6 +11,7 @@ import FormProvider, { RHFTextField, RHFDatePicker } from '../../../components/h
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
 import RHFSwitch from '../../../components/hook-form/RHFSwitch';
+import { recieveLR } from '../../../redux/slices/subtrip';
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -51,7 +52,7 @@ export function RecieveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
   const onSubmit = async (data) => {
     try {
       // Dispatch action to update subtrip with closing details
-      // await dispatch(updateSubtripCloseDetails({ subtripId, ...data }));
+      await dispatch(recieveLR(subtripId, data));
       enqueueSnackbar('Subtrip closed successfully!');
       handleReset();
       setShowDialog(false);

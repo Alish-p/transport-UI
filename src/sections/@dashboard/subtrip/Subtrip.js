@@ -40,6 +40,7 @@ import IncomeWidgetSummary from './widgets/IncomeWidgets';
 import LRInfo from './widgets/LRInfoCard2';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs/CustomBreadcrumbs';
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import OrderDetailsToolbar from './widgets/SubtripToolbar';
 
 // ----------------------------------------------------------------------
 
@@ -86,15 +87,10 @@ export default function SubtripDashBoardPage() {
             { name: 'Trip Dashboard', href: PATH_DASHBOARD.trip.detail(subtripData.tripId) },
             { name: 'SubTrip Dashboard' },
           ]}
-          action={
-            <Button to={PATH_DASHBOARD.driver.new} variant="text">
-              <Iconify icon="tdesign:edit" />
-            </Button>
-          }
         />
 
         {/* Toolbar */}
-        <Stack
+        {/* <Stack
           flexShrink={0}
           direction="row"
           alignItems="space-between"
@@ -137,7 +133,20 @@ export default function SubtripDashBoardPage() {
               </PDFDownloadLink>
             </Stack>
           </>
-        </Stack>
+        </Stack> */}
+
+        <OrderDetailsToolbar
+          backLink={PATH_DASHBOARD.trip.detail(subtripData.tripId)}
+          tripId={subtripData.tripId}
+          status={subtripData.subtripStatus}
+          subtripData={subtripData}
+          onAddMaterialInfo={() => setShowMaterialDialog(true)}
+          onRecieve={() => setShowRecieveDialog(true)}
+          onEdit={() => {
+            navigate(PATH_DASHBOARD.driver.new);
+          }}
+          onSubtripClose={() => {}}
+        />
 
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>

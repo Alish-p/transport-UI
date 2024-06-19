@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { TableRow, MenuItem, TableCell, IconButton, Link } from '@mui/material';
 import { paramCase } from 'change-case';
 import { useNavigate } from 'react-router';
+import { useTheme } from '@emotion/react';
 import Iconify from '../../../components/iconify';
 import MenuPopover from '../../../components/menu-popover';
 import ConfirmDialog from '../../../components/confirm-dialog';
@@ -33,6 +34,8 @@ TripListRow.propTypes = {
 export default function TripListRow({ row, selected, onDeleteRow, onEditRow }) {
   const [openConfirm, setOpenConfirm] = useState(false);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isLight = theme.palette.mode === 'light';
 
   const handleCloseConfirm = () => {
     setOpenConfirm(false);
@@ -78,7 +81,7 @@ export default function TripListRow({ row, selected, onDeleteRow, onEditRow }) {
                 case 'tripStatus':
                   return (
                     <Label
-                      variant="soft"
+                      variant={isLight ? 'soft' : 'filled'}
                       color={
                         // (status === 'paid' && 'success') ||
                         // (status === 'unpaid' && 'warning') ||

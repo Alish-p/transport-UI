@@ -4,7 +4,7 @@ import { Box, Stack, Button, MenuItem } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // form components
 import FormProvider, {
@@ -15,6 +15,7 @@ import FormProvider, {
 import ConfirmDialog from '../../../../components/confirm-dialog';
 import { useSnackbar } from '../../../../components/snackbar';
 import { addExpense } from '../../../../redux/slices/subtrip';
+import { fetchPumps } from '../../../../redux/slices/pump';
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required('Date is required'),
@@ -73,6 +74,12 @@ export function AddExpenseDialog({ showDialog, setShowDialog, subtripId }) {
     reset(defaultValues);
   };
 
+  useEffect(() => {
+    dispatch(fetchPumps());
+  }, [dispatch]);
+
+  const { pumps } = useSelector((state) => state.pump);
+
   const onSubmit = async (data) => {
     try {
       await dispatch(addExpense(subtripId, data));
@@ -122,7 +129,15 @@ export function AddExpenseDialog({ showDialog, setShowDialog, subtripId }) {
               <RHFTextField name="slipNo" label="Slip No" />
               {expenseType === 'fuel' && (
                 <>
-                  <RHFTextField name="pumpCd" label="Pump Code" />
+                  <RHFSelect native name="pumpCd" label="Pump">
+                    <option value="" />
+                    {pumps.map((pump) => (
+                      <option key={pump._id} value={pump._id}>
+                        {pump.pumpName}
+                      </option>
+                    ))}
+                  </RHFSelect>
+
                   <RHFTextField name="dieselLtr" label="Diesel Liters" type="number" />
                 </>
               )}

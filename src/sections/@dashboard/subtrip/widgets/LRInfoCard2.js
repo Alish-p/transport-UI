@@ -33,7 +33,7 @@ export default function LRInfoCard({ subtrip }) {
     materialType,
     quantity,
     grade,
-    tripId,
+    tripId: { _id },
     startDate,
     endDate,
     rate,
@@ -73,7 +73,7 @@ export default function LRInfoCard({ subtrip }) {
           <Box>
             Trip No :{' '}
             <Box component="span" sx={{ color: 'text.secondary', ml: 0.25 }}>
-              {tripId}
+              {_id}
             </Box>
           </Box>
 

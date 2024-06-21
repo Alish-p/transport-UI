@@ -40,7 +40,7 @@ import IncomeWidgetSummary from './widgets/IncomeWidgets';
 import LRInfo from './widgets/LRInfoCard2';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs/CustomBreadcrumbs';
 import { PATH_DASHBOARD } from '../../../routes/paths';
-import OrderDetailsToolbar from './widgets/SubtripToolbar';
+import SubtripToolbar from './widgets/SubtripToolbar';
 
 // ----------------------------------------------------------------------
 
@@ -84,7 +84,7 @@ export default function SubtripDashBoardPage() {
           heading="Subtrip Dashboard"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Trip Dashboard', href: PATH_DASHBOARD.trip.detail(subtripData.tripId) },
+            { name: 'Trip Dashboard', href: PATH_DASHBOARD.trip.detail(subtripData.tripId._id) },
             { name: 'SubTrip Dashboard' },
           ]}
         />
@@ -135,9 +135,9 @@ export default function SubtripDashBoardPage() {
           </>
         </Stack> */}
 
-        <OrderDetailsToolbar
-          backLink={PATH_DASHBOARD.trip.detail(subtripData.tripId)}
-          tripId={subtripData.tripId}
+        <SubtripToolbar
+          backLink={PATH_DASHBOARD.trip.detail(subtripData.tripId._id)}
+          tripId={subtripData.tripId._id}
           status={subtripData.subtripStatus}
           subtripData={subtripData}
           onAddMaterialInfo={() => setShowMaterialDialog(true)}

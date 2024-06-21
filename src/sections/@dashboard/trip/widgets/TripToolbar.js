@@ -10,22 +10,12 @@ import { Box, CircularProgress, Dialog, DialogActions, Tooltip } from '@mui/mate
 import Label from '../../../../components/label/Label';
 import Iconify from '../../../../components/iconify/Iconify';
 import CustomPopover, { usePopover } from '../../../../components/custom-popover';
-import LRPDF from '../lr/LRPdf';
-import { useBoolean } from '../../../../hooks/useBoolean';
+import LRPDF from '../../subtrip/lr/LRPdf';
 
 // ----------------------------------------------------------------------
 
-export default function SubtripToolbar({
-  status,
-  backLink,
-  subtripData,
-  onAddMaterialInfo,
-  onRecieve,
-  onSubtripClose,
-  onEdit,
-}) {
+export default function TripToolbar({ status, backLink, tripData, onTripClose, onEdit }) {
   const popover = usePopover();
-  const view = useBoolean();
 
   return (
     <>
@@ -43,7 +33,7 @@ export default function SubtripToolbar({
 
           <Stack spacing={0.5}>
             <Stack spacing={1} direction="row" alignItems="center">
-              <Typography variant="h4">Subtrip #{subtripData._id} </Typography>
+              <Typography variant="h4">Trip #{tripData._id} </Typography>
               <Label
                 variant="soft"
                 color={
@@ -79,15 +69,14 @@ export default function SubtripToolbar({
           <Button
             color="primary"
             variant="outlined"
-            startIcon={<Iconify icon="solar:eye-bold" />}
-            onClick={view.onTrue}
+            startIcon={<Iconify icon="solar:printer-minimalistic-bold" />}
           >
-            View
+            Print
           </Button>
 
-          <PDFDownloadLink
-            document={<LRPDF subtripData={subtripData} />}
-            fileName={subtripData._id}
+          {/* <PDFDownloadLink
+            document={<LRPDF subtrip={tripData} />}
+            fileName={tripData._id}
             style={{ textDecoration: 'none' }}
             color="green"
           >
@@ -102,7 +91,7 @@ export default function SubtripToolbar({
                 </IconButton>
               </Tooltip>
             )}
-          </PDFDownloadLink>
+          </PDFDownloadLink> */}
 
           <Button
             color="primary"
@@ -124,60 +113,18 @@ export default function SubtripToolbar({
         <MenuItem
           onClick={() => {
             popover.onClose();
-            onAddMaterialInfo();
           }}
-          disabled={!(subtripData.subtripStatus === 'In-queue')}
-        >
-          Add Material
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-            onRecieve();
-          }}
-          disabled={!(subtripData.subtripStatus === 'Loaded')}
-        >
-          Recieve Trip
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-            onSubtripClose();
-          }}
-          disabled={!(subtripData.subtripStatus === 'Received')}
-        >
-          Resolve
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-            onSubtripClose();
-          }}
-          disabled={!(subtripData.subtripStatus === 'Received')}
         >
           Close Trip
         </MenuItem>
+        <MenuItem
+          onClick={() => {
+            popover.onClose();
+          }}
+        >
+          Bill Trip
+        </MenuItem>
       </CustomPopover>
-
-      <Dialog fullScreen open={view.value}>
-        <Box sx={{ height: 1, display: 'flex', flexDirection: 'column' }}>
-          <DialogActions
-            sx={{
-              p: 1.5,
-            }}
-          >
-            <Button color="primary" variant="outlined" onClick={view.onFalse}>
-              Close
-            </Button>
-          </DialogActions>
-
-          <Box sx={{ flexGrow: 1, height: 1, overflow: 'hidden' }}>
-            <PDFViewer width="100%" height="100%" style={{ border: 'none' }}>
-              <LRPDF subtripData={subtripData} />
-            </PDFViewer>
-          </Box>
-        </Box>
-      </Dialog>
     </>
   );
 }

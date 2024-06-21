@@ -24,6 +24,7 @@ import VehicleCard from './widgets/VehicleWidgets';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs/CustomBreadcrumbs';
 import Iconify from '../../../components/iconify';
+import TripToolbar from './widgets/TripToolbar';
 
 // ----------------------------------------------------------------------
 
@@ -93,6 +94,18 @@ export default function TripDashBoardPage() {
             { name: 'Trips List', href: PATH_DASHBOARD.trip.list },
             { name: 'Trip Dashboard' },
           ]}
+        />
+
+        <TripToolbar
+          backLink={PATH_DASHBOARD.trip.list}
+          tripId={tripData._id}
+          status={tripData.tripStatus}
+          tripData={tripData}
+          onTripClose={() => true}
+          onEdit={() => {
+            navigate(PATH_DASHBOARD.trip.new);
+          }}
+          onSubtripClose={() => {}}
         />
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>

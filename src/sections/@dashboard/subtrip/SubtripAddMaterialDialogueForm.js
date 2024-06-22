@@ -1,17 +1,22 @@
 // SubtripMaterialInfoDialog.js
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
-import { Box, Stack, Button } from '@mui/material';
+import { Box, Stack, Button, Divider, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // form components
-import FormProvider, { RHFTextField, RHFDatePicker } from '../../../components/hook-form';
+import FormProvider, {
+  RHFTextField,
+  RHFDatePicker,
+  RHFSelect,
+} from '../../../components/hook-form';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
 import { addMaterialInfo } from '../../../redux/slices/subtrip';
+import { fetchPumps } from '../../../redux/slices/pump';
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -26,7 +31,10 @@ const validationSchema = Yup.object().shape({
   materialType: Yup.string(),
   quantity: Yup.number().positive().integer(),
   grade: Yup.string(),
-  tds: Yup.number().positive().integer(),
+  tds: Yup.number().integer(),
+  driverAdvance: Yup.number().integer(),
+  dieselLtr: Yup.number().integer(),
+  pumpCd: Yup.string(),
 });
 
 const defaultValues = {
@@ -42,6 +50,9 @@ const defaultValues = {
   quantity: 0,
   grade: '',
   tds: 0,
+  driverAdvance: 0,
+  dieselLtr: 0,
+  pumpCd: '',
 };
 
 export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId }) {
@@ -82,6 +93,12 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showDialog]);
 
+  useEffect(() => {
+    dispatch(fetchPumps());
+  }, [dispatch]);
+
+  const { pumps } = useSelector((state) => state.pump);
+
   return (
     <ConfirmDialog
       open={showDialog}
@@ -110,7 +127,36 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId
               <RHFTextField name="materialType" label="Material Type" />
               <RHFTextField name="quantity" label="Quantity" type="number" />
               <RHFTextField name="grade" label="Grade" />
-              <RHFTextField name="tds" label="TDS" type="number" />
+              <RHFTextField name="tds" label="TDS" type="number" required />
+            </Box>
+            <Divider sx={{ marginBlock: '20px' }} />
+
+            <Typography variant="h5" mb="20px">
+              {' '}
+              Advance Details{' '}
+            </Typography>
+
+            <Box
+              rowGap={3}
+              columnGap={2}
+              display="grid"
+              gridTemplateColumns={{
+                xs: 'repeat(1, 1fr)',
+                sm: 'repeat(2, 1fr)',
+              }}
+            >
+              <RHFTextField name="driverAdvance" label="Driver Advance" type="number" />
+              <RHFTextField name="dieselLtr" label="Diesel (Ltr)" />
+              <>
+                <RHFSelect native name="pumpCd" label="Pump">
+                  <option value="" />
+                  {pumps.map((pump) => (
+                    <option key={pump._id} value={pump._id}>
+                      {pump.pumpName}
+                    </option>
+                  ))}
+                </RHFSelect>
+              </>
             </Box>
           </FormProvider>
         </Box>

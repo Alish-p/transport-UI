@@ -30,6 +30,7 @@ import VehicleListRow from './VehicleListRow';
 import VehicleTableToolbar from './VehicleTableToolbar';
 import { vehicleConfig } from './VehicleTableConfig';
 import Iconify from '../../../components/iconify/Iconify';
+import { exportToExcel } from '../../../utils/ExportToExcel';
 
 // ----------------------------------------------------------------------
 
@@ -168,8 +169,11 @@ export default function VehicleTable() {
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Vehicle List' }]}
           action={
             <Button
-              component={RouterLink}
-              to={PATH_DASHBOARD.vehicle.new}
+              // component={RouterLink}
+              // to={PATH_DASHBOARD.vehicle.new}
+              onClick={() => {
+                exportToExcel(dataFiltered, 'VehicleList');
+              }}
               variant="contained"
               startIcon={<Iconify icon="eva:plus-fill" />}
             >

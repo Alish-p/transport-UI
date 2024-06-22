@@ -12,6 +12,7 @@ import Iconify from '../../../../components/iconify/Iconify';
 import CustomPopover, { usePopover } from '../../../../components/custom-popover';
 import LRPDF from '../lr/LRPdf';
 import { useBoolean } from '../../../../hooks/useBoolean';
+import IndentPdf from '../lr/IndentPDF';
 
 // ----------------------------------------------------------------------
 
@@ -24,8 +25,12 @@ export default function SubtripToolbar({
   onSubtripClose,
   onEdit,
 }) {
-  const popover = usePopover();
-  const view = useBoolean();
+  const actionPopover = usePopover();
+  const viewPopover = usePopover();
+  const downloadPopover = usePopover();
+
+  const viewLR = useBoolean();
+  const viewIntent = useBoolean();
 
   return (
     <>
@@ -70,7 +75,7 @@ export default function SubtripToolbar({
             color="primary"
             variant="outlined"
             endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
-            onClick={popover.onOpen}
+            onClick={actionPopover.onOpen}
             sx={{ textTransform: 'capitalize' }}
           >
             Actions
@@ -80,29 +85,22 @@ export default function SubtripToolbar({
             color="primary"
             variant="outlined"
             startIcon={<Iconify icon="solar:eye-bold" />}
-            onClick={view.onTrue}
+            endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
+            onClick={viewPopover.onOpen}
+            sx={{ textTransform: 'capitalize' }}
           >
             View
           </Button>
-
-          <PDFDownloadLink
-            document={<LRPDF subtripData={subtripData} />}
-            fileName={subtripData._id}
-            style={{ textDecoration: 'none' }}
-            color="green"
+          <Button
+            color="primary"
+            variant="outlined"
+            startIcon={<Iconify icon="material-symbols:download" />}
+            endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
+            onClick={downloadPopover.onOpen}
+            sx={{ textTransform: 'capitalize' }}
           >
-            {({ loading }) => (
-              <Tooltip title="Download">
-                <IconButton>
-                  {loading ? (
-                    <CircularProgress size={24} color="primary" />
-                  ) : (
-                    <Iconify icon="eva:download-fill" />
-                  )}
-                </IconButton>
-              </Tooltip>
-            )}
-          </PDFDownloadLink>
+            Download
+          </Button>
 
           <Button
             color="primary"
@@ -115,15 +113,16 @@ export default function SubtripToolbar({
         </Stack>
       </Stack>
 
+      {/* Actions Popover */}
       <CustomPopover
-        open={popover.open}
-        onClose={popover.onClose}
+        open={actionPopover.open}
+        onClose={actionPopover.onClose}
         arrow="top-right"
         sx={{ width: 160 }}
       >
         <MenuItem
           onClick={() => {
-            popover.onClose();
+            actionPopover.onClose();
             onAddMaterialInfo();
           }}
           disabled={!(subtripData.subtripStatus === 'In-queue')}
@@ -132,7 +131,7 @@ export default function SubtripToolbar({
         </MenuItem>
         <MenuItem
           onClick={() => {
-            popover.onClose();
+            actionPopover.onClose();
             onRecieve();
           }}
           disabled={!(subtripData.subtripStatus === 'Loaded')}
@@ -141,7 +140,7 @@ export default function SubtripToolbar({
         </MenuItem>
         <MenuItem
           onClick={() => {
-            popover.onClose();
+            actionPopover.onClose();
             onSubtripClose();
           }}
           disabled={!(subtripData.subtripStatus === 'Received')}
@@ -150,7 +149,7 @@ export default function SubtripToolbar({
         </MenuItem>
         <MenuItem
           onClick={() => {
-            popover.onClose();
+            actionPopover.onClose();
             onSubtripClose();
           }}
           disabled={!(subtripData.subtripStatus === 'Received')}
@@ -159,14 +158,93 @@ export default function SubtripToolbar({
         </MenuItem>
       </CustomPopover>
 
-      <Dialog fullScreen open={view.value}>
+      {/* View Popover */}
+      <CustomPopover
+        open={viewPopover.open}
+        onClose={viewPopover.onClose}
+        arrow="top-right"
+        sx={{ width: 200 }}
+      >
+        <MenuItem
+          onClick={() => {
+            viewPopover.onClose();
+            viewLR.onTrue();
+          }}
+        >
+          Lorry Receipt (LR)
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            viewPopover.onClose();
+            viewIntent.onTrue();
+          }}
+          disabled={!(subtripData.subtripStatus === 'Loaded')}
+        >
+          Petrol Pump Intent
+        </MenuItem>
+      </CustomPopover>
+
+      {/* Download Popover */}
+      <CustomPopover
+        open={downloadPopover.open}
+        onClose={downloadPopover.onClose}
+        arrow="top-right"
+        sx={{ width: 200 }}
+      >
+        <PDFDownloadLink
+          document={<LRPDF subtripData={subtripData} />}
+          fileName={subtripData._id}
+          style={{ textDecoration: 'none' }}
+          color="green"
+          onClick={() => {
+            downloadPopover.onClose();
+          }}
+        >
+          {({ loading }) => (
+            <Tooltip title="Download">
+              <Button
+                startIcon={
+                  loading ? <Iconify icon="solar:eye-bold" /> : <Iconify icon="eva:download-fill" />
+                }
+              >
+                LR
+              </Button>
+            </Tooltip>
+          )}
+        </PDFDownloadLink>
+
+        <PDFDownloadLink
+          document={<IndentPdf subtripData={subtripData} />}
+          fileName={`${subtripData._id}_indent`}
+          style={{ textDecoration: 'none' }}
+          color="green"
+          onClick={() => {
+            downloadPopover.onClose();
+          }}
+        >
+          {({ loading }) => (
+            <Tooltip title="Download">
+              <Button
+                startIcon={
+                  loading ? <Iconify icon="solar:eye-bold" /> : <Iconify icon="eva:download-fill" />
+                }
+              >
+                Petrol Pump Indent
+              </Button>
+            </Tooltip>
+          )}
+        </PDFDownloadLink>
+      </CustomPopover>
+
+      {/* View LR Dialog */}
+      <Dialog fullScreen open={viewLR.value}>
         <Box sx={{ height: 1, display: 'flex', flexDirection: 'column' }}>
           <DialogActions
             sx={{
               p: 1.5,
             }}
           >
-            <Button color="primary" variant="outlined" onClick={view.onFalse}>
+            <Button color="primary" variant="outlined" onClick={viewLR.onFalse}>
               Close
             </Button>
           </DialogActions>
@@ -174,6 +252,27 @@ export default function SubtripToolbar({
           <Box sx={{ flexGrow: 1, height: 1, overflow: 'hidden' }}>
             <PDFViewer width="100%" height="100%" style={{ border: 'none' }}>
               <LRPDF subtripData={subtripData} />
+            </PDFViewer>
+          </Box>
+        </Box>
+      </Dialog>
+
+      {/* View Intent Dialog */}
+      <Dialog fullScreen open={viewIntent.value}>
+        <Box sx={{ height: 1, display: 'flex', flexDirection: 'column' }}>
+          <DialogActions
+            sx={{
+              p: 1.5,
+            }}
+          >
+            <Button color="primary" variant="outlined" onClick={viewIntent.onFalse}>
+              Close
+            </Button>
+          </DialogActions>
+
+          <Box sx={{ flexGrow: 1, height: 1, overflow: 'hidden' }}>
+            <PDFViewer width="100%" height="100%" style={{ border: 'none' }}>
+              <IndentPdf subtripData={subtripData} />
             </PDFViewer>
           </Box>
         </Box>

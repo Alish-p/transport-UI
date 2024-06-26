@@ -80,7 +80,7 @@ export const UserEditPage = Loadable(lazy(() => import('../pages/dashboard/UserE
 
 // DASHBOARD: Vehicle
 export const VehicleListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/vehicle/VehicleList'))
+  lazy(() => import('../sections/@dashboard/vehicle/vehicle-list/vehicle-list-view'))
 );
 export const VehicleCreatePage = Loadable(
   lazy(() => import('../sections/@dashboard/vehicle/VehicleCreatePage'))
@@ -101,7 +101,9 @@ export const TransporterEditPage = Loadable(
 );
 
 // DASHBOARD: Driver
-export const DriverListPage = Loadable(lazy(() => import('../sections/@dashboard/driver/Driver')));
+export const DriverListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/driver/driver-list/driver-list-view'))
+);
 export const DriverCreatePage = Loadable(
   lazy(() => import('../sections/@dashboard/driver/DriverCreatePage'))
 );

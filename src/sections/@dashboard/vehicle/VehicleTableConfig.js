@@ -2,7 +2,7 @@ export const vehicleTypes = [
   { key: 'body', value: 'Body' },
   { key: 'trailer', value: 'Trailer' },
   { key: 'bulker', value: 'Bulker' },
-  { key: '4220', value: 'Local Bulker' },
+  { key: 'localBulker', value: 'Local Bulker' },
   { key: 'tanker', value: 'Tanker' },
   { key: 'pickup', value: 'Pickup' },
   { key: 'crane', value: 'Crane' },

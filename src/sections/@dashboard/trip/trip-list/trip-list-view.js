@@ -58,6 +58,7 @@ const TABLE_HEAD = [
   { id: 'fromDate', label: 'From Date' },
   { id: 'toDate', label: 'To Date' },
   { id: 'remarks', label: 'Remarks' },
+  { id: '' },
 ];
 
 const defaultFilters = {
@@ -71,7 +72,7 @@ const defaultFilters = {
 
 // ----------------------------------------------------------------------
 
-export default function ExpenseListView() {
+export default function TripListView() {
   const theme = useTheme();
   const settings = useSettingsContext();
   const router = useRouter();

@@ -12,12 +12,14 @@ import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
+import { Box, Collapse, Paper, Stack } from '@mui/material';
 import { useBoolean } from '../../../../hooks/useBoolean';
 import Label from '../../../../components/label/Label';
 import Iconify from '../../../../components/iconify';
 import CustomPopover, { usePopover } from '../../../../components/custom-popover';
 import ConfirmDialog from '../../../../components/confirm-dialog/ConfirmDialog';
 import { fDate } from '../../../../utils/formatTime';
+import { fCurrency } from '../../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -37,95 +39,184 @@ export default function VehicleTableRow({
     fromDate,
     remarks,
     toDate,
+    subtrips,
   } = row;
 
   const confirm = useBoolean();
-
+  const collapse = useBoolean();
   const popover = usePopover();
 
+  const renderPrimary = (
+    <TableRow hover selected={selected}>
+      <TableCell padding="checkbox">
+        <Checkbox checked={selected} onClick={onSelectRow} />
+      </TableCell>
+      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+        <Avatar alt={vehicleNo} sx={{ mr: 2 }}>
+          {vehicleNo.slice(0, 2).toUpperCase()}
+        </Avatar>
+
+        <ListItemText
+          disableTypography
+          primary={
+            <Typography variant="body2" noWrap>
+              {vehicleNo}
+            </Typography>
+          }
+          secondary={
+            <Link
+              noWrap
+              variant="body2"
+              onClick={() => {
+                onViewRow(_id);
+              }}
+              sx={{ color: 'primary', cursor: 'pointer' }}
+            >
+              {_id}
+            </Link>
+          }
+        />
+      </TableCell>
+      <TableCell>
+        <ListItemText
+          primary={driverId?.driverName}
+          primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+        />
+      </TableCell>
+      <TableCell>
+        <Label variant="soft" color={tripStatus.toLowerCase() === 'pending' ? 'error' : 'success'}>
+          {tripStatus}
+        </Label>
+      </TableCell>
+      <TableCell>
+        <ListItemText
+          primary={format(new Date(fromDate), 'dd MMM yyyy')}
+          secondary={format(new Date(fromDate), 'p')}
+          primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+          secondaryTypographyProps={{
+            mt: 0.5,
+            component: 'span',
+            typography: 'caption',
+          }}
+        />
+      </TableCell>
+      <TableCell>
+        <ListItemText
+          primary={format(new Date(toDate), 'dd MMM yyyy')}
+          secondary={format(new Date(toDate), 'p')}
+          primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+          secondaryTypographyProps={{
+            mt: 0.5,
+            component: 'span',
+            typography: 'caption',
+          }}
+        />
+      </TableCell>
+      <TableCell>
+        <ListItemText
+          primary={remarks}
+          primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+        />
+      </TableCell>
+
+      <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+        <IconButton
+          color={collapse.value ? 'inherit' : 'default'}
+          onClick={collapse.onToggle}
+          sx={{
+            ...(collapse.value && {
+              bgcolor: 'action.hover',
+            }),
+          }}
+        >
+          <Iconify icon="eva:arrow-ios-downward-fill" />
+        </IconButton>
+
+        <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+          <Iconify icon="eva:more-vertical-fill" />
+        </IconButton>
+      </TableCell>
+    </TableRow>
+  );
+
+  const renderSecondary = (
+    <TableRow>
+      <TableCell sx={{ p: 0, border: 'none' }} colSpan={8}>
+        <Collapse
+          in={collapse.value}
+          timeout="auto"
+          unmountOnExit
+          sx={{ bgcolor: 'background.neutral' }}
+        >
+          <Stack component={Paper} sx={{ m: 1.5 }}>
+            {subtrips.map((subtrip) => (
+              <Stack
+                key={subtrip._id}
+                direction="row"
+                alignItems="center"
+                sx={{
+                  p: (theme) => theme.spacing(1.5, 2, 1.5, 1.5),
+                  '&:not(:last-of-type)': {
+                    borderBottom: (theme) => `solid 2px ${theme.palette.background.neutral}`,
+                  },
+                }}
+              >
+                <Avatar alt={subtrip._id} sx={{ mr: 2 }}>
+                  {subtrip.customerId.slice(0, 2).toUpperCase()}
+                </Avatar>
+
+                <ListItemText
+                  disableTypography
+                  primary={
+                    <Typography variant="body2" noWrap>
+                      {subtrip.customerId}
+                    </Typography>
+                  }
+                  secondary={
+                    <Link
+                      noWrap
+                      variant="body2"
+                      onClick={() => {
+                        onViewRow(_id);
+                      }}
+                      sx={{ color: 'primary', cursor: 'pointer' }}
+                    >
+                      {subtrip._id}
+                    </Link>
+                  }
+                />
+
+                <Box sx={{ width: 200, textAlign: 'center' }}>
+                  {`${subtrip.loadingPoint} - ${subtrip.unloadingPoint}`}
+                </Box>
+
+                <Box sx={{ width: 200, textAlign: 'center' }}>
+                  {`${subtrip.quantity} x ${subtrip.materialType}`}
+                </Box>
+                <Box sx={{ width: 200, textAlign: 'right' }}>
+                  <Link
+                    noWrap
+                    variant="body2"
+                    onClick={() => {
+                      onViewRow(_id);
+                    }}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <Iconify icon="solar:eye-bold" />
+                  </Link>
+                </Box>
+              </Stack>
+            ))}
+          </Stack>
+        </Collapse>
+      </TableCell>
+    </TableRow>
+  );
   return (
     <>
-      <TableRow hover selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox checked={selected} onClick={onSelectRow} />
-        </TableCell>
-        <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={vehicleNo} sx={{ mr: 2 }}>
-            {vehicleNo.slice(0, 2).toUpperCase()}
-          </Avatar>
+      {renderPrimary}
 
-          <ListItemText
-            disableTypography
-            primary={
-              <Typography variant="body2" noWrap>
-                {vehicleNo}
-              </Typography>
-            }
-            secondary={
-              <Link
-                noWrap
-                variant="body2"
-                onClick={() => {
-                  onViewRow(_id);
-                }}
-                sx={{ color: 'text.disabled', cursor: 'pointer' }}
-              >
-                {_id}
-              </Link>
-            }
-          />
-        </TableCell>
-        <TableCell>
-          <ListItemText
-            primary={driverId?.driverName}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-        <TableCell>
-          <Label
-            variant="soft"
-            color={tripStatus.toLowerCase() === 'pending' ? 'error' : 'success'}
-          >
-            {tripStatus}
-          </Label>
-        </TableCell>
-        <TableCell>
-          <ListItemText
-            primary={format(new Date(fromDate), 'dd MMM yyyy')}
-            secondary={format(new Date(fromDate), 'p')}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
-        </TableCell>
-        <TableCell>
-          <ListItemText
-            primary={format(new Date(toDate), 'dd MMM yyyy')}
-            secondary={format(new Date(toDate), 'p')}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
-        </TableCell>
-        <TableCell>
-          <ListItemText
-            primary={remarks}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-
-        <TableCell align="right" sx={{ px: 1 }}>
-          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
-        </TableCell>
-      </TableRow>
+      {renderSecondary}
 
       <CustomPopover
         open={popover.open}

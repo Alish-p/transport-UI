@@ -91,7 +91,7 @@ export const VehicleEditPage = Loadable(
 
 // DASHBOARD: Transporter
 export const TransporterListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/transporter/Transporter'))
+  lazy(() => import('../sections/@dashboard/transporter/transporter-list/transporter-list-view'))
 );
 export const TransporterCreatePage = Loadable(
   lazy(() => import('../sections/@dashboard/transporter/TransporterCreatePage'))
@@ -112,7 +112,9 @@ export const DriverEditPage = Loadable(
 );
 
 // DASHBOARD: Route
-export const RouteListPage = Loadable(lazy(() => import('../sections/@dashboard/route/Route')));
+export const RouteListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/route/route-list/route-list-view'))
+);
 export const RouteCreatePage = Loadable(
   lazy(() => import('../sections/@dashboard/route/RouteCreatePage'))
 );
@@ -121,7 +123,9 @@ export const RouteEditPage = Loadable(
 );
 
 // DASHBOARD: Pump
-export const PumpListPage = Loadable(lazy(() => import('../sections/@dashboard/pump/Pump')));
+export const PumpListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/pump/pump-list/pump-list-view'))
+);
 export const PumpCreatePage = Loadable(
   lazy(() => import('../sections/@dashboard/pump/PumpCreatePage'))
 );
@@ -141,7 +145,7 @@ export const BankEditPage = Loadable(
 // DASHBOARD: Trip
 export const TripDetailPage = Loadable(lazy(() => import('../sections/@dashboard/trip/Trip')));
 export const TripListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/trip/TripListPage'))
+  lazy(() => import('../sections/@dashboard/trip/trip-list/trip-list-view'))
 );
 export const TripCreatePage = Loadable(
   lazy(() => import('../sections/@dashboard/trip/TripCreatePage'))
@@ -169,7 +173,7 @@ export const ExpenseDetailPage = Loadable(
   lazy(() => import('../sections/@dashboard/expense/Expense'))
 );
 export const ExpenseListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/expense/ExpenseListPage'))
+  lazy(() => import('../sections/@dashboard/expense/expense-list/expense-list-view'))
 );
 export const ExpenseCreatePage = Loadable(
   lazy(() => import('../sections/@dashboard/expense/ExpenseCreatePage'))

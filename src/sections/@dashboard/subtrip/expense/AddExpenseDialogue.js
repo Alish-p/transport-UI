@@ -20,17 +20,16 @@ import { fetchPumps } from '../../../../redux/slices/pump';
 const validationSchema = Yup.object().shape({
   date: Yup.date().required('Date is required'),
   expenseType: Yup.string().required('Expense Type is required'),
-  installment: Yup.number().required('Installment is required').positive().integer(),
-  amount: Yup.number().required('Amount is required').positive().integer(),
+  amount: Yup.number().required('Amount is required').integer(),
   slipNo: Yup.string(),
   pumpCd: Yup.string().when('expenseType', {
-    is: 'fuel',
-    then: Yup.string().required('Pump Code is required for fuel expenses'),
+    is: 'diesel',
+    then: Yup.string().required('Pump Code is required for Diesel expenses'),
   }),
   dieselLtr: Yup.number().when('expenseType', {
-    is: 'fuel',
+    is: 'diesel',
     then: Yup.number()
-      .required('Diesel Liters are required for fuel expenses')
+      .required('Diesel Liters are required for Diesel expenses')
       .positive()
       .integer(),
   }),
@@ -42,7 +41,6 @@ const validationSchema = Yup.object().shape({
 const defaultValues = {
   date: new Date(),
   expenseType: '',
-  installment: 0,
   amount: 0,
   slipNo: '',
   pumpCd: '',
@@ -52,7 +50,7 @@ const defaultValues = {
   authorisedBy: '',
 };
 
-export function AddExpenseDialog({ showDialog, setShowDialog, subtripId }) {
+export function AddExpenseDialog({ showDialog, setShowDialog, subtripId, vehicleId }) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
@@ -82,7 +80,10 @@ export function AddExpenseDialog({ showDialog, setShowDialog, subtripId }) {
 
   const onSubmit = async (data) => {
     try {
-      await dispatch(addExpense(subtripId, data));
+      if (data.expenseType !== 'diesel') {
+        data.pumpCd = null;
+      }
+      await dispatch(addExpense(subtripId, { ...data, vehicleId }));
       enqueueSnackbar('Expense added successfully!');
       handleReset();
       setShowDialog(false);
@@ -117,17 +118,22 @@ export function AddExpenseDialog({ showDialog, setShowDialog, subtripId }) {
             >
               <RHFDatePicker name="date" label="Date" />
               <RHFSelect name="expenseType" label="Expense Type">
-                <MenuItem value="fuel">Fuel</MenuItem>
-                <MenuItem value="repair">Repair</MenuItem>
-                <MenuItem value="toll">Toll</MenuItem>
-                <MenuItem value="puncher">Puncher</MenuItem>
+                <MenuItem value="diesel">Diesel</MenuItem>
+                <MenuItem value="adblue">Adblue</MenuItem>
+                <MenuItem value="driver-salary">Driver Salary</MenuItem>
+                <MenuItem value="trip-advance">Driver Advance</MenuItem>
+                <MenuItem value="trip-extra-advance">Extra Advance</MenuItem>
+                <MenuItem value="puncher">Tyre puncher</MenuItem>
+                <MenuItem value="tyre-expense">Tyre Expense</MenuItem>
                 <MenuItem value="police">Police</MenuItem>
+                <MenuItem value="rto">Rto</MenuItem>
+                <MenuItem value="toll">Toll</MenuItem>
+                <MenuItem value="vehicle-repair">Vehicle Repair</MenuItem>
                 <MenuItem value="other">Other</MenuItem>
               </RHFSelect>
-              <RHFTextField name="installment" label="Installment" type="number" />
               <RHFTextField name="amount" label="Amount" type="number" />
               <RHFTextField name="slipNo" label="Slip No" />
-              {expenseType === 'fuel' && (
+              {expenseType === 'diesel' && (
                 <>
                   <RHFSelect native name="pumpCd" label="Pump">
                     <option value="" />
@@ -171,4 +177,5 @@ AddExpenseDialog.propTypes = {
   showDialog: PropTypes.bool.isRequired,
   setShowDialog: PropTypes.func.isRequired,
   subtripId: PropTypes.string.isRequired,
+  vehicleId: PropTypes.string.isRequired,
 };

@@ -18,7 +18,7 @@ import Iconify from '../../../../components/iconify';
 import CustomPopover, { usePopover } from '../../../../components/custom-popover';
 import ConfirmDialog from '../../../../components/confirm-dialog/ConfirmDialog';
 import { fDate } from '../../../../utils/formatTime';
-import { transportCompany } from '../VehicleTableConfig';
+// import { transportCompany } from '../VehicleTableConfig';
 
 // ----------------------------------------------------------------------
 
@@ -31,19 +31,25 @@ export default function VehicleTableRow({
   onDeleteRow,
 }) {
   const {
-    vehicleNo,
-    vehicleType,
-    modelType,
-    vehicleCompany,
-    noOfTyres,
-    chasisNo,
-    engineNo,
-    manufacturingYear,
-    loadingCapacity,
-    engineType,
-    transporter: { transportName },
-    fuelTankCapacity,
-    fromDate,
+    routeName,
+    tollAmt,
+    advanceAmt,
+    diesel,
+    adBlue,
+    fromPlace,
+    toPlace,
+    noOfDays,
+    driverSalary,
+    tripType,
+    fixMilage,
+    performanceMilage,
+    ratePerTon,
+    salary,
+    salaryPercentage,
+    distance,
+    validFromDate,
+    transportType,
+    validTillDate,
   } = row;
 
   const confirm = useBoolean();
@@ -58,15 +64,15 @@ export default function VehicleTableRow({
         </TableCell>
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={vehicleNo} sx={{ mr: 2 }}>
-            {vehicleNo.slice(0, 2).toUpperCase()}
+          <Avatar alt={routeName} sx={{ mr: 2 }}>
+            {routeName.slice(0, 2).toUpperCase()}
           </Avatar>
 
           <ListItemText
             disableTypography
             primary={
               <Typography variant="body2" noWrap>
-                {vehicleNo}
+                {routeName}
               </Typography>
             }
             secondary={
@@ -76,7 +82,7 @@ export default function VehicleTableRow({
                 onClick={() => {}}
                 sx={{ color: 'text.disabled', cursor: 'pointer' }}
               >
-                {vehicleType}
+                {routeName}
               </Link>
             }
           />
@@ -84,62 +90,114 @@ export default function VehicleTableRow({
 
         <TableCell>
           <ListItemText
-            primary={vehicleCompany}
+            primary={fromPlace}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>
 
         <TableCell>
           <ListItemText
-            primary={noOfTyres}
+            primary={toPlace}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>
 
         <TableCell>
           <ListItemText
-            primary={chasisNo}
+            primary={tollAmt}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>
 
         <TableCell>
           <ListItemText
-            primary={engineNo}
+            primary={advanceAmt}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>
 
         <TableCell>
           <ListItemText
-            primary={manufacturingYear}
+            primary={diesel}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>
 
         <TableCell>
-          <Label variant="soft" color={loadingCapacity >= 20 ? 'success' : 'error'}>
-            {loadingCapacity}
+          <Label variant="soft" color={adBlue >= 20 ? 'success' : 'error'}>
+            {adBlue}
+          </Label>
+        </TableCell>
+
+        <TableCell>
+          <Label variant="soft" color={noOfDays >= 5 ? 'success' : 'error'}>
+            {noOfDays}
           </Label>
         </TableCell>
 
         <TableCell>
           <ListItemText
-            primary={fuelTankCapacity}
+            primary={driverSalary}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>
 
         <TableCell>
           <ListItemText
-            primary={fDate(fromDate)}
+            primary={tripType}
+            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+          />
+        </TableCell>
+
+        <TableCell>
+          <Label variant="soft" color="warning">
+            {fixMilage}
+          </Label>
+        </TableCell>
+
+        <TableCell>
+          <Label variant="soft" color="success">
+            {performanceMilage}
+          </Label>
+        </TableCell>
+
+        <TableCell>
+          <ListItemText
+            primary={ratePerTon}
+            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+          />
+        </TableCell>
+        <TableCell>
+          <ListItemText
+            primary={salary}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>
 
         <TableCell>
           <ListItemText
-            primary={transportName}
+            primary={salaryPercentage}
+            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+          />
+        </TableCell>
+
+        <TableCell>
+          <ListItemText
+            primary={distance}
+            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+          />
+        </TableCell>
+
+        <TableCell>
+          <ListItemText
+            primary={fDate(validFromDate)}
+            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+          />
+        </TableCell>
+
+        <TableCell>
+          <ListItemText
+            primary={transportType}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>

@@ -78,7 +78,6 @@ export default function SubtripDashBoardPage() {
       <Helmet>
         <title> Subtrip Analytics </title>
       </Helmet>
-
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <CustomBreadcrumbs
           heading="Subtrip Dashboard"
@@ -244,14 +243,12 @@ export default function SubtripDashBoardPage() {
           <Grid item xs={12} md={6} lg={4} />
         </Grid>
       </Container>
-
       {/* Add Material Dialogue Form */}
       <SubtripMaterialInfoDialog
         showDialog={showMaterialDialog}
         setShowDialog={setShowMaterialDialog}
         subtripId={id}
       />
-
       {/* Render the RecieveSubtripDialog */}
       <RecieveSubtripDialog
         showDialog={showRecieveDialog}
@@ -264,6 +261,7 @@ export default function SubtripDashBoardPage() {
         showDialog={showExpenseDialog}
         setShowDialog={setShowExpenseDialog}
         subtripId={id}
+        vehicleId={subtripData?.tripId?.vehicleId?._id}
       />
     </>
   );

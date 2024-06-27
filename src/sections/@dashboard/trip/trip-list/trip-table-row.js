@@ -18,7 +18,6 @@ import Iconify from '../../../../components/iconify';
 import CustomPopover, { usePopover } from '../../../../components/custom-popover';
 import ConfirmDialog from '../../../../components/confirm-dialog/ConfirmDialog';
 import { fDate } from '../../../../utils/formatTime';
-import { transportCompany } from '../VehicleTableConfig';
 
 // ----------------------------------------------------------------------
 
@@ -31,19 +30,13 @@ export default function VehicleTableRow({
   onDeleteRow,
 }) {
   const {
-    vehicleNo,
-    vehicleType,
-    modelType,
-    vehicleCompany,
-    noOfTyres,
-    chasisNo,
-    engineNo,
-    manufacturingYear,
-    loadingCapacity,
-    engineType,
-    transporter: { transportName },
-    fuelTankCapacity,
+    _id,
+    vehicleId: { vehicleNo },
+    driverId,
+    tripStatus,
     fromDate,
+    remarks,
+    toDate,
   } = row;
 
   const confirm = useBoolean();
@@ -56,7 +49,6 @@ export default function VehicleTableRow({
         <TableCell padding="checkbox">
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
-
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar alt={vehicleNo} sx={{ mr: 2 }}>
             {vehicleNo.slice(0, 2).toUpperCase()}
@@ -73,73 +65,57 @@ export default function VehicleTableRow({
               <Link
                 noWrap
                 variant="body2"
-                onClick={() => {}}
+                onClick={() => {
+                  onViewRow(_id);
+                }}
                 sx={{ color: 'text.disabled', cursor: 'pointer' }}
               >
-                {vehicleType}
+                {_id}
               </Link>
             }
           />
         </TableCell>
-
         <TableCell>
           <ListItemText
-            primary={vehicleCompany}
+            primary={driverId?.driverName}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>
-
         <TableCell>
-          <ListItemText
-            primary={noOfTyres}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-
-        <TableCell>
-          <ListItemText
-            primary={chasisNo}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-
-        <TableCell>
-          <ListItemText
-            primary={engineNo}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-
-        <TableCell>
-          <ListItemText
-            primary={manufacturingYear}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-
-        <TableCell>
-          <Label variant="soft" color={loadingCapacity >= 20 ? 'success' : 'error'}>
-            {loadingCapacity}
+          <Label
+            variant="soft"
+            color={tripStatus.toLowerCase() === 'pending' ? 'error' : 'success'}
+          >
+            {tripStatus}
           </Label>
         </TableCell>
-
         <TableCell>
           <ListItemText
-            primary={fuelTankCapacity}
+            primary={format(new Date(fromDate), 'dd MMM yyyy')}
+            secondary={format(new Date(fromDate), 'p')}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+            secondaryTypographyProps={{
+              mt: 0.5,
+              component: 'span',
+              typography: 'caption',
+            }}
           />
         </TableCell>
-
         <TableCell>
           <ListItemText
-            primary={fDate(fromDate)}
+            primary={format(new Date(toDate), 'dd MMM yyyy')}
+            secondary={format(new Date(toDate), 'p')}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+            secondaryTypographyProps={{
+              mt: 0.5,
+              component: 'span',
+              typography: 'caption',
+            }}
           />
         </TableCell>
-
         <TableCell>
           <ListItemText
-            primary={transportName}
+            primary={remarks}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>

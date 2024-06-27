@@ -133,9 +133,17 @@ export default function ExpenseForm({
               </RHFSelect>
               <RHFDatePicker name="date" label="Date" />
               <RHFSelect name="expenseType" label="Expense Type">
-                <MenuItem value="fuel">Fuel</MenuItem>
-                <MenuItem value="repair">Repair</MenuItem>
+                <MenuItem value="diesel">Diesel</MenuItem>
+                <MenuItem value="adblue">Adblue</MenuItem>
+                <MenuItem value="driver-salary">Driver Salary</MenuItem>
+                <MenuItem value="trip-advance">Driver Advance</MenuItem>
+                <MenuItem value="trip-extra-advance">Extra Advance</MenuItem>
+                <MenuItem value="puncher">Tyre puncher</MenuItem>
+                <MenuItem value="tyre-expense">Tyre Expense</MenuItem>
+                <MenuItem value="police">Police</MenuItem>
+                <MenuItem value="rto">Rto</MenuItem>
                 <MenuItem value="toll">Toll</MenuItem>
+                <MenuItem value="vehicle-repair">Vehicle Repair</MenuItem>
                 <MenuItem value="other">Other</MenuItem>
               </RHFSelect>
               <RHFTextField name="installment" label="Installment" type="number" />

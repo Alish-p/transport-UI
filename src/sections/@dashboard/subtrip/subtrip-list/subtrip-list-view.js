@@ -1,0 +1,520 @@
+import sumBy from 'lodash/sumBy';
+import { useState, useCallback, useEffect } from 'react';
+// @mui
+import { useTheme, alpha } from '@mui/material/styles';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Card from '@mui/material/Card';
+import Table from '@mui/material/Table';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
+import Container from '@mui/material/Container';
+import TableBody from '@mui/material/TableBody';
+import IconButton from '@mui/material/IconButton';
+import TableContainer from '@mui/material/TableContainer';
+
+// _mock
+
+import { paramCase } from 'change-case';
+import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import SubtripTableRow from './subtrip-table-row';
+import SubtripTableToolbar from './subtrip-table-toolbar';
+import SubtripTableFiltersResult from './subtrip-table-filters-result';
+import { PATH_DASHBOARD } from '../../../../routes/paths';
+import { useRouter } from '../../../../hooks/useRouter';
+import RouterLink from '../../../../routes/components/router-link';
+import { useBoolean } from '../../../../hooks/useBoolean';
+import { fTimestamp } from '../../../../utils/formatTime';
+import Label from '../../../../components/label/Label';
+import Iconify from '../../../../components/iconify/Iconify';
+import Scrollbar from '../../../../components/scrollbar/Scrollbar';
+import ConfirmDialog from '../../../../components/confirm-dialog/ConfirmDialog';
+import { useSettingsContext } from '../../../../components/settings';
+import CustomBreadcrumbs from '../../../../components/custom-breadcrumbs/CustomBreadcrumbs';
+import {
+  useTable,
+  getComparator,
+  emptyRows,
+  TableNoData,
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSelectedAction,
+  TablePaginationCustom,
+} from '../../../../components/table';
+import { isDateError } from '../../../../components/date-range-picker/utils';
+import SubtripAnalytic from './subtrip-analytic';
+import { deleteSubtrip, fetchSubtrips } from '../../../../redux/slices/subtrip';
+import { exportToExcel } from '../../../../utils/ExportToExcel';
+
+// ----------------------------------------------------------------------
+
+const TABLE_HEAD = [
+  { id: '_id', label: 'Details', align: 'left' },
+  { id: 'customerId', label: 'Customer ID', align: 'left' },
+  { id: 'routeName', label: 'Route', align: 'left', type: 'string' },
+  { id: 'invoiceNo', label: 'Invoice No', align: 'left', type: 'string' },
+  { id: 'startDate', label: 'Start Date', align: 'left' },
+  { id: 'subtripStatus', label: 'Subtrip Status', align: 'left', type: 'string' },
+  { id: '' },
+];
+
+const defaultFilters = {
+  customer: '',
+  subtripId: '',
+  vehicleNo: '',
+  subtripStatus: 'all',
+  fromDate: null,
+  endDate: null,
+};
+
+// ----------------------------------------------------------------------
+
+export default function TripListView() {
+  const theme = useTheme();
+  const settings = useSettingsContext();
+  const router = useRouter();
+  const table = useTable({ defaultOrderBy: 'createDate' });
+  const confirm = useBoolean();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [filters, setFilters] = useState(defaultFilters);
+
+  const dateError = isDateError(filters.fromDate, filters.endDate);
+
+  useEffect(() => {
+    dispatch(fetchSubtrips());
+  }, [dispatch]);
+
+  const { subtrips, isLoading } = useSelector((state) => state.subtrip);
+
+  useEffect(() => {
+    if (subtrips.length) {
+      setTableData(subtrips);
+    }
+  }, [subtrips]);
+
+  const [tableData, setTableData] = useState([]);
+
+  const dataFiltered = applyFilter({
+    inputData: tableData,
+    comparator: getComparator(table.order, table.orderBy),
+    filters,
+    dateError,
+  });
+
+  const denseHeight = table.dense ? 56 : 76;
+
+  const canReset =
+    !!filters.vehicleNo ||
+    !!filters.subtripId ||
+    !!filters.customer ||
+    filters.subtripStatus !== 'all' ||
+    (!!filters.fromDate && !!filters.endDate);
+
+  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+
+  const getSubtripLength = (subtripStatus) =>
+    tableData.filter((item) => item.subtripStatus === subtripStatus).length;
+
+  const getTotalAmount = (subtripStatus) =>
+    sumBy(
+      tableData.filter((item) => item.subtripStatus === subtripStatus),
+      'totalAmount'
+    );
+
+  const getPercentBySubtripStatus = (subtripStatus) =>
+    (getSubtripLength(subtripStatus) / tableData.length) * 100;
+
+  const TABS = [
+    { value: 'all', label: 'All', color: 'default', count: tableData.length },
+    { value: 'in-queue', label: 'In-queue', color: 'error', count: getSubtripLength('in-queue') },
+    { value: 'loaded', label: 'Loaded', color: 'success', count: getSubtripLength('loaded') },
+    { value: 'recieved', label: 'Recieved', color: 'success', count: getSubtripLength('recieved') },
+    { value: 'error', label: 'Error', color: 'error', count: getSubtripLength('error') },
+    { value: 'closed', label: 'Closed', color: 'success', count: getSubtripLength('closed') },
+    { value: 'billed', label: 'Billed', color: 'error', count: getSubtripLength('billed') },
+  ];
+
+  const handleFilters = useCallback(
+    (name, value) => {
+      table.onResetPage();
+      setFilters((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    },
+    [table]
+  );
+
+  const handleDeleteRow = (id) => {
+    dispatch(deleteSubtrip(id));
+  };
+
+  const handleEditRow = (id) => {
+    navigate(PATH_DASHBOARD.subtrip.edit(paramCase(id)));
+  };
+  const handleDeleteRows = useCallback(() => {}, []);
+
+  const handleViewRow = useCallback(
+    (id) => {
+      router.push(PATH_DASHBOARD.subtrip.detail(id));
+    },
+    [router]
+  );
+
+  const handleFilterSubtripStatus = useCallback(
+    (event, newValue) => {
+      handleFilters('subtripStatus', newValue);
+    },
+    [handleFilters]
+  );
+
+  const handleResetFilters = useCallback(() => {
+    setFilters(defaultFilters);
+  }, []);
+
+  return (
+    <>
+      <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+        <CustomBreadcrumbs
+          heading="Subtrip List"
+          links={[
+            {
+              name: 'Dashboard',
+              href: PATH_DASHBOARD.root,
+            },
+            {
+              name: 'Subtrip List',
+            },
+          ]}
+          action={
+            <Button
+              component={RouterLink}
+              href={PATH_DASHBOARD.subtrip.new}
+              variant="contained"
+              startIcon={<Iconify icon="mingcute:add-line" />}
+            >
+              New Subtrip
+            </Button>
+          }
+          sx={{
+            mb: { xs: 3, md: 5 },
+          }}
+        />
+
+        {/* Analytics Section */}
+        <Card
+          sx={{
+            mb: { xs: 3, md: 5 },
+          }}
+        >
+          <Scrollbar>
+            <Stack
+              direction="row"
+              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+              sx={{ py: 2 }}
+            >
+              <SubtripAnalytic
+                title="All"
+                total={tableData.length}
+                percent={100}
+                price={sumBy(tableData, 'totalAmount')}
+                icon="solar:bill-list-bold-duotone"
+                color={theme.palette.info.main}
+              />
+
+              <SubtripAnalytic
+                title="in-queue"
+                total={getSubtripLength('in-queue')}
+                percent={getPercentBySubtripStatus('in-queue')}
+                price={getTotalAmount('in-queue')}
+                icon="solar:sort-by-time-bold-duotone"
+                color={theme.palette.warning.main}
+              />
+
+              <SubtripAnalytic
+                title="loaded"
+                total={getSubtripLength('loaded')}
+                percent={getPercentBySubtripStatus('loaded')}
+                price={getTotalAmount('loaded')}
+                icon="solar:file-check-bold-duotone"
+                color={theme.palette.success.main}
+              />
+
+              <SubtripAnalytic
+                title="recieved"
+                total={getSubtripLength('recieved')}
+                percent={getPercentBySubtripStatus('recieved')}
+                price={getTotalAmount('recieved')}
+                icon="solar:sort-by-time-bold-duotone"
+                color={theme.palette.warning.main}
+              />
+
+              <SubtripAnalytic
+                title="error"
+                total={getSubtripLength('error')}
+                percent={getPercentBySubtripStatus('error')}
+                price={getTotalAmount('error')}
+                icon="solar:sort-by-time-bold-duotone"
+                color={theme.palette.warning.main}
+              />
+
+              <SubtripAnalytic
+                title="closed"
+                total={getSubtripLength('closed')}
+                percent={getPercentBySubtripStatus('closed')}
+                price={getTotalAmount('closed')}
+                icon="solar:sort-by-time-bold-duotone"
+                color={theme.palette.warning.main}
+              />
+              <SubtripAnalytic
+                title="billed"
+                total={getSubtripLength('billed')}
+                percent={getPercentBySubtripStatus('billed')}
+                price={getTotalAmount('billed')}
+                icon="solar:sort-by-time-bold-duotone"
+                color={theme.palette.warning.main}
+              />
+            </Stack>
+          </Scrollbar>
+        </Card>
+
+        {/* Table Section */}
+        <Card>
+          {/* filtering Tabs */}
+          <Tabs
+            value={filters.subtripStatus}
+            onChange={handleFilterSubtripStatus}
+            sx={{
+              px: 2.5,
+              boxShadow: `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
+            }}
+          >
+            {TABS.map((tab) => (
+              <Tab
+                key={tab.value}
+                value={tab.value}
+                label={tab.label}
+                iconPosition="end"
+                icon={
+                  <Label
+                    variant={
+                      ((tab.value === 'all' || tab.value === filters.subtripStatus) && 'filled') ||
+                      'soft'
+                    }
+                    color={tab.color}
+                  >
+                    {tab.count}
+                  </Label>
+                }
+              />
+            ))}
+          </Tabs>
+
+          <SubtripTableToolbar
+            filters={filters}
+            onFilters={handleFilters}
+            tableData={dataFiltered}
+          />
+
+          {canReset && (
+            <SubtripTableFiltersResult
+              filters={filters}
+              onFilters={handleFilters}
+              onResetFilters={handleResetFilters}
+              results={dataFiltered.length}
+              sx={{ p: 2.5, pt: 0 }}
+            />
+          )}
+
+          <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+            <TableSelectedAction
+              dense={table.dense}
+              numSelected={table.selected.length}
+              rowCount={tableData.length}
+              onSelectAllRows={(checked) =>
+                table.onSelectAllRows(
+                  checked,
+                  tableData.map((row) => row._id)
+                )
+              }
+              action={
+                <Stack direction="row">
+                  <Tooltip title="Sent">
+                    <IconButton color="primary">
+                      <Iconify icon="iconamoon:send-fill" />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="Download">
+                    <IconButton
+                      color="primary"
+                      onClick={() => {
+                        const selectedRows = tableData.filter(({ _id }) =>
+                          table.selected.includes(_id)
+                        );
+                        exportToExcel(selectedRows, 'filtered');
+                      }}
+                    >
+                      <Iconify icon="eva:download-outline" />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="Print">
+                    <IconButton color="primary">
+                      <Iconify icon="solar:printer-minimalistic-bold" />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="Delete">
+                    <IconButton color="primary" onClick={confirm.onTrue}>
+                      <Iconify icon="solar:trash-bin-trash-bold" />
+                    </IconButton>
+                  </Tooltip>
+                </Stack>
+              }
+            />
+
+            <Scrollbar>
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 800 }}>
+                <TableHeadCustom
+                  order={table.order}
+                  orderBy={table.orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={tableData.length}
+                  numSelected={table.selected.length}
+                  onSort={table.onSort}
+                  onSelectAllRows={(checked) =>
+                    table.onSelectAllRows(
+                      checked,
+                      tableData.map((row) => row._id)
+                    )
+                  }
+                />
+                <TableBody>
+                  {dataFiltered
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+                    .map((row) => (
+                      <SubtripTableRow
+                        key={row._id}
+                        row={row}
+                        selected={table.selected.includes(row._id)}
+                        onSelectRow={() => table.onSelectRow(row._id)}
+                        onViewRow={() => handleViewRow(row._id)}
+                        onEditRow={() => handleEditRow(row._id)}
+                        onDeleteRow={() => handleDeleteRow(row._id)}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={denseHeight}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, tableData.length)}
+                  />
+
+                  <TableNoData notFound={notFound} />
+                </TableBody>
+              </Table>
+            </Scrollbar>
+          </TableContainer>
+
+          <TablePaginationCustom
+            count={dataFiltered.length}
+            page={table.page}
+            rowsPerPage={table.rowsPerPage}
+            onPageChange={table.onChangePage}
+            onRowsPerPageChange={table.onChangeRowsPerPage}
+            //
+            dense={table.dense}
+            onChangeDense={table.onChangeDense}
+          />
+        </Card>
+      </Container>
+
+      {/* Delete Confirmations dialogue */}
+      <ConfirmDialog
+        open={confirm.value}
+        onClose={confirm.onFalse}
+        title="Delete"
+        content={
+          <>
+            Are you sure want to delete <strong> {table.selected.length} </strong> items?
+          </>
+        }
+        action={
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              handleDeleteRows();
+              confirm.onFalse();
+            }}
+          >
+            Delete
+          </Button>
+        }
+      />
+    </>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+// filtering logic
+function applyFilter({ inputData, comparator, filters, dateError }) {
+  const { vehicleNo, subtripId, customer, subtripStatus, fromDate, endDate } = filters;
+
+  const stabilizedThis = inputData.map((el, index) => [el, index]);
+
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+
+  inputData = stabilizedThis.map((el) => el[0]);
+
+  if (vehicleNo) {
+    inputData = inputData.filter(
+      (record) =>
+        record.tripId &&
+        record.tripId.vehicleId &&
+        record.tripId.vehicleId.vehicleNo &&
+        record.tripId.vehicleId.vehicleNo.toLowerCase().indexOf(vehicleNo.toLowerCase()) !== -1
+    );
+  }
+
+  if (customer) {
+    inputData = inputData.filter(
+      (record) =>
+        record.customerId && record.customerId.toLowerCase().indexOf(customer.toLowerCase()) !== -1
+    );
+  }
+  if (subtripId) {
+    inputData = inputData.filter(
+      (record) => record._id && record._id.toLowerCase().indexOf(subtripId.toLowerCase()) !== -1
+    );
+  }
+
+  if (subtripStatus !== 'all') {
+    inputData = inputData.filter((record) => record.subtripStatus === subtripStatus);
+  }
+  if (!dateError) {
+    if (fromDate && endDate) {
+      inputData = inputData.filter(
+        (subtrip) =>
+          fTimestamp(subtrip.startDate) >= fTimestamp(fromDate) &&
+          fTimestamp(subtrip.startDate) <= fTimestamp(endDate)
+      );
+    }
+  }
+
+  return inputData;
+}

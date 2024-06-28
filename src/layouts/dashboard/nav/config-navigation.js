@@ -50,14 +50,15 @@ const navConfig = [
   {
     subheader: 'general',
     items: [
-      { title: 'Create Trip', path: PATH_DASHBOARD.trip.new, icon: ICONS.trip },
-      { title: 'Create LR', path: PATH_DASHBOARD.general.vehicle, icon: ICONS.lr },
-      { title: 'Add Expenses', path: PATH_DASHBOARD.general.vehicle, icon: ICONS.expense },
+      {
+        title: 'Create Trip',
+        path: PATH_DASHBOARD.trip.new,
+        icon: ICONS.trip,
+        info: <Iconify icon="material-symbols-light:star" width={24} />,
+      },
+      // { title: 'Create LR', path: PATH_DASHBOARD.subtrip.new, icon: ICONS.subtrip },
+      // { title: 'Add Expenses', path: PATH_DASHBOARD.expense.new, icon: ICONS.expense },
 
-      { title: 'vehicle', path: PATH_DASHBOARD.general.vehicle, icon: ICONS.vehicle },
-      { title: 'driver', path: PATH_DASHBOARD.general.driver, icon: ICONS.driver },
-      { title: 'transporter', path: PATH_DASHBOARD.general.transporter, icon: ICONS.transporter },
-      { title: 'routes', path: PATH_DASHBOARD.general.transporter, icon: ICONS.map },
       // { title: 'account', path: PATH_DASHBOARD.user.account, icon: ICONS.dashboard },
       // { title: 'ecommerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
       // { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
@@ -88,26 +89,26 @@ const navConfig = [
 
       // Trip
       {
-        title: 'trip',
+        title: 'Trip',
         path: PATH_DASHBOARD.trip.root,
         icon: ICONS.trip,
         children: [
           { title: 'list', path: PATH_DASHBOARD.trip.list },
           { title: 'create', path: PATH_DASHBOARD.trip.new },
-          { title: 'edit', path: PATH_DASHBOARD.trip.demoEdit },
-          { title: 'view', path: PATH_DASHBOARD.trip.demoDetail },
+          // { title: 'edit', path: PATH_DASHBOARD.trip.demoEdit },
+          // { title: 'view', path: PATH_DASHBOARD.trip.demoDetail },
         ],
       },
 
       // subtrip
       {
-        title: 'subtrip',
+        title: 'Subtrip',
         path: PATH_DASHBOARD.subtrip.root,
         icon: ICONS.subtrip,
         children: [
           { title: 'list', path: PATH_DASHBOARD.subtrip.list },
           { title: 'create', path: PATH_DASHBOARD.subtrip.new('123') },
-          { title: 'edit', path: PATH_DASHBOARD.subtrip.demoEdit },
+          // { title: 'edit', path: PATH_DASHBOARD.subtrip.demoEdit },
         ],
       },
 
@@ -119,7 +120,7 @@ const navConfig = [
         children: [
           { title: 'list', path: PATH_DASHBOARD.expense.list },
           { title: 'create', path: PATH_DASHBOARD.expense.new },
-          { title: 'edit', path: PATH_DASHBOARD.expense.demoEdit },
+          // { title: 'edit', path: PATH_DASHBOARD.expense.demoEdit },
         ],
       },
 
@@ -131,7 +132,7 @@ const navConfig = [
         children: [
           { title: 'list', path: PATH_DASHBOARD.vehicle.list },
           { title: 'create', path: PATH_DASHBOARD.vehicle.new },
-          { title: 'edit', path: PATH_DASHBOARD.vehicle.demoEdit },
+          // { title: 'edit', path: PATH_DASHBOARD.vehicle.demoEdit },
         ],
       },
 
@@ -143,7 +144,7 @@ const navConfig = [
         children: [
           { title: 'list', path: PATH_DASHBOARD.transporter.list },
           { title: 'create', path: PATH_DASHBOARD.transporter.new },
-          { title: 'edit', path: PATH_DASHBOARD.transporter.demoEdit },
+          // { title: 'edit', path: PATH_DASHBOARD.transporter.demoEdit },
         ],
       },
 
@@ -155,7 +156,7 @@ const navConfig = [
         children: [
           { title: 'list', path: PATH_DASHBOARD.driver.list },
           { title: 'create', path: PATH_DASHBOARD.driver.new },
-          { title: 'edit', path: PATH_DASHBOARD.driver.demoEdit },
+          // { title: 'edit', path: PATH_DASHBOARD.driver.demoEdit },
         ],
       },
       // route
@@ -166,7 +167,7 @@ const navConfig = [
         children: [
           { title: 'list', path: PATH_DASHBOARD.route.list },
           { title: 'create', path: PATH_DASHBOARD.route.new },
-          { title: 'edit', path: PATH_DASHBOARD.route.demoEdit },
+          // { title: 'edit', path: PATH_DASHBOARD.route.demoEdit },
         ],
       },
       // pump
@@ -177,7 +178,7 @@ const navConfig = [
         children: [
           { title: 'list', path: PATH_DASHBOARD.pump.list },
           { title: 'create', path: PATH_DASHBOARD.pump.new },
-          { title: 'edit', path: PATH_DASHBOARD.pump.demoEdit },
+          // { title: 'edit', path: PATH_DASHBOARD.pump.demoEdit },
         ],
       },
       // bank
@@ -188,7 +189,7 @@ const navConfig = [
         children: [
           { title: 'list', path: PATH_DASHBOARD.bank.list },
           { title: 'create', path: PATH_DASHBOARD.bank.new },
-          { title: 'edit', path: PATH_DASHBOARD.bank.demoEdit },
+          // { title: 'edit', path: PATH_DASHBOARD.bank.demoEdit },
         ],
       },
 

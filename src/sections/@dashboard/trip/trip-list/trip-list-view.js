@@ -84,7 +84,7 @@ export default function TripListView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const dateError = isDateError(filters.startDate, filters.endDate);
+  const dateError = isDateError(filters.fromDate, filters.endDate);
 
   useEffect(() => {
     dispatch(fetchTrips());

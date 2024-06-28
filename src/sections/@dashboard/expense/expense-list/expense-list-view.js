@@ -86,7 +86,7 @@ export default function ExpenseListView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const dateError = isDateError(filters.startDate, filters.endDate);
+  const dateError = isDateError(filters.fromDate, filters.endDate);
 
   useEffect(() => {
     dispatch(fetchExpenses());
@@ -391,7 +391,7 @@ export default function ExpenseListView() {
                 icon={
                   <Label
                     variant={
-                      ((tab.value === 'all' || tab.value === filters.vehicleType) && 'filled') ||
+                      ((tab.value === 'all' || tab.value === filters.expenseType) && 'filled') ||
                       'soft'
                     }
                     color={tab.color}

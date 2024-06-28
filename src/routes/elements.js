@@ -159,7 +159,7 @@ export const SubtripDetailPage = Loadable(
   lazy(() => import('../sections/@dashboard/subtrip/Subtrip'))
 );
 export const SubtripListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/subtrip/SubtripListPage'))
+  lazy(() => import('../sections/@dashboard/subtrip/subtrip-list/subtrip-list-view'))
 );
 export const SubtripCreatePage = Loadable(
   lazy(() => import('../sections/@dashboard/subtrip/SubtripCreatePage'))

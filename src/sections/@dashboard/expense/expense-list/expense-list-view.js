@@ -427,7 +427,7 @@ export default function ExpenseListView() {
               onSelectAllRows={(checked) =>
                 table.onSelectAllRows(
                   checked,
-                  tableData.map((row) => row._id)
+                  dataFiltered.map((row) => row._id)
                 )
               }
               action={

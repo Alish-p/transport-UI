@@ -473,13 +473,13 @@ export default function ExpenseListView() {
                   order={table.order}
                   orderBy={table.orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={tableData.length}
+                  rowCount={dataFiltered.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
                   onSelectAllRows={(checked) =>
                     table.onSelectAllRows(
                       checked,
-                      tableData.map((row) => row._id)
+                      dataFiltered.map((row) => row._id)
                     )
                   }
                 />

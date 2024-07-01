@@ -274,89 +274,89 @@ export default function ExpenseListView() {
                 total={getExpenseLength('diesel')}
                 percent={getPercentByExpenseType('diesel')}
                 price={getTotalAmount('diesel')}
-                icon="solar:file-check-bold-duotone"
+                icon="lucide:fuel"
                 color={theme.palette.success.main}
               />
 
               <ExpenseAnalytic
-                title="adblue"
+                title="Adblue"
                 total={getExpenseLength('adblue')}
                 percent={getPercentByExpenseType('adblue')}
                 price={getTotalAmount('adblue')}
-                icon="solar:sort-by-time-bold-duotone"
+                icon="mdi:fossil-fuel"
                 color={theme.palette.warning.main}
               />
 
               <ExpenseAnalytic
-                title="driver-salary"
+                title="Driver Salary"
                 total={getExpenseLength('driver-salary')}
                 percent={getPercentByExpenseType('driver-salary')}
                 price={getTotalAmount('driver-salary')}
-                icon="solar:sort-by-time-bold-duotone"
+                icon="mynaui:rupee-circle"
                 color={theme.palette.error.main}
               />
               <ExpenseAnalytic
-                title="trip-advance"
+                title="Trip Advance"
                 total={getExpenseLength('trip-advance')}
                 percent={getPercentByExpenseType('trip-advance')}
                 price={getTotalAmount('trip-advance')}
-                icon="solar:sort-by-time-bold-duotone"
+                icon="line-md:plus-square"
                 color={theme.palette.text.secondary}
               />
               <ExpenseAnalytic
-                title="trip-extra-advance"
+                title="Extra Advance"
                 total={getExpenseLength('trip-extra-advance')}
                 percent={getPercentByExpenseType('trip-extra-advance')}
                 price={getTotalAmount('trip-extra-advance')}
-                icon="solar:sort-by-time-bold-duotone"
+                icon="line-md:plus-square"
                 color={theme.palette.primary.main}
               />
               <ExpenseAnalytic
-                title="puncher"
+                title="Puncture"
                 total={getExpenseLength('puncher')}
                 percent={getPercentByExpenseType('puncher')}
                 price={getTotalAmount('puncher')}
-                icon="solar:sort-by-time-bold-duotone"
+                icon="game-icons:flat-tire"
                 color={theme.palette.secondary.main}
               />
               <ExpenseAnalytic
-                title="tyre-expense"
+                title="Tyre expense"
                 total={getExpenseLength('tyre-expense')}
                 percent={getPercentByExpenseType('tyre-expense')}
                 price={getTotalAmount('tyre-expense')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.common.white}
+                icon="solar:wheel-bold"
+                color={theme.palette.secondary.main}
               />
               <ExpenseAnalytic
-                title="police"
+                title="Police"
                 total={getExpenseLength('police')}
                 percent={getPercentByExpenseType('police')}
                 price={getTotalAmount('police')}
-                icon="solar:sort-by-time-bold-duotone"
+                icon="ri:police-badge-line"
                 color={theme.palette.common.white}
               />
               <ExpenseAnalytic
-                title="rto"
+                title="Rto"
                 total={getExpenseLength('rto')}
                 percent={getPercentByExpenseType('rto')}
                 price={getTotalAmount('rto')}
-                icon="solar:sort-by-time-bold-duotone"
+                icon="hugeicons:office"
                 color={theme.palette.common.white}
               />
               <ExpenseAnalytic
-                title="toll"
+                title="Toll Tax"
                 total={getExpenseLength('toll')}
                 percent={getPercentByExpenseType('toll')}
                 price={getTotalAmount('toll')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.common.white}
+                icon="healthicons:paved-road"
+                color="orange"
               />
               <ExpenseAnalytic
-                title="vehicle-repair"
+                title="Vehicle Repair"
                 total={getExpenseLength('vehicle-repair')}
                 percent={getPercentByExpenseType('vehicle-repair')}
                 price={getTotalAmount('vehicle-repair')}
-                icon="solar:sort-by-time-bold-duotone"
+                icon="mdi:truck-alert-outline"
                 color={theme.palette.common.white}
               />
               <ExpenseAnalytic
@@ -364,7 +364,7 @@ export default function ExpenseListView() {
                 total={getExpenseLength('other')}
                 percent={getPercentByExpenseType('other')}
                 price={getTotalAmount('other')}
-                icon="solar:sort-by-time-bold-duotone"
+                icon="basil:other-1-outline"
                 color={theme.palette.common.white}
               />
             </Stack>

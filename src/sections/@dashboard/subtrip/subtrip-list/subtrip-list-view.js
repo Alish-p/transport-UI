@@ -229,7 +229,7 @@ export default function TripListView() {
               />
 
               <SubtripAnalytic
-                title="in-queue"
+                title="In-queue"
                 total={getSubtripLength('in-queue')}
                 percent={getPercentBySubtripStatus('in-queue')}
                 price={getTotalAmount('in-queue')}
@@ -238,47 +238,47 @@ export default function TripListView() {
               />
 
               <SubtripAnalytic
-                title="loaded"
+                title="Loaded"
                 total={getSubtripLength('loaded')}
                 percent={getPercentBySubtripStatus('loaded')}
                 price={getTotalAmount('loaded')}
-                icon="solar:file-check-bold-duotone"
+                icon="mdi:truck"
                 color={theme.palette.success.main}
               />
 
               <SubtripAnalytic
-                title="recieved"
+                title="Recieved"
                 total={getSubtripLength('recieved')}
                 percent={getPercentBySubtripStatus('recieved')}
                 price={getTotalAmount('recieved')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.warning.main}
+                icon="material-symbols:call-received"
+                color={theme.palette.primary.main}
               />
 
               <SubtripAnalytic
-                title="error"
+                title="Error"
                 total={getSubtripLength('error')}
                 percent={getPercentBySubtripStatus('error')}
                 price={getTotalAmount('error')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.warning.main}
+                icon="material-symbols:error-outline"
+                color={theme.palette.error.main}
               />
 
               <SubtripAnalytic
-                title="closed"
+                title="Closed"
                 total={getSubtripLength('closed')}
                 percent={getPercentBySubtripStatus('closed')}
                 price={getTotalAmount('closed')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.warning.main}
+                icon="zondicons:lock-closed"
+                color={theme.palette.secondary.main}
               />
               <SubtripAnalytic
-                title="billed"
+                title="Billed"
                 total={getSubtripLength('billed')}
                 percent={getPercentBySubtripStatus('billed')}
                 price={getTotalAmount('billed')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.warning.main}
+                icon="mdi:progress-tick"
+                color={theme.palette.success.main}
               />
             </Stack>
           </Scrollbar>

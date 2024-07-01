@@ -315,11 +315,11 @@ export default function DriverListView() {
             <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
-              rowCount={tableData.length}
+              rowCount={dataFiltered.length}
               onSelectAllRows={(checked) =>
                 table.onSelectAllRows(
                   checked,
-                  tableData.map((row) => row._id)
+                  dataFiltered.map((row) => row._id)
                 )
               }
               action={
@@ -370,7 +370,7 @@ export default function DriverListView() {
                   onSort={table.onSort}
                   onSelectAllRows={(checked) =>
                     table.onSelectAllRows(
-                      checked
+                      checked,
                       dataFiltered.map((row) => row._id)
                     )
                   }

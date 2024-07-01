@@ -423,7 +423,7 @@ export default function ExpenseListView() {
             <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
-              rowCount={tableData.length}
+              rowCount={dataFiltered.length}
               onSelectAllRows={(checked) =>
                 table.onSelectAllRows(
                   checked,

@@ -1,5 +1,19 @@
 export const mapExpensesToChartData = (expenses) => {
-  const expenseTypes = ['fuel', 'repair', 'toll', 'puncher', 'police', 'other'];
+  const expenseTypes = [
+    'all',
+    'diesel',
+    'adblue',
+    'driver-salary',
+    'trip-advance',
+    'trip-extra-advance',
+    'puncher',
+    'tyre-expense',
+    'police',
+    'rto',
+    'toll',
+    'vehicle-repair',
+    'other',
+  ];
 
   const expenseData = expenseTypes.map((type) => {
     const total = expenses

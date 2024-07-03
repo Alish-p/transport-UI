@@ -39,7 +39,7 @@ const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
   { value: 'loaded', label: 'Loaded' },
   { value: 'in-queue', label: 'In Queue' },
-  { value: 'recieved', label: 'Recieved' },
+  { value: 'received', label: 'Recieved' },
   { value: 'error', label: 'Error' },
   { value: 'closed', label: 'Closed' },
   { value: 'billed', label: 'Billed' },

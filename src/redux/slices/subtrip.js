@@ -120,11 +120,22 @@ export const addMaterialInfo = (id, data) => async (dispatch) => {
   }
 };
 
-// Close LR
-export const recieveLR = (id, data) => async (dispatch) => {
+// Receive LR
+export const receiveLR = (id, data) => async (dispatch) => {
   dispatch(startLoading());
   try {
-    const response = await axios.put(`/api/subtrips/${id}/recieve`, data);
+    const response = await axios.put(`/api/subtrips/${id}/receive`, data);
+    dispatch(updateSubtripSuccess(response.data));
+  } catch (error) {
+    dispatch(hasError(error));
+  }
+};
+
+// Resolve LR
+export const resolveLR = (id, data) => async (dispatch) => {
+  dispatch(startLoading());
+  try {
+    const response = await axios.put(`/api/subtrips/${id}/resolve`, data);
     dispatch(updateSubtripSuccess(response.data));
   } catch (error) {
     dispatch(hasError(error));

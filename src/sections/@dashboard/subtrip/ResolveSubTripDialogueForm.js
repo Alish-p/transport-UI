@@ -11,7 +11,7 @@ import FormProvider, { RHFTextField, RHFDatePicker } from '../../../components/h
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
 import RHFSwitch from '../../../components/hook-form/RHFSwitch';
-import { receiveLR } from '../../../redux/slices/subtrip';
+import { resolveLR } from '../../../redux/slices/subtrip';
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -22,7 +22,7 @@ const defaultValues = {
   remarks: '',
 };
 
-export function RecieveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
+export function ResolveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
@@ -44,8 +44,8 @@ export function RecieveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
   const onSubmit = async (data) => {
     try {
       // Dispatch action to update subtrip with closing details
-      await dispatch(receiveLR(subtripId, data));
-      enqueueSnackbar('Subtrip received successfully!');
+      await dispatch(resolveLR(subtripId, data));
+      enqueueSnackbar('Subtrip Resolved successfully!');
       handleReset();
       setShowDialog(false);
     } catch (error) {
@@ -64,7 +64,7 @@ export function RecieveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
     <ConfirmDialog
       open={showDialog}
       onClose={() => setShowDialog(false)}
-      title="Receive Subtrip"
+      title="Resolve Subtrip"
       content={
         <Box sx={{ marginTop: '6px' }}>
           <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -77,19 +77,7 @@ export function RecieveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="unloadingWeight" label="Unloading Weight" type="number" />
-              <RHFDatePicker name="endDate" label="End Date" />
-              <RHFTextField name="endKm" label="End Km" type="number" />
-              <RHFTextField name="deductedWeight" label="Deducted Weight" type="number" />
-              <RHFTextField name="detentionTime" label="Detention Time" type="number" />
               <RHFTextField name="remarks" label="Remarks" type="text" />
-            </Box>
-
-            <Box sx={{ marginTop: '20px' }}>
-              <RHFSwitch
-                name="hasError"
-                label={<Typography variant="subtitle1">Recievied With Error ?</Typography>}
-              />
             </Box>
           </FormProvider>
         </Box>
@@ -105,7 +93,7 @@ export function RecieveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
             loading={isSubmitting}
             onClick={handleSubmit(onSubmit)}
           >
-            Save Changes
+            Resolve
           </Button>
         </Stack>
       }
@@ -113,7 +101,7 @@ export function RecieveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
   );
 }
 
-RecieveSubtripDialog.propTypes = {
+ResolveSubtripDialog.propTypes = {
   showDialog: PropTypes.bool.isRequired,
   setShowDialog: PropTypes.func.isRequired,
   subtripId: PropTypes.string.isRequired,

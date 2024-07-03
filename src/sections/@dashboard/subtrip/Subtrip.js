@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { Stack, width } from '@mui/system';
 import { useSettingsContext } from '../../../components/settings';
-import { fetchSubtrip } from '../../../redux/slices/subtrip';
+import { closeTrip, fetchSubtrip } from '../../../redux/slices/subtrip';
 import AnalyticsWidgetSummary from '../general/analytics/AnalyticsWidgetSummary';
 import SimpleExpenseList from './expense/ExpenseTable';
 import { SubtripMaterialInfoDialog } from './SubtripAddMaterialDialogueForm';
@@ -41,6 +41,9 @@ import LRInfo from './widgets/LRInfoCard2';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs/CustomBreadcrumbs';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import SubtripToolbar from './widgets/SubtripToolbar';
+import { ResolveSubtripDialog } from './ResolveSubTripDialogueForm';
+import { SubtripCloseDialog } from './SubtripCloseDialogue';
+import ConfirmDialog from '../../../components/confirm-dialog/ConfirmDialog';
 
 // ----------------------------------------------------------------------
 
@@ -54,6 +57,8 @@ export default function SubtripDashBoardPage() {
   // State for dialog visibility
   const [showMaterialDialog, setShowMaterialDialog] = useState(false);
   const [showRecieveDialog, setShowRecieveDialog] = useState(false);
+  const [showResolveDialog, setShowResolveDialog] = useState(false);
+  const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [showExpenseDialog, setShowExpenseDialog] = useState(false);
 
   useEffect(() => {
@@ -88,52 +93,6 @@ export default function SubtripDashBoardPage() {
           ]}
         />
 
-        {/* Toolbar */}
-        {/* <Stack
-          flexShrink={0}
-          direction="row"
-          alignItems="space-between"
-          justifyContent="space-between"
-          sx={{
-            // width: 'fit-content',
-            height: 'inherit',
-          }}
-        >
-          <>
-            <Typography variant="h4" sx={{ mb: 5 }}>
-              Hi, Welcome back
-              <Typography variant="span" sx={{ color: 'text.primary' }}>
-                Elis
-              </Typography>
-            </Typography>
-            <Stack direction="row" spacing={1}>
-              <Button size="small" variant="contained" onClick={() => setShowMaterialDialog(true)}>
-                Add Material Details
-              </Button>
-              <Button size="small" variant="contained" onClick={() => setShowRecieveDialog(true)}>
-                Recieve Trip
-              </Button>
-              <PDFDownloadLink
-                document={<LRPDF subtrip={subtripData} />}
-                fileName={subtripData._id}
-                style={{ textDecoration: 'none' }}
-              >
-                {({ loading }) => (
-                  <Tooltip title="Download">
-                    <IconButton>
-                      {loading ? (
-                        <CircularProgress size={24} color="inherit" />
-                      ) : (
-                        <Iconify icon="eva:download-fill" />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </PDFDownloadLink>
-            </Stack>
-          </>
-        </Stack> */}
-
         <SubtripToolbar
           backLink={PATH_DASHBOARD.trip.detail(subtripData.tripId._id)}
           tripId={subtripData.tripId._id}
@@ -142,9 +101,10 @@ export default function SubtripDashBoardPage() {
           onAddMaterialInfo={() => setShowMaterialDialog(true)}
           onRecieve={() => setShowRecieveDialog(true)}
           onEdit={() => {
-            navigate(PATH_DASHBOARD.driver.new);
+            navigate(PATH_DASHBOARD.subtrip.edit(id));
           }}
-          onSubtripClose={() => {}}
+          onResolve={() => setShowResolveDialog(true)}
+          onSubtripClose={() => setShowCloseDialog(true)}
         />
 
         <Grid container spacing={3}>
@@ -188,9 +148,9 @@ export default function SubtripDashBoardPage() {
                   sx={{ flexGrow: { xs: 0, sm: 1 }, flexBasis: { xs: 'auto', sm: 0 } }}
                 />
                 <AnalyticsWidgetSummary
-                  title="Subtrip Status"
+                  title={`${subtripData.subtripStatus.toUpperCase()}`}
                   total={subtripData.subtripStatus}
-                  color={subtripData.subtripStatus === 'completed' ? 'success' : 'warning'}
+                  color={subtripData.subtripStatus === 'completed' ? 'error' : 'error'}
                   icon="ant-design:check-circle-filled"
                   sx={{ flexGrow: { xs: 0, sm: 1 }, flexBasis: { xs: 'auto', sm: 0 } }}
                 />
@@ -243,16 +203,33 @@ export default function SubtripDashBoardPage() {
           <Grid item xs={12} md={6} lg={4} />
         </Grid>
       </Container>
+
       {/* Add Material Dialogue Form */}
       <SubtripMaterialInfoDialog
         showDialog={showMaterialDialog}
         setShowDialog={setShowMaterialDialog}
         subtripId={id}
+        vehicleId={subtripData?.tripId?.vehicleId?._id}
       />
+
       {/* Render the RecieveSubtripDialog */}
       <RecieveSubtripDialog
         showDialog={showRecieveDialog}
         setShowDialog={setShowRecieveDialog}
+        subtripId={id}
+      />
+
+      {/* Resolve Subtrip Dialogue */}
+      <ResolveSubtripDialog
+        showDialog={showResolveDialog}
+        setShowDialog={setShowResolveDialog}
+        subtripId={id}
+      />
+
+      {/* Resolve Subtrip Dialogue */}
+      <SubtripCloseDialog
+        showDialog={showCloseDialog}
+        setShowDialog={setShowCloseDialog}
         subtripId={id}
       />
 

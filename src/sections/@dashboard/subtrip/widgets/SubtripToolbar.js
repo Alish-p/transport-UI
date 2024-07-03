@@ -24,6 +24,7 @@ export default function SubtripToolbar({
   onRecieve,
   onSubtripClose,
   onEdit,
+  onResolve,
 }) {
   const actionPopover = usePopover();
   const viewPopover = usePopover();
@@ -125,7 +126,7 @@ export default function SubtripToolbar({
             actionPopover.onClose();
             onAddMaterialInfo();
           }}
-          disabled={!(subtripData.subtripStatus === 'In-queue')}
+          disabled={!(subtripData.subtripStatus === 'in-queue')}
         >
           Add Material
         </MenuItem>
@@ -134,16 +135,16 @@ export default function SubtripToolbar({
             actionPopover.onClose();
             onRecieve();
           }}
-          disabled={!(subtripData.subtripStatus === 'Loaded')}
+          disabled={!(subtripData.subtripStatus === 'loaded')}
         >
           Recieve Trip
         </MenuItem>
         <MenuItem
           onClick={() => {
             actionPopover.onClose();
-            onSubtripClose();
+            onResolve();
           }}
-          disabled={!(subtripData.subtripStatus === 'Received')}
+          disabled={!(subtripData.subtripStatus === 'error')}
         >
           Resolve
         </MenuItem>
@@ -152,7 +153,7 @@ export default function SubtripToolbar({
             actionPopover.onClose();
             onSubtripClose();
           }}
-          disabled={!(subtripData.subtripStatus === 'Received')}
+          disabled={!(subtripData.subtripStatus === 'received')}
         >
           Close Trip
         </MenuItem>
@@ -170,6 +171,7 @@ export default function SubtripToolbar({
             viewPopover.onClose();
             viewLR.onTrue();
           }}
+          disabled={!(subtripData.subtripStatus === 'loaded')}
         >
           Lorry Receipt (LR)
         </MenuItem>
@@ -178,7 +180,7 @@ export default function SubtripToolbar({
             viewPopover.onClose();
             viewIntent.onTrue();
           }}
-          disabled={!(subtripData.subtripStatus === 'Loaded')}
+          disabled={!(subtripData.subtripStatus === 'loaded')}
         >
           Petrol Pump Intent
         </MenuItem>
@@ -204,7 +206,11 @@ export default function SubtripToolbar({
             <Tooltip title="Download">
               <Button
                 startIcon={
-                  loading ? <Iconify icon="solar:eye-bold" /> : <Iconify icon="eva:download-fill" />
+                  loading ? (
+                    <Iconify icon="line-md:loading-loop" />
+                  ) : (
+                    <Iconify icon="eva:download-fill" />
+                  )
                 }
               >
                 LR
@@ -226,7 +232,11 @@ export default function SubtripToolbar({
             <Tooltip title="Download">
               <Button
                 startIcon={
-                  loading ? <Iconify icon="solar:eye-bold" /> : <Iconify icon="eva:download-fill" />
+                  loading ? (
+                    <Iconify icon="line-md:loading-loop" />
+                  ) : (
+                    <Iconify icon="eva:download-fill" />
+                  )
                 }
               >
                 Petrol Pump Indent

@@ -134,7 +134,7 @@ export default function TripListView() {
     { value: 'all', label: 'All', color: 'default', count: tableData.length },
     { value: 'in-queue', label: 'In-queue', color: 'error', count: getSubtripLength('in-queue') },
     { value: 'loaded', label: 'Loaded', color: 'success', count: getSubtripLength('loaded') },
-    { value: 'recieved', label: 'Recieved', color: 'success', count: getSubtripLength('recieved') },
+    { value: 'received', label: 'Recieved', color: 'success', count: getSubtripLength('received') },
     { value: 'error', label: 'Error', color: 'error', count: getSubtripLength('error') },
     { value: 'closed', label: 'Closed', color: 'success', count: getSubtripLength('closed') },
     { value: 'billed', label: 'Billed', color: 'error', count: getSubtripLength('billed') },
@@ -248,9 +248,9 @@ export default function TripListView() {
 
               <SubtripAnalytic
                 title="Recieved"
-                total={getSubtripLength('recieved')}
-                percent={getPercentBySubtripStatus('recieved')}
-                price={getTotalAmount('recieved')}
+                total={getSubtripLength('received')}
+                percent={getPercentBySubtripStatus('received')}
+                price={getTotalAmount('received')}
                 icon="material-symbols:call-received"
                 color={theme.palette.primary.main}
               />

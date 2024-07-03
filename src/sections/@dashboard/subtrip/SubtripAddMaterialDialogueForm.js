@@ -55,7 +55,7 @@ const defaultValues = {
   pumpCd: '',
 };
 
-export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId }) {
+export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId, vehicleId }) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
@@ -77,7 +77,7 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId
   const onSubmit = async (data) => {
     try {
       // Dispatch action to update subtrip with material details
-      await dispatch(addMaterialInfo(subtripId, data));
+      await dispatch(addMaterialInfo(subtripId, { ...data, vehicleId }));
       enqueueSnackbar('Material details added successfully!');
       handleReset();
       setShowDialog(false);
@@ -184,4 +184,5 @@ SubtripMaterialInfoDialog.propTypes = {
   showDialog: PropTypes.bool.isRequired,
   setShowDialog: PropTypes.func.isRequired,
   subtripId: PropTypes.string.isRequired,
+  vehicleId: PropTypes.string.isRequired,
 };

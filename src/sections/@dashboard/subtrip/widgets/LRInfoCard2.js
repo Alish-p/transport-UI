@@ -172,20 +172,20 @@ export default function LRInfoCard({ subtrip }) {
             Rate
           </Box>
           {rate}
-          <Iconify icon="ph:currency-inr-thin" width={18} sx={{ ml: 0.5 }} />
+          {rate && <span>&nbsp; ₹ </span>}
         </Stack>
         <Stack direction="row" alignItems="center">
           <Box component="span" sx={{ color: 'text.secondary', width: 200, flexShrink: 0 }}>
             TDS
           </Box>
           {tds}
-          <Iconify icon="ph:currency-inr-thin" width={18} sx={{ ml: 0.5 }} />
+          {tds && <span> &nbsp;% </span>}
         </Stack>
         <Stack direction="row" alignItems="center">
           <Box component="span" sx={{ color: 'text.secondary', width: 200, flexShrink: 0 }}>
             Shipment
           </Box>
-          # {shipmentNo}
+          {shipmentNo}
         </Stack>
         <Stack direction="row" alignItems="center">
           <Box component="span" sx={{ color: 'text.secondary', width: 200, flexShrink: 0 }}>
@@ -209,7 +209,7 @@ export default function LRInfoCard({ subtrip }) {
     </>
   );
 
-  const renderPayment = (
+  const renderWeight = (
     <>
       <CardHeader
         title="Weight"
@@ -228,9 +228,9 @@ export default function LRInfoCard({ subtrip }) {
         </Stack>
         <Stack direction="row" alignItems="center">
           <Box component="span" sx={{ color: 'text.secondary', width: 200, flexShrink: 0 }}>
-            UnLoading Weight
+            Unloading Weight
           </Box>
-          {loadingWeight}
+          {UnloadingWeight}
         </Stack>
       </Stack>
     </>
@@ -250,7 +250,7 @@ export default function LRInfoCard({ subtrip }) {
 
       <Divider sx={{ borderStyle: 'dashed' }} />
 
-      {renderPayment}
+      {renderWeight}
     </Card>
   );
 }

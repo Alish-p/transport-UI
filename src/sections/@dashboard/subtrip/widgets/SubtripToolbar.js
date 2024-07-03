@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { Box, CircularProgress, Dialog, DialogActions, Tooltip } from '@mui/material';
+import { useNavigate } from 'react-router';
 import Label from '../../../../components/label/Label';
 import Iconify from '../../../../components/iconify/Iconify';
 import CustomPopover, { usePopover } from '../../../../components/custom-popover';
@@ -30,6 +31,7 @@ export default function SubtripToolbar({
   const viewPopover = usePopover();
   const downloadPopover = usePopover();
 
+  const navigate = useNavigate();
   const viewLR = useBoolean();
   const viewIntent = useBoolean();
 
@@ -43,7 +45,7 @@ export default function SubtripToolbar({
         }}
       >
         <Stack spacing={1} direction="row" alignItems="flex-start">
-          <IconButton component="button" href={backLink}>
+          <IconButton component="button" onClick={() => navigate(backLink)}>
             <Iconify icon="eva:arrow-ios-back-fill" />
           </IconButton>
 

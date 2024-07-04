@@ -392,7 +392,7 @@ export default function Router() {
     {
       element: <MainLayout />,
       children: [
-        { element: <Navigate to="/dashboard/vehicle/list" replace />, index: true },
+        { element: <Navigate to="/dashboard/app" replace />, index: true },
         { path: 'about-us', element: <AboutPage /> },
         { path: 'contact-us', element: <Contact /> },
         { path: 'faqs', element: <FaqsPage /> },

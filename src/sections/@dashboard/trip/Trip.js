@@ -72,14 +72,6 @@ export default function TripDashBoardPage() {
     return sum + kmCovered;
   }, 0);
 
-  // subtrips table
-  // total expense
-  // total income
-  // total km
-
-  // driver details
-  // vehicle details
-
   return (
     <>
       <Helmet>

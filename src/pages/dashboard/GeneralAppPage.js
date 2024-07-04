@@ -49,7 +49,7 @@ export default function GeneralAppPage() {
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
             <AppWelcome
-              title={`Welcome back! \n ${user?.displayName}`}
+              title={`Welcome back! \n Alish`}
               description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
               img={
                 <SeoIllustration
@@ -70,9 +70,9 @@ export default function GeneralAppPage() {
 
           <Grid item xs={12} md={4}>
             <AppWidgetSummary
-              title="Total Active Users"
+              title="Total Trips Completed"
               percent={2.6}
-              total={18765}
+              total={1765}
               chart={{
                 colors: [theme.palette.primary.main],
                 series: [5, 18, 12, 51, 68, 11, 39, 37, 27, 20],
@@ -82,9 +82,9 @@ export default function GeneralAppPage() {
 
           <Grid item xs={12} md={4}>
             <AppWidgetSummary
-              title="Total Installed"
+              title="Total Vehicles"
               percent={0.2}
-              total={4876}
+              total={276}
               chart={{
                 colors: [theme.palette.info.main],
                 series: [20, 41, 63, 33, 28, 35, 50, 46, 11, 26],
@@ -94,8 +94,8 @@ export default function GeneralAppPage() {
 
           <Grid item xs={12} md={4}>
             <AppWidgetSummary
-              title="Total Downloads"
-              percent={-0.1}
+              title="Total Invoices Generated"
+              percent={0.1}
               total={678}
               chart={{
                 colors: [theme.palette.warning.main],
@@ -106,7 +106,7 @@ export default function GeneralAppPage() {
 
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentDownload
-              title="Current Download"
+              title="Invoices"
               chart={{
                 colors: [
                   theme.palette.primary.main,
@@ -115,10 +115,10 @@ export default function GeneralAppPage() {
                   theme.palette.warning.main,
                 ],
                 series: [
-                  { label: 'Mac', value: 12244 },
-                  { label: 'Window', value: 53345 },
-                  { label: 'iOS', value: 44313 },
-                  { label: 'Android', value: 78343 },
+                  { label: 'Pending', value: 244 },
+                  { label: 'Draft', value: 545 },
+                  { label: 'Billed', value: 443 },
+                  { label: 'Completed', value: 783 },
                 ],
               }}
             />
@@ -126,7 +126,7 @@ export default function GeneralAppPage() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AppAreaInstalled
-              title="Area Installed"
+              title="Trip Completed"
               subheader="(+43%) than last year"
               chart={{
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
@@ -134,15 +134,15 @@ export default function GeneralAppPage() {
                   {
                     year: '2019',
                     data: [
-                      { name: 'Asia', data: [10, 41, 35, 51, 49, 62, 69, 91, 148] },
-                      { name: 'America', data: [10, 34, 13, 56, 77, 88, 99, 77, 45] },
+                      { name: 'Own', data: [10, 41, 35, 51, 49, 62, 69, 91, 148] },
+                      { name: 'Market', data: [10, 34, 13, 56, 77, 88, 99, 77, 45] },
                     ],
                   },
                   {
                     year: '2020',
                     data: [
-                      { name: 'Asia', data: [148, 91, 69, 62, 49, 51, 35, 41, 10] },
-                      { name: 'America', data: [45, 77, 99, 88, 77, 56, 13, 34, 10] },
+                      { name: 'Own', data: [148, 91, 69, 62, 49, 51, 35, 41, 10] },
+                      { name: 'Market', data: [45, 77, 99, 88, 77, 56, 13, 34, 10] },
                     ],
                   },
                 ],

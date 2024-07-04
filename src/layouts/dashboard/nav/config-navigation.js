@@ -48,6 +48,16 @@ const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
+    subheader: 'main',
+    items: [
+      {
+        title: 'Dashboard',
+        path: PATH_DASHBOARD.general.app,
+        icon: <Iconify icon="heroicons:home" width={24} />,
+      },
+    ],
+  },
+  {
     subheader: 'general',
     items: [
       {

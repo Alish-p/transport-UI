@@ -14,6 +14,7 @@ import CustomPopover, { usePopover } from '../../../../components/custom-popover
 import LRPDF from '../lr/LRPdf';
 import { useBoolean } from '../../../../hooks/useBoolean';
 import IndentPdf from '../lr/IndentPDF';
+import RouterLink from '../../../../routes/components/router-link';
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +46,7 @@ export default function SubtripToolbar({
         }}
       >
         <Stack spacing={1} direction="row" alignItems="flex-start">
-          <IconButton component="button" onClick={() => navigate(backLink)}>
+          <IconButton component={RouterLink} href={backLink}>
             <Iconify icon="eva:arrow-ios-back-fill" />
           </IconButton>
 

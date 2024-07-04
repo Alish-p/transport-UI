@@ -11,6 +11,7 @@ import Label from '../../../../components/label/Label';
 import Iconify from '../../../../components/iconify/Iconify';
 import CustomPopover, { usePopover } from '../../../../components/custom-popover';
 import LRPDF from '../../subtrip/lr/LRPdf';
+import RouterLink from '../../../../routes/components/router-link';
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ export default function TripToolbar({ status, backLink, tripData, onTripClose, o
         }}
       >
         <Stack spacing={1} direction="row" alignItems="flex-start">
-          <IconButton component="button" href={backLink}>
+          <IconButton component={RouterLink} href={backLink}>
             <Iconify icon="eva:arrow-ios-back-fill" />
           </IconButton>
 

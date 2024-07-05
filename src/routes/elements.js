@@ -100,6 +100,17 @@ export const TransporterEditPage = Loadable(
   lazy(() => import('../sections/@dashboard/transporter/TransporterEditPage'))
 );
 
+// DASHBOARD: Customer
+export const CustomerListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/customer/customer-list/customer-list-view'))
+);
+export const CustomerCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/customer/CustomerCreatePage'))
+);
+export const CustomerEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/customer/CustomerEditPage'))
+);
+
 // DASHBOARD: Driver
 export const DriverListPage = Loadable(
   lazy(() => import('../sections/@dashboard/driver/driver-list/driver-list-view'))

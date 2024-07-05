@@ -69,6 +69,11 @@ import {
   TransporterCreatePage,
   TransporterEditPage,
 
+  // Dashboard:Customer
+  CustomerListPage,
+  CustomerCreatePage,
+  CustomerEditPage,
+
   // Dashboard:Driver
   DriverListPage,
   DriverCreatePage,
@@ -293,6 +298,15 @@ export default function Router() {
             { path: 'list', element: <TransporterListPage /> },
             { path: 'new', element: <TransporterCreatePage /> },
             { path: ':id/edit', element: <TransporterEditPage /> },
+          ],
+        },
+        {
+          path: 'customer',
+          children: [
+            { element: <Navigate to="/dashboard/customer/list" replace />, index: true },
+            { path: 'list', element: <CustomerListPage /> },
+            { path: 'new', element: <CustomerCreatePage /> },
+            { path: ':id/edit', element: <CustomerEditPage /> },
           ],
         },
         {

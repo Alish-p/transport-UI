@@ -45,6 +45,7 @@ export const PATH_DASHBOARD = {
     app: path(ROOTS_DASHBOARD, '/app'),
     vehicle: path(ROOTS_DASHBOARD, '/vehicle'),
     transporter: path(ROOTS_DASHBOARD, '/transporter'),
+    customer: path(ROOTS_DASHBOARD, '/customer'),
     driver: path(ROOTS_DASHBOARD, '/driver'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
@@ -107,6 +108,14 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/transporter/list'),
     edit: (name) => path(ROOTS_DASHBOARD, `/transporter/${name}/edit`),
     demoEdit: path(ROOTS_DASHBOARD, `/transporter/abc/edit`),
+  },
+
+  customer: {
+    root: path(ROOTS_DASHBOARD, '/customer'),
+    new: path(ROOTS_DASHBOARD, '/customer/new'),
+    list: path(ROOTS_DASHBOARD, '/customer/list'),
+    edit: (name) => path(ROOTS_DASHBOARD, `/customer/${name}/edit`),
+    demoEdit: path(ROOTS_DASHBOARD, `/customer/abc/edit`),
   },
 
   driver: {

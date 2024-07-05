@@ -36,6 +36,7 @@ const ICONS = {
   vehicle: icon('ic_vehicle'),
   driver: icon('ic_person'),
   transporter: icon('ic_transporter'),
+  customer: icon('ic_customer'),
   route: icon('ic_map'),
   bank: icon('ic_bank'),
   pump: icon('ic_pump'),
@@ -154,6 +155,18 @@ const navConfig = [
         children: [
           { title: 'list', path: PATH_DASHBOARD.transporter.list },
           { title: 'create', path: PATH_DASHBOARD.transporter.new },
+          // { title: 'edit', path: PATH_DASHBOARD.transporter.demoEdit },
+        ],
+      },
+
+      // Customer
+      {
+        title: 'customer',
+        path: PATH_DASHBOARD.customer.root,
+        icon: ICONS.customer,
+        children: [
+          { title: 'list', path: PATH_DASHBOARD.customer.list },
+          { title: 'create', path: PATH_DASHBOARD.customer.new },
           // { title: 'edit', path: PATH_DASHBOARD.transporter.demoEdit },
         ],
       },

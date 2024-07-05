@@ -9,6 +9,7 @@ import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
 import vehicleReducer from './slices/vehicle';
 import transporterReducer from './slices/transporter';
+import customerReducer from './slices/customer';
 import driverReducer from './slices/driver';
 import pumpReducer from './slices/pump';
 import routeReducer from './slices/route';
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   product: persistReducer(productPersistConfig, productReducer),
   vehicle: vehicleReducer,
   transporter: transporterReducer,
+  customer: customerReducer,
   driver: driverReducer,
   pump: pumpReducer,
   bank: bankReducer,

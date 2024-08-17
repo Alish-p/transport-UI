@@ -82,7 +82,7 @@ const navConfig = [
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: 'Reports',
+    subheader: 'Transport',
     items: [
       // USER
       // {
@@ -231,18 +231,7 @@ const navConfig = [
       //   ],
       // },
 
-      // // INVOICE
-      // {
-      //   title: 'invoice',
-      //   path: PATH_DASHBOARD.invoice.root,
-      //   icon: ICONS.invoice,
-      //   children: [
-      //     { title: 'list', path: PATH_DASHBOARD.invoice.list },
-      //     { title: 'details', path: PATH_DASHBOARD.invoice.demoView },
-      //     { title: 'create', path: PATH_DASHBOARD.invoice.new },
-      //     { title: 'edit', path: PATH_DASHBOARD.invoice.demoEdit },
-      //   ],
-      // },
+      // INVOICE
 
       // // BLOG
       // {
@@ -265,32 +254,24 @@ const navConfig = [
 
   // APP
   // ----------------------------------------------------------------------
-  // {
-  //   subheader: 'app',
-  //   items: [
-  //     {
-  //       title: 'mail',
-  //       path: PATH_DASHBOARD.mail.root,
-  //       icon: ICONS.mail,
-  //       info: <Label color="error">+32</Label>,
-  //     },
-  //     {
-  //       title: 'chat',
-  //       path: PATH_DASHBOARD.chat.root,
-  //       icon: ICONS.chat,
-  //     },
-  //     {
-  //       title: 'calendar',
-  //       path: PATH_DASHBOARD.calendar,
-  //       icon: ICONS.calendar,
-  //     },
-  //     {
-  //       title: 'kanban',
-  //       path: PATH_DASHBOARD.kanban,
-  //       icon: ICONS.kanban,
-  //     },
-  //   ],
-  // },
+  {
+    subheader: 'Billing',
+    items: [
+      {
+        title: 'invoice',
+        path: PATH_DASHBOARD.invoice.root,
+        icon: ICONS.invoice,
+        children: [
+          { title: 'list', path: PATH_DASHBOARD.invoice.list },
+          { title: 'details', path: PATH_DASHBOARD.invoice.demoView },
+          { title: 'create', path: PATH_DASHBOARD.invoice.new },
+          { title: 'edit', path: PATH_DASHBOARD.invoice.demoEdit },
+        ],
+      },
+
+      //
+    ],
+  },
 
   // DEMO MENU STATES
   // {

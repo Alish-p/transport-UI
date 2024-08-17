@@ -60,16 +60,6 @@ export const EcommerceCheckoutPage = Loadable(
   lazy(() => import('../pages/dashboard/EcommerceCheckoutPage'))
 );
 
-// DASHBOARD: INVOICE
-export const InvoiceListPage = Loadable(lazy(() => import('../pages/dashboard/InvoiceListPage')));
-export const InvoiceDetailsPage = Loadable(
-  lazy(() => import('../pages/dashboard/InvoiceDetailsPage'))
-);
-export const InvoiceCreatePage = Loadable(
-  lazy(() => import('../pages/dashboard/InvoiceCreatePage'))
-);
-export const InvoiceEditPage = Loadable(lazy(() => import('../pages/dashboard/InvoiceEditPage')));
-
 // DASHBOARD: USER
 export const UserProfilePage = Loadable(lazy(() => import('../pages/dashboard/UserProfilePage')));
 export const UserCardsPage = Loadable(lazy(() => import('../pages/dashboard/UserCardsPage')));
@@ -142,6 +132,20 @@ export const PumpCreatePage = Loadable(
 );
 export const PumpEditPage = Loadable(
   lazy(() => import('../sections/@dashboard/pump/PumpEditPage'))
+);
+
+// DASHBOARD: Invoice
+export const InvoiceListPage = Loadable(
+  lazy(() => import('../sections/@dashboard/invoice/views/invoice-list-view'))
+);
+export const InvoiceCreatePage = Loadable(
+  lazy(() => import('../sections/@dashboard/invoice/views/invoice-create-view'))
+);
+export const InvoiceEditPage = Loadable(
+  lazy(() => import('../sections/@dashboard/invoice/views/invoice-edit-view'))
+);
+export const InvoiceDetailPage = Loadable(
+  lazy(() => import('../sections/@dashboard/invoice/views/invoice-details-view'))
 );
 
 // DASHBOARD: Bank

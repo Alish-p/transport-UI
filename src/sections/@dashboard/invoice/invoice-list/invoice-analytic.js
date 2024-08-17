@@ -1,39 +1,34 @@
-import PropTypes from 'prop-types';
+/* eslint-disable react/prop-types */
 // @mui
 import { alpha } from '@mui/material/styles';
-import { Stack, Typography, Box, CircularProgress } from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 // utils
-import { fShortenNumber, fCurrency } from '../../../utils/formatNumber';
+import { fCurrency, fShortenNumber } from '../../../../utils/formatNumber';
 // components
-import Iconify from '../../../components/iconify';
+import Iconify from '../../../../components/iconify/Iconify';
 
 // ----------------------------------------------------------------------
-
-InvoiceAnalytic.propTypes = {
-  icon: PropTypes.string,
-  title: PropTypes.string,
-  color: PropTypes.string,
-  price: PropTypes.number,
-  total: PropTypes.number,
-  percent: PropTypes.number,
-};
 
 export default function InvoiceAnalytic({ title, total, icon, color, percent, price }) {
   return (
     <Stack
+      spacing={2.5}
       direction="row"
       alignItems="center"
       justifyContent="center"
       sx={{ width: 1, minWidth: 200 }}
     >
       <Stack alignItems="center" justifyContent="center" sx={{ position: 'relative' }}>
-        <Iconify icon={icon} width={24} sx={{ color, position: 'absolute' }} />
+        <Iconify icon={icon} width={32} sx={{ color, position: 'absolute' }} />
 
         <CircularProgress
           variant="determinate"
           value={percent}
           size={56}
-          thickness={4}
+          thickness={2}
           sx={{ color, opacity: 0.48 }}
         />
 
@@ -41,7 +36,7 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
           variant="determinate"
           value={100}
           size={56}
-          thickness={4}
+          thickness={3}
           sx={{
             top: 0,
             left: 0,
@@ -52,19 +47,14 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
         />
       </Stack>
 
-      <Stack spacing={0.5} sx={{ ml: 2 }}>
-        <Typography variant="h6">{title}</Typography>
+      <Stack spacing={0.5}>
+        <Typography variant="subtitle1">{title}</Typography>
 
-        <Typography variant="subtitle2">
-          {fShortenNumber(total)}{' '}
-          <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            invoices
-          </Box>
-        </Typography>
+        <Box component="span" sx={{ color: 'text.disabled', typography: 'body2' }}>
+          {fShortenNumber(total) || 0} Invoices
+        </Box>
 
-        <Typography variant="subtitle2" sx={{ color }}>
-          {fCurrency(price)}
-        </Typography>
+        <Typography variant="subtitle2">{fCurrency(price)}</Typography>
       </Stack>
     </Stack>
   );

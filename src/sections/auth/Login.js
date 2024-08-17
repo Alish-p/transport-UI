@@ -19,33 +19,22 @@ export default function Login() {
   return (
     <LoginLayout>
       <Stack spacing={2} sx={{ mb: 5, position: 'relative' }}>
-        <Typography variant="h4">Sign in to Minimal</Typography>
+        <Typography variant="h4">Sign in to Transport Plus + </Typography>
 
-        <Stack direction="row" spacing={0.5}>
+        {/* <Stack direction="row" spacing={0.5}>
           <Typography variant="body2">New user?</Typography>
 
           <Link component={RouterLink} to={PATH_AUTH.register} variant="subtitle2">
             Create an account
           </Link>
-        </Stack>
-
-        <Tooltip title={method} placement="left">
-          <Box
-            component="img"
-            alt={method}
-            src={`/assets/icons/auth/ic_${method}.png`}
-            sx={{ width: 32, height: 32, position: 'absolute', right: 0 }}
-          />
-        </Tooltip>
+        </Stack> */}
       </Stack>
 
       <Alert severity="info" sx={{ mb: 3 }}>
-        Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
+        Use email : <strong>demo@transport.cc</strong> / password :<strong> demo@123</strong>
       </Alert>
 
       <AuthLoginForm />
-
-      <AuthWithSocial />
     </LoginLayout>
   );
 }

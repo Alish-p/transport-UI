@@ -210,6 +210,7 @@ export default function SubtripDashBoardPage() {
         setShowDialog={setShowMaterialDialog}
         subtripId={id}
         vehicleId={subtripData?.tripId?.vehicleId?._id}
+        consignees={subtripData?.customerId?.consignees}
       />
 
       {/* Render the RecieveSubtripDialog */}

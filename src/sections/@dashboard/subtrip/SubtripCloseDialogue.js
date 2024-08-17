@@ -20,7 +20,6 @@ import FormProvider, { RHFCheckbox } from '../../../components/hook-form';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
 import { closeTrip } from '../../../redux/slices/subtrip';
-import { fetchPumps } from '../../../redux/slices/pump';
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -69,10 +68,6 @@ export function SubtripCloseDialog({ showDialog, setShowDialog, subtripId }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showDialog]);
-
-  useEffect(() => {
-    dispatch(fetchPumps());
-  }, [dispatch]);
 
   return (
     <ConfirmDialog

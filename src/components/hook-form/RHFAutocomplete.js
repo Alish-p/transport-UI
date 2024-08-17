@@ -9,10 +9,11 @@ import { Autocomplete, TextField } from '@mui/material';
 RHFAutocomplete.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
+  freeSolo: PropTypes.bool,
   helperText: PropTypes.node,
 };
 
-export default function RHFAutocomplete({ name, label, helperText, ...other }) {
+export default function RHFAutocomplete({ name, label, helperText, freeSolo, ...other }) {
   const { control, setValue } = useFormContext();
 
   return (
@@ -22,6 +23,7 @@ export default function RHFAutocomplete({ name, label, helperText, ...other }) {
       render={({ field, fieldState: { error } }) => (
         <Autocomplete
           {...field}
+          freeSolo={freeSolo}
           onChange={(event, newValue) => setValue(name, newValue, { shouldValidate: true })}
           renderInput={(params) => (
             <TextField

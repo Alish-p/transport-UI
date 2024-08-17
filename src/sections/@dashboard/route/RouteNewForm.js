@@ -46,7 +46,6 @@ export default function RouteForm({ isEdit = false, currentRoute }) {
     fixMilage: Yup.number().required('Fixed Milage is required'),
     performanceMilage: Yup.number().required('Performance Milage is required'),
     ratePerTon: Yup.number().required('Rate per Ton is required'),
-    salary: Yup.number().required('Salary is required'),
     salaryPercentage: Yup.number().required('Salary Percentage is required'),
     distance: Yup.number().required('Distance is required'),
     validFromDate: Yup.date().required('Valid From Date is required'),
@@ -69,7 +68,6 @@ export default function RouteForm({ isEdit = false, currentRoute }) {
       fixMilage: currentRoute?.fixMilage || 0,
       performanceMilage: currentRoute?.performanceMilage || 0,
       ratePerTon: currentRoute?.ratePerTon || 0,
-      salary: currentRoute?.salary || 0,
       salaryPercentage: currentRoute?.salaryPercentage || 0,
       distance: currentRoute?.distance || 0,
       validFromDate: currentRoute?.validFromDate || '',
@@ -152,7 +150,6 @@ export default function RouteForm({ isEdit = false, currentRoute }) {
               <RHFTextField name="fixMilage" label="Fixed Milage" type="number" />
               <RHFTextField name="performanceMilage" label="Performance Milage" type="number" />
               <RHFTextField name="ratePerTon" label="Rate per Ton" type="number" />
-              <RHFTextField name="salary" label="Salary" type="number" />
               <RHFTextField name="salaryPercentage" label="Salary Percentage" type="number" />
               <RHFTextField name="distance" label="Distance" type="number" />
               <RHFDatePicker name="validFromDate" label="Valid From Date" />

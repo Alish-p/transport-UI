@@ -95,8 +95,8 @@ import {
   BankEditPage,
 
   // Dashboard: Invoice
+  InvoiceDetailPage,
   InvoiceListPage,
-  InvoiceDetailsPage,
   InvoiceCreatePage,
   InvoiceEditPage,
   // Dashboard: Blog
@@ -226,9 +226,9 @@ export default function Router() {
     {
       path: 'dashboard',
       element: (
-        // <AuthGuard>
-        <DashboardLayout />
-        // </AuthGuard>
+        <AuthGuard>
+          <DashboardLayout />
+        </AuthGuard>
       ),
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
@@ -362,7 +362,7 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/invoice/list" replace />, index: true },
             { path: 'list', element: <InvoiceListPage /> },
-            { path: ':id', element: <InvoiceDetailsPage /> },
+            { path: ':id', element: <InvoiceDetailPage /> },
             { path: ':id/edit', element: <InvoiceEditPage /> },
             { path: 'new', element: <InvoiceCreatePage /> },
           ],

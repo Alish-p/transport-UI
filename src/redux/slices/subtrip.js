@@ -183,3 +183,18 @@ export const addExpense = (subtripId, expenseData) => async (dispatch) => {
     dispatch(hasError(error));
   }
 };
+
+// Billing...
+export const fetchClosedTripsByCustomerAndDate = async (customerId, fromDate, toDate) => {
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const response = await axios.post('/api/subtrips/fetchClosedTripsByCustomerAndDate', {
+      customerId,
+      fromDate,
+      toDate,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

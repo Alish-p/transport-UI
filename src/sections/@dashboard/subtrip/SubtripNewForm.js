@@ -22,6 +22,7 @@ import { fetchVehicles } from '../../../redux/slices/vehicle';
 import { fetchRoutes } from '../../../redux/slices/route';
 import { useSelector } from '../../../redux/store';
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import { fetchCustomers } from '../../../redux/slices/customer';
 
 TripForm.propTypes = {
   isEdit: PropTypes.bool,
@@ -97,14 +98,12 @@ export default function TripForm({ isEdit = false, currentTrip }) {
   );
 
   useEffect(() => {
-    dispatch(fetchDrivers());
-    dispatch(fetchVehicles());
+    dispatch(fetchCustomers());
     dispatch(fetchRoutes());
   }, [dispatch]);
 
-  const { drivers } = useSelector((state) => state.driver);
-  const { vehicles } = useSelector((state) => state.vehicle);
   const { routes } = useSelector((state) => state.route);
+  const { customers } = useSelector((state) => state.customer);
 
   const methods = useForm({
     resolver: yupResolver(NewTripSchema),
@@ -169,7 +168,15 @@ export default function TripForm({ isEdit = false, currentTrip }) {
                 ))}
               </RHFSelect>
 
-              <RHFTextField name="customerId" label="Customer ID" />
+              <RHFSelect native name="customerId" label="Customer">
+                <option value="" />
+                {customers.map((customer) => (
+                  <option key={customer._id} value={customer._id}>
+                    {customer.customerName}
+                  </option>
+                ))}
+              </RHFSelect>
+
               <RHFTextField name="loadingPoint" label="Loading Point" />
               <RHFTextField name="unloadingPoint" label="Unloading Point" />
               <RHFTextField name="startKm" label="Start Km" />

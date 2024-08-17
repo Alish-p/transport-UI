@@ -21,6 +21,7 @@ import { fetchRoutes } from '../../../redux/slices/route';
 import { useSelector } from '../../../redux/store';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import { addSubtrip } from '../../../redux/slices/subtrip';
+import { fetchCustomers } from '../../../redux/slices/customer';
 
 SubtripCreateForm.propTypes = {
   isEdit: PropTypes.bool,
@@ -52,12 +53,12 @@ export default function SubtripCreateForm({ isEdit = false, currentTrip }) {
   );
 
   useEffect(() => {
-    dispatch(fetchDrivers());
-    dispatch(fetchVehicles());
+    dispatch(fetchCustomers());
     dispatch(fetchRoutes());
   }, [dispatch]);
 
   const { routes } = useSelector((state) => state.route);
+  const { customers } = useSelector((state) => state.customer);
 
   const methods = useForm({
     resolver: yupResolver(NewTripSchema),
@@ -122,7 +123,15 @@ export default function SubtripCreateForm({ isEdit = false, currentTrip }) {
                 ))}
               </RHFSelect>
 
-              <RHFTextField name="customerId" label="Customer ID" />
+              <RHFSelect native name="customerId" label="Customer">
+                <option value="" />
+                {customers.map((customer) => (
+                  <option key={customer._id} value={customer._id}>
+                    {customer.customerName}
+                  </option>
+                ))}
+              </RHFSelect>
+
               <RHFTextField name="loadingPoint" label="Loading Point" />
               <RHFTextField name="unloadingPoint" label="Unloading Point" />
               <RHFDatePicker name="startDate" label="Subtrip Start Date" />

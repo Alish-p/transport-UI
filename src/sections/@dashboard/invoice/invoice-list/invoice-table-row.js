@@ -21,7 +21,7 @@ import { fDate } from '../../../../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
-export default function SubtripTableRow({
+export default function VehicleTableRow({
   row,
   selected,
   onSelectRow,
@@ -29,15 +29,7 @@ export default function SubtripTableRow({
   onEditRow,
   onDeleteRow,
 }) {
-  const {
-    _id,
-    customerId,
-    routeCd: { routeName },
-    invoiceNo,
-    subtripStatus,
-    startDate,
-    tripId: { vehicleId },
-  } = row;
+  const { _id, customerId, invoiceStatus, createdDate, dueDate } = row;
 
   const confirm = useBoolean();
 
@@ -50,54 +42,33 @@ export default function SubtripTableRow({
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={vehicleId?.vehicleNo} sx={{ mr: 2 }}>
-            {vehicleId?.vehicleNo.slice(0, 2).toUpperCase()}
+          <Avatar alt={_id} sx={{ mr: 2 }}>
+            {customerId?.customerName.slice(0, 2).toUpperCase()}
           </Avatar>
 
           <ListItemText
             disableTypography
             primary={
               <Typography variant="body2" noWrap>
-                {vehicleId?.vehicleNo}
+                {_id}
               </Typography>
             }
             secondary={
               <Link
                 noWrap
                 variant="body2"
-                onClick={() => {
-                  onViewRow(_id);
-                }}
-                sx={{ color: 'primary', cursor: 'pointer' }}
+                onClick={() => {}}
+                sx={{ color: 'text.disabled', cursor: 'pointer' }}
               >
-                {_id}
+                {customerId?.customerName}
               </Link>
             }
           />
         </TableCell>
         <TableCell>
           <ListItemText
-            primary={customerId?.customerName}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-
-        <TableCell>
-          <ListItemText
-            primary={routeName}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-        <TableCell>
-          <ListItemText
-            primary={invoiceNo || '-'}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-        <TableCell>
-          <ListItemText
-            primary={format(new Date(startDate), 'dd MMM yyyy')}
-            secondary={format(new Date(startDate), 'p')}
+            primary={format(new Date(createdDate), 'dd MMM yyyy')}
+            secondary={format(new Date(createdDate), 'p')}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
             secondaryTypographyProps={{
               mt: 0.5,
@@ -107,9 +78,27 @@ export default function SubtripTableRow({
           />
         </TableCell>
         <TableCell>
-          <Label variant="soft" color={subtripStatus >= 20 ? 'success' : 'error'}>
-            {subtripStatus}
+          <ListItemText
+            primary={format(new Date(createdDate), 'dd MMM yyyy')}
+            secondary={format(new Date(createdDate), 'p')}
+            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+            secondaryTypographyProps={{
+              mt: 0.5,
+              component: 'span',
+              typography: 'caption',
+            }}
+          />
+        </TableCell>
+        <TableCell>
+          <Label variant="soft" color={invoiceStatus === 'paid' ? 'success' : 'error'}>
+            {invoiceStatus}
           </Label>
+        </TableCell>
+        <TableCell>
+          <ListItemText
+            primary={2010}
+            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+          />
         </TableCell>
 
         <TableCell align="right" sx={{ px: 1 }}>

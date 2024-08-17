@@ -251,6 +251,7 @@ export default function ReactHookForm({ debug }) {
 
               <Block label="RHFAutocomplete">
                 <RHFAutocomplete
+                  freeSolo
                   name="autocomplete"
                   label="Autocomplete"
                   options={OPTIONS}

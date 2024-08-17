@@ -11,12 +11,12 @@ export default function LoginAuth0() {
   const { method } = useAuthContext();
 
   // NOTE: Turn off comments below to enable Auth0.
-  // const { login } = useAuthContext();
+  const { login } = useAuthContext();
 
   const handleLoginAuth0 = async () => {
     try {
       // NOTE: Turn off comments below to enable Auth0.
-      // await login();
+      await login();
     } catch (error) {
       console.error(error);
     }

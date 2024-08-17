@@ -12,14 +12,17 @@ import FormProvider, {
   RHFTextField,
   RHFDatePicker,
   RHFSelect,
+  RHFAutocomplete,
 } from '../../../components/hook-form';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
 import { addMaterialInfo } from '../../../redux/slices/subtrip';
 import { fetchPumps } from '../../../redux/slices/pump';
+import { fetchCustomer } from '../../../redux/slices/customer';
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
+  consignee: Yup.object(),
   loadingWeight: Yup.number().required('Loading Weight is required').positive().integer(),
   startKm: Yup.number().positive().integer(),
   rate: Yup.number().positive().integer(),
@@ -38,6 +41,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const defaultValues = {
+  consignee: [{}],
   loadingWeight: 0,
   startKm: 0,
   rate: 0,
@@ -55,7 +59,13 @@ const defaultValues = {
   pumpCd: '',
 };
 
-export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId, vehicleId }) {
+export function SubtripMaterialInfoDialog({
+  showDialog,
+  setShowDialog,
+  subtripId,
+  vehicleId,
+  consignees,
+}) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
@@ -76,8 +86,11 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId
 
   const onSubmit = async (data) => {
     try {
-      // Dispatch action to update subtrip with material details
-      await dispatch(addMaterialInfo(subtripId, { ...data, vehicleId }));
+      // Dispatch action to update subtrip with material details\
+      await dispatch(
+        addMaterialInfo(subtripId, { ...data, vehicleId, consignee: data?.consignee?.value })
+      );
+
       enqueueSnackbar('Material details added successfully!');
       handleReset();
       setShowDialog(false);
@@ -94,8 +107,11 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId
   }, [showDialog]);
 
   useEffect(() => {
-    dispatch(fetchPumps());
-  }, [dispatch]);
+    if (showDialog) {
+      dispatch(fetchPumps());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showDialog]);
 
   const { pumps } = useSelector((state) => state.pump);
 
@@ -116,6 +132,24 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtripId
                 sm: 'repeat(2, 1fr)',
               }}
             >
+              <RHFAutocomplete
+                freeSolo
+                name="consignee"
+                label="consignee"
+                options={consignees.map((c) => ({ label: c.name, value: c.name }))}
+              />
+              {/* <RHFAutocomplete
+                name="consignee"
+                label="Consignee"
+                options={consignees.map((c) => ({ label: c.name, value: c.name }))}
+                getOptionLabel={(option) => option.label}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+                renderOption={(props, option) => (
+                  <li {...props} key={option.value}>
+                    {option.label}
+                  </li>
+                )}
+              /> */}
               <RHFTextField name="loadingWeight" label="Loading Weight" type="number" />
               <RHFTextField name="startKm" label="Start Km" type="number" />
               <RHFTextField name="rate" label="Rate" type="number" />
@@ -185,4 +219,5 @@ SubtripMaterialInfoDialog.propTypes = {
   setShowDialog: PropTypes.func.isRequired,
   subtripId: PropTypes.string.isRequired,
   vehicleId: PropTypes.string.isRequired,
+  consignees: PropTypes.array,
 };

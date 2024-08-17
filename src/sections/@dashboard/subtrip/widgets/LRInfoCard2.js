@@ -25,7 +25,7 @@ const avatar = _mock.image.avatar(0);
 export default function LRInfoCard({ subtrip }) {
   const {
     routeCd: { routeName },
-    customerId,
+    customerId: { customerName },
     ewayBill,
     ewayExpiryDate,
     loadingPoint,
@@ -62,7 +62,7 @@ export default function LRInfoCard({ subtrip }) {
         <Avatar src={avatar} sx={{ width: 48, height: 48, mr: 2 }} />
 
         <Stack spacing={0.5} alignItems="flex-start" sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2">{customerId}</Typography>
+          <Typography variant="subtitle2">{customerName}</Typography>
 
           <Box>
             Status:{' '}

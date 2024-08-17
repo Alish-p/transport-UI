@@ -14,7 +14,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 
 SubtripListRow.propTypes = {
   row: PropTypes.shape({
-    customerId: PropTypes.string,
+    customerId: PropTypes.object,
     invoiceNo: PropTypes.string,
     subtripStatus: PropTypes.string,
     fromDate: PropTypes.string,
@@ -69,7 +69,7 @@ export default function SubtripListRow({ row, selected, onDeleteRow, onEditRow }
                     </Link>
                   );
                 case 'customerId':
-                  return row.customerId;
+                  return row.customerId?.customerName;
                 case 'routeName':
                   return row.routeCd.routeName;
                 case 'invoiceNo':

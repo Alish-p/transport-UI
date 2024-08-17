@@ -17,6 +17,7 @@ import bankReducer from './slices/bank';
 import tripReducer from './slices/trip';
 import subtripReducer from './slices/subtrip';
 import expenseReducer from './slices/expense';
+import invoiceReducer from './slices/invoice';
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +51,7 @@ const rootReducer = combineReducers({
   trip: tripReducer,
   subtrip: subtripReducer,
   expense: expenseReducer,
+  invoice: invoiceReducer,
 });
 
 export default rootReducer;

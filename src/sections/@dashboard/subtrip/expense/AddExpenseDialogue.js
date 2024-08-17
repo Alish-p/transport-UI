@@ -73,8 +73,11 @@ export function AddExpenseDialog({ showDialog, setShowDialog, subtripId, vehicle
   };
 
   useEffect(() => {
-    dispatch(fetchPumps());
-  }, [dispatch]);
+    if (showDialog) {
+      dispatch(fetchPumps());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showDialog]);
 
   const { pumps } = useSelector((state) => state.pump);
 

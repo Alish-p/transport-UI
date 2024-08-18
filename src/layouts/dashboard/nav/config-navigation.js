@@ -256,11 +256,14 @@ const navConfig = [
   // ----------------------------------------------------------------------
   {
     subheader: 'Billing',
+
     items: [
       {
         title: 'invoice',
         path: PATH_DASHBOARD.invoice.root,
         icon: ICONS.invoice,
+        roles: ['admin'],
+
         children: [
           { title: 'list', path: PATH_DASHBOARD.invoice.list },
           { title: 'details', path: PATH_DASHBOARD.invoice.demoView },

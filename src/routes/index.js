@@ -353,8 +353,8 @@ export default function Router() {
             { path: 'cards', element: <UserCardsPage /> },
             { path: 'list', element: <UserListPage /> },
             { path: 'new', element: <UserCreatePage /> },
-            { path: ':name/edit', element: <VehicleEditPage /> },
-            { path: 'account', element: <UserAccountPage /> },
+            { path: ':name/edit', element: <UserProfilePage /> },
+            { path: 'account', element: <UserProfilePage /> },
           ],
         },
         {

@@ -102,8 +102,8 @@ export default function VehicleTableRow({
       </TableCell>
       <TableCell>
         <ListItemText
-          primary={format(new Date(toDate), 'dd MMM yyyy')}
-          secondary={format(new Date(toDate), 'p')}
+          primary={toDate ? format(new Date(toDate), 'dd MMM yyyy') : '--'}
+          secondary={toDate ? format(new Date(toDate), 'p') : '--'}
           primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           secondaryTypographyProps={{
             mt: 0.5,
@@ -162,14 +162,14 @@ export default function VehicleTableRow({
                 }}
               >
                 <Avatar alt={subtrip._id} sx={{ mr: 2 }}>
-                  {subtrip.customerId.slice(0, 2).toUpperCase()}
+                  {subtrip?.customerId?.customerName?.slice(0, 2).toUpperCase()}
                 </Avatar>
 
                 <ListItemText
                   disableTypography
                   primary={
                     <Typography variant="body2" noWrap>
-                      {subtrip.customerId}
+                      {subtrip?.customerId?.customerName}
                     </Typography>
                   }
                   secondary={
@@ -191,7 +191,9 @@ export default function VehicleTableRow({
                 </Box>
 
                 <Box sx={{ width: 200, textAlign: 'center' }}>
-                  {`${subtrip.quantity} x ${subtrip.materialType}`}
+                  {subtrip.quantity &&
+                    subtrip.materialType &&
+                    `${subtrip.quantity} x ${subtrip.materialType}`}
                 </Box>
                 <Box sx={{ width: 200, textAlign: 'right' }}>
                   <Link

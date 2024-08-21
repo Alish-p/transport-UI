@@ -88,7 +88,7 @@ export default function SubtripListRow({ row, onDeleteRow, onEditRow }) {
                     </Link>
                   );
                 case 'customerId':
-                  return row.customerId;
+                  return row?.customerId?.customerName;
                 case 'routeName':
                   return row.routeCd.routeName;
                 case 'invoiceNo':

@@ -15,7 +15,14 @@ import RouterLink from '../../../../routes/components/router-link';
 
 // ----------------------------------------------------------------------
 
-export default function TripToolbar({ status, backLink, tripData, onTripClose, onEdit }) {
+export default function TripToolbar({
+  status,
+  backLink,
+  tripData,
+  onTripClose,
+  onEdit,
+  isCloseDisabled,
+}) {
   const popover = usePopover();
 
   return (
@@ -111,13 +118,28 @@ export default function TripToolbar({ status, backLink, tripData, onTripClose, o
         arrow="top-right"
         sx={{ width: 160 }}
       >
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-          }}
+        <Tooltip
+          title={
+            isCloseDisabled
+              ? 'All subtrips must be in the "billed" state before you can close this trip.'
+              : ''
+          }
+          disableHoverListener={!isCloseDisabled}
+          placement="right"
         >
-          Close Trip
-        </MenuItem>
+          <span>
+            <MenuItem
+              onClick={() => {
+                onTripClose();
+                popover.onClose();
+              }}
+              disabled={isCloseDisabled}
+            >
+              Close Trip
+            </MenuItem>
+          </span>
+        </Tooltip>
+
         <MenuItem
           onClick={() => {
             popover.onClose();

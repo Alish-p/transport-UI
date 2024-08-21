@@ -1,13 +1,23 @@
 import { Helmet } from 'react-helmet-async';
 import { Container } from '@mui/material';
 
-import ExpenseNewForm from './ExpenseNewForm'; // Import the new expense form component
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import ExpenseNewForm from './ExpenseNewForm';
 import { useSettingsContext } from '../../../components/settings';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs';
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import { fetchSubtrips } from '../../../redux/slices/subtrip';
 
 export default function NewExpensePage() {
   const { themeStretch } = useSettingsContext();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchSubtrips());
+  }, [dispatch]);
+
+  const { subtrips, isLoading } = useSelector((state) => state.subtrip);
 
   return (
     <>
@@ -25,7 +35,7 @@ export default function NewExpensePage() {
           ]}
         />
 
-        <ExpenseNewForm />
+        <ExpenseNewForm subtrips={subtrips} />
       </Container>
     </>
   );

@@ -457,8 +457,25 @@ export const vehicleCompany = [
   { key: 'tata', value: 'Tata' },
   { key: 'ace', value: 'Ace' },
 ];
-export const transportCompany = [
+export const vehicleExpenseType = [
   { key: 'shreeEnterprice', value: 'Shree Enterprice' },
   { key: 'Laxmi', value: 'Laxmi Enterprice' },
   { key: 'GTP', value: 'Gautam Tukaram Paikrao' },
 ];
+
+export const subtripExpenseType = [
+  { key: 'diesel', value: 'Diesel' },
+  { key: 'adblue', value: 'Adblue' },
+  { key: 'driver-salary', value: 'Driver Salary' },
+  { key: 'trip-advance', value: 'Driver Advance' },
+  { key: 'trip-extra-advance', value: 'Extra Advance' },
+  { key: 'puncher', value: 'Tyre Puncher' },
+  { key: 'tyre-expense', value: 'Tyre Expense' },
+  { key: 'police', value: 'Police' },
+  { key: 'rto', value: 'Rto' },
+  { key: 'toll', value: 'Toll' },
+  { key: 'vehicle-repair', value: 'Vehicle Repair' },
+  { key: 'other', value: 'Other' },
+];
+
+const expenseTypes = [];

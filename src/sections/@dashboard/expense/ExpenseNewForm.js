@@ -1,26 +1,37 @@
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Grid, InputAdornment, Stack, Typography, MenuItem } from '@mui/material';
+import {
+  Box,
+  Card,
+  Grid,
+  InputAdornment,
+  Stack,
+  Typography,
+  MenuItem,
+  Tabs,
+  Tab,
+} from '@mui/material';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import { useSnackbar } from '../../../components/snackbar';
 import FormProvider, {
   RHFTextField,
   RHFSelect,
   RHFDatePicker,
+  RHFAutocomplete,
 } from '../../../components/hook-form';
 import { dispatch } from '../../../redux/store';
 
 import { addExpense, updateExpense } from '../../../redux/slices/expense';
+import SvgColor from '../../../components/svg-color';
 
 ExpenseForm.propTypes = {
   isEdit: PropTypes.bool,
   currentExpense: PropTypes.object,
-  trips: PropTypes.array.isRequired,
   subtrips: PropTypes.array.isRequired,
   vehicles: PropTypes.array.isRequired,
 };
@@ -28,16 +39,17 @@ ExpenseForm.propTypes = {
 export default function ExpenseForm({
   isEdit = false,
   currentExpense,
-  trips = [],
   subtrips = [],
   vehicles = [],
 }) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [expenseType, setExpenseType] = useState('subtrip');
+
   const ExpenseSchema = Yup.object().shape({
     tripId: Yup.string().required('Trip ID is required'),
-    subtripId: Yup.string().required('Subtrip ID is required'),
+    subtripId: Yup.mixed().required('Subtrip is required').nullable(true),
     vehicleId: Yup.string().required('Vehicle ID is required'),
     date: Yup.date().required('Date is required'),
     expenseType: Yup.string().required('Expense Type is required'),
@@ -54,7 +66,7 @@ export default function ExpenseForm({
   const defaultValues = useMemo(
     () => ({
       tripId: currentExpense?.tripId || '',
-      subtripId: currentExpense?.subtripId || '',
+      subtripId: currentExpense?.subtripId || null,
       vehicleId: currentExpense?.vehicleId || '',
       date: currentExpense?.date ? new Date(currentExpense?.date) : new Date(),
       expenseType: currentExpense?.expenseType || '',
@@ -109,21 +121,59 @@ export default function ExpenseForm({
       console.error(error);
     }
   };
-
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        spacing={3}
+        sx={{ paddingLeft: 15 }}
+      >
+        <Tabs value={expenseType} onChange={(event, newValue) => setExpenseType(newValue)}>
+          <Tab
+            iconPosition="top"
+            key="subtrip"
+            icon={
+              <SvgColor src="/assets/icons/navbar/ic_trip.svg" sx={{ width: 0.5, height: 0.5 }} />
+            }
+            label="Subtrip Expense"
+            value="subtrip"
+          />
+          <Tab
+            iconPosition="top"
+            key="vehicle"
+            icon={
+              <SvgColor src="/assets/icons/navbar/ic_vehicle.svg" sx={{ width: 1, height: 1 }} />
+            }
+            label="Vehicle Expense"
+            value="vehicle"
+          />
+        </Tabs>
+      </Grid>
+
+      <Grid container spacing={3} sx={{ pt: 5 }}>
+        <Grid item xs={12} md={3}>
+          <Box sx={{ pt: 2, pb: 5, px: 3 }}>
+            <Typography variant="h6" sx={{ color: 'text.primary' }}>
+              Expense Details
+            </Typography>
+            <Typography variant="subtitle1" sx={{ color: 'text.secondary', mt: 1 }}>
+              Please provide the details of the Expense.
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box rowGap={3} columnGap={2} display="grid" gridTemplateColumns="repeat(2, 1fr)">
-              <RHFTextField name="tripId" label="Trip ID" InputProps={{ readOnly: true }} />
-              <RHFSelect name="subtripId" label="Subtrip ID">
-                {subtrips.map((subtrip) => (
-                  <MenuItem key={subtrip._id} value={subtrip._id}>
-                    {subtrip.name}
-                  </MenuItem>
-                ))}
-              </RHFSelect>
+              <RHFAutocomplete
+                freeSolo
+                name="subtripId"
+                label="Subtrip"
+                options={subtrips.map((c) => ({ label: c._id, value: c._id }))}
+                getOptionLabel={(option) => option.label}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+              />
               <RHFSelect name="vehicleId" label="Vehicle ID">
                 {vehicles.map((vehicle) => (
                   <MenuItem key={vehicle._id} value={vehicle._id}>

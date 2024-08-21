@@ -9,6 +9,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stack } from '@mui/system';
+import { toDate } from 'date-fns';
+import { useSnackbar } from 'notistack';
 import { useSettingsContext } from '../../../components/settings';
 
 // sections
@@ -17,7 +19,7 @@ import {
   AnalyticsCurrentVisits,
   AnalyticsWebsiteVisits,
 } from '../general/analytics';
-import { fetchTrip } from '../../../redux/slices/trip';
+import { fetchTrip, updateTrip } from '../../../redux/slices/trip';
 import DriverCard from './widgets/DriverWidgets';
 import SimpleSubtripList from './subtrip/SubtripTable';
 import VehicleCard from './widgets/VehicleWidgets';
@@ -25,6 +27,8 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs/CustomBreadcrumbs';
 import Iconify from '../../../components/iconify';
 import TripToolbar from './widgets/TripToolbar';
+import { ChartArea } from '../../_examples/extra/chart';
+import ChartColumnMultiple from './widgets/SubtripColumnChart';
 
 // ----------------------------------------------------------------------
 
@@ -33,9 +37,9 @@ export default function TripDashBoardPage() {
   const { themeStretch } = useSettingsContext();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
 
-  // const [tripData, setTripData] = useState(null);
+  const { id } = useParams();
 
   useEffect(() => {
     dispatch(fetchTrip(id));
@@ -44,6 +48,27 @@ export default function TripDashBoardPage() {
   const { trip: tripData, isLoading } = useSelector((state) => state.trip);
 
   if (!tripData) return <div>Loading...</div>;
+
+  const closeTrip = async () => {
+    try {
+      await dispatch(
+        updateTrip(tripData._id, {
+          id: tripData._id,
+          tripStatus: 'closed',
+          toDate: new Date(),
+        })
+      );
+      enqueueSnackbar('Trip closed successfully!');
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('Failed to close the trip. Please try again.', { variant: 'error' });
+    }
+  };
+
+  // Function to check if all subtrips have status "billed"
+  const allSubtripsBilled = tripData?.subtrips?.every(
+    (subtrip) => subtrip.subtripStatus === 'billed'
+  );
 
   const totalTrips = tripData?.subtrips?.length;
   const totalAdblueAmt = tripData?.subtrips?.reduce(
@@ -93,11 +118,11 @@ export default function TripDashBoardPage() {
           tripId={tripData._id}
           status={tripData.tripStatus}
           tripData={tripData}
-          onTripClose={() => true}
+          onTripClose={closeTrip}
+          isCloseDisabled={!allSubtripsBilled}
           onEdit={() => {
-            navigate(PATH_DASHBOARD.trip.new);
+            navigate(PATH_DASHBOARD.trip.edit(tripData._id));
           }}
-          onSubtripClose={() => {}}
         />
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
@@ -170,23 +195,34 @@ export default function TripDashBoardPage() {
                   <SimpleSubtripList subtrips={tripData.subtrips} />
                 </Card>
               </Grid>
-              <Grid item xs={12} md={12}>
-                <AnalyticsCurrentVisits
-                  title="SubTrip Status"
-                  chart={{
-                    series: [
-                      {
-                        label: 'Completed',
-                        value: tripData?.subtrips?.filter((trip) => trip.tripStatus === '1').length,
-                      },
-                      {
-                        label: 'In Progress',
-                        value: tripData?.subtrips?.filter((trip) => trip.tripStatus !== '1').length,
-                      },
-                    ],
-                    colors: [theme.palette.primary.main, theme.palette.info.main],
-                  }}
-                />
+              <Grid item container spacing={1} xs={12} md={12}>
+                <Grid item xs={5} md={6}>
+                  <AnalyticsCurrentVisits
+                    title="SubTrip Status"
+                    chart={{
+                      series: [
+                        {
+                          label: 'Completed',
+                          value: tripData?.subtrips?.filter((trip) => trip.tripStatus === '1')
+                            .length,
+                        },
+                        {
+                          label: 'In Progress',
+                          value: tripData?.subtrips?.filter((trip) => trip.tripStatus !== '1')
+                            .length,
+                        },
+                      ],
+                      colors: [theme.palette.primary.main, theme.palette.info.main],
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={5} md={6}>
+                  <ChartColumnMultiple
+                    subtrips={tripData.subtrips}
+                    title="Subtrip Profit/Expense"
+                    subheader="Profit and expense Subtrip Wise"
+                  />
+                </Grid>
               </Grid>
             </Stack>
           </Grid>

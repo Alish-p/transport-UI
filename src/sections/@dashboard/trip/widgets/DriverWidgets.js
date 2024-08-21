@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography';
 import { PropTypes } from 'prop-types';
 import Iconify from '../../../../components/iconify/Iconify';
 import { fDate } from '../../../../utils/formatTime';
-import _mock from '../../../../_mock';
 
 // ----------------------------------------------------------------------
 
@@ -20,12 +19,9 @@ DriverCard.propTypes = {
   driver: PropTypes.object.isRequired,
 };
 
-const avatar = _mock.image.avatar(0);
-
 export default function DriverCard({ driver }) {
   const {
     driverName,
-    images = [],
     driverLicenceNo,
     driverPresentAddress,
     driverCellNo,
@@ -48,7 +44,7 @@ export default function DriverCard({ driver }) {
         }
       />
       <Stack direction="row" sx={{ p: 3 }}>
-        <Avatar src={avatar} sx={{ width: 48, height: 48, mr: 2 }} />
+        <Avatar src="/assets/avatar-25.webp" sx={{ width: 100, height: 100, mr: 2 }} />
 
         <Stack spacing={0.5} alignItems="flex-start" sx={{ typography: 'body2' }}>
           <Typography variant="subtitle2">{driverName}</Typography>

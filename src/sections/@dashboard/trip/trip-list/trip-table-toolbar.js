@@ -165,7 +165,15 @@ export default function TripTableToolbar({ filters, onFilters, tableData }) {
         <MenuItem
           onClick={() => {
             popover.onClose();
-            exportToExcel(tableData, 'Trips-list');
+            exportToExcel(
+              tableData.map((data) => ({
+                ...data,
+                driverId: data?.driverId?.driverName,
+                vehicleId: data?.vehicleId?.vehicleNo,
+                subtrips: data?.subtrips?.map((st) => st._id).join(','),
+              })),
+              'Trips-list'
+            );
           }}
         >
           <Iconify icon="solar:export-bold" />

@@ -1,29 +1,24 @@
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, Grid, Stack, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { paramCase } from 'change-case';
-import { options } from 'numeral';
 import { useSnackbar } from '../../../components/snackbar';
 import FormProvider, {
-  RHFSelect,
   RHFTextField,
   RHFDatePicker,
   RHFAutocomplete,
 } from '../../../components/hook-form';
-import { addTrip } from '../../../redux/slices/trip';
+import { addTrip, updateTrip } from '../../../redux/slices/trip';
 import { fetchDrivers } from '../../../redux/slices/driver';
 import { fetchVehicles } from '../../../redux/slices/vehicle';
-import { fetchRoutes } from '../../../redux/slices/route';
 import { useSelector } from '../../../redux/store';
 import { PATH_DASHBOARD } from '../../../routes/paths';
-import { subtripStatus, tripStatus } from './TripTableConfig';
-import RHFSwitch from '../../../components/hook-form/RHFSwitch';
 
 TripForm.propTypes = {
   isEdit: PropTypes.bool,
@@ -36,24 +31,21 @@ export default function TripForm({ isEdit = false, currentTrip }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const NewTripSchema = Yup.object().shape({
-    // Trip Related fields
-    driverId: Yup.string().required('Driver is required'),
-    vehicleId: Yup.string().required('Vehicle is required'),
+    driverId: Yup.mixed().required('Driver is required').nullable(true),
+    vehicleId: Yup.mixed().required('Vehicle is required').nullable(true),
     fromDate: Yup.date().required('From Date is required'),
-    toDate: Yup.date().required('To Date is required'),
-    tripStatus: Yup.string().required('Trip Status is required'),
-    totalDetTime: Yup.number().required('Total Detention Time is required'),
     remarks: Yup.string(),
   });
 
   const defaultValues = useMemo(
     () => ({
-      driverId: currentTrip?.driverId?.driverName || null,
-      vehicleId: currentTrip?.vehicleId?.vehicleNo || null,
+      driverId: currentTrip?.driverId
+        ? { label: currentTrip?.driverId?.driverName, value: currentTrip?.driverId?._id }
+        : null,
+      vehicleId: currentTrip?.vehicleId
+        ? { label: currentTrip?.vehicleId?.vehicleNo, value: currentTrip?.vehicleId?._id }
+        : null,
       fromDate: currentTrip?.fromDate ? new Date(currentTrip?.fromDate) : new Date(),
-      toDate: currentTrip?.toDate ? new Date(currentTrip?.toDate) : new Date(),
-      tripStatus: currentTrip?.tripStatus || 'Pending',
-      totalDetTime: currentTrip?.totalDetTime || 3,
       remarks: currentTrip?.remarks || 'Remarks',
     }),
     [currentTrip]
@@ -62,12 +54,10 @@ export default function TripForm({ isEdit = false, currentTrip }) {
   useEffect(() => {
     dispatch(fetchDrivers());
     dispatch(fetchVehicles());
-    dispatch(fetchRoutes());
   }, [dispatch]);
 
   const { drivers } = useSelector((state) => state.driver);
   const { vehicles } = useSelector((state) => state.vehicle);
-  const { routes } = useSelector((state) => state.route);
 
   const methods = useForm({
     resolver: yupResolver(NewTripSchema),
@@ -91,12 +81,29 @@ export default function TripForm({ isEdit = false, currentTrip }) {
 
   const onSubmit = async (data) => {
     try {
-      const createdTrip = await dispatch(addTrip(data));
+      if (isEdit) {
+        // Update Trip
+        await dispatch(
+          updateTrip(currentTrip._id, {
+            ...data,
+            driverId: data?.driverId?.value,
+            vehicleId: data?.vehicleId?.value,
+          })
+        );
+        enqueueSnackbar('Trip updated successfully!');
+        navigate(PATH_DASHBOARD.trip.detail(paramCase(currentTrip._id)));
+      } else {
+        // Add New Trip
+        const createdTrip = await dispatch(
+          addTrip({ ...data, driverId: data?.driverId?.value, vehicleId: data?.vehicleId?.value })
+        );
+        enqueueSnackbar('Trip created successfully!');
+        navigate(PATH_DASHBOARD.trip.detail(paramCase(createdTrip._id)));
+      }
       reset();
-      enqueueSnackbar(!isEdit ? 'Trip created successfully!' : 'Trip edited successfully!');
-      navigate(PATH_DASHBOARD.trip.detail(paramCase(createdTrip._id)));
     } catch (error) {
       console.error(error);
+      enqueueSnackbar('An error occurred. Please try again.', { variant: 'error' });
     }
   };
   return (
@@ -117,22 +124,21 @@ export default function TripForm({ isEdit = false, currentTrip }) {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-              <RHFSelect native name="vehicleId" label="Vehicle">
-                <option value="" />
-                {vehicles.map((vehicle) => (
-                  <option key={vehicle._id} value={vehicle._id}>
-                    {vehicle.vehicleNo}
-                  </option>
-                ))}
-              </RHFSelect>
-              <RHFSelect native name="driverId" label="Driver">
-                <option value="" />
-                {drivers.map((driver) => (
-                  <option key={driver._id} value={driver._id}>
-                    {driver.driverName}
-                  </option>
-                ))}
-              </RHFSelect>
+              <RHFAutocomplete
+                name="vehicleId"
+                label="Vehicle"
+                options={vehicles.map((c) => ({ label: c.vehicleNo, value: c._id }))}
+                getOptionLabel={(option) => option.label}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+              />
+              <RHFAutocomplete
+                freeSolo
+                name="driverId"
+                label="Driver"
+                options={drivers.map((c) => ({ label: c.driverName, value: c._id }))}
+                getOptionLabel={(option) => option.label}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+              />
 
               <RHFDatePicker name="fromDate" label="From Date" />
               <RHFTextField name="remarks" label="Remarks" />

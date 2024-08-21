@@ -174,7 +174,7 @@ export default function SubtripToolbar({
             viewPopover.onClose();
             viewLR.onTrue();
           }}
-          disabled={!(subtripData.subtripStatus === 'loaded')}
+          disabled={subtripData.subtripStatus === 'loaded'}
         >
           Lorry Receipt (LR)
         </MenuItem>
@@ -183,7 +183,7 @@ export default function SubtripToolbar({
             viewPopover.onClose();
             viewIntent.onTrue();
           }}
-          disabled={!(subtripData.subtripStatus === 'loaded')}
+          disabled={subtripData.subtripStatus === 'loaded'}
         >
           Petrol Pump Intent
         </MenuItem>

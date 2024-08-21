@@ -2,13 +2,7 @@ import { useState } from 'react';
 // @mui
 import { Grid, Button, Card } from '@mui/material';
 
-import {
-  vehicleTypes,
-  modelType,
-  engineType,
-  transportCompany,
-  vehicleCompany,
-} from '../../../assets/data';
+import { vehicleTypes, modelType, engineType, vehicleCompany } from '../../../assets/data';
 import { _vehicleList } from '../../../_mock/arrays';
 import { VehicleDialog } from './VehicleForm';
 import VehicleList from './VehicleList';
@@ -53,7 +47,7 @@ const formFields = [
     name: 'transportCompany',
     label: 'Transport Company',
     type: 'select',
-    options: transportCompany,
+    options: [],
   },
 ];
 

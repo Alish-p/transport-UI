@@ -256,7 +256,7 @@ export default function ReactHookForm({ debug }) {
                   label="Autocomplete"
                   options={OPTIONS}
                   getOptionLabel={(option) => option.label}
-                  isOptionEqualToValue={(option, value) => option.value === value.value}
+                  // isOptionEqualToValue={(option, value) => option.value === value.value}
                 />
               </Block>
 

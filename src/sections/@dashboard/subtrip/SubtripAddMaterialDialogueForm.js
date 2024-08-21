@@ -1,4 +1,3 @@
-// SubtripMaterialInfoDialog.js
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { Box, Stack, Button, Divider, Typography } from '@mui/material';
@@ -22,7 +21,7 @@ import { fetchCustomer } from '../../../redux/slices/customer';
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
-  consignee: Yup.object(),
+  consignee: Yup.mixed().required('Consignee is required').nullable(true),
   loadingWeight: Yup.number().required('Loading Weight is required').positive().integer(),
   startKm: Yup.number().positive().integer(),
   rate: Yup.number().positive().integer(),
@@ -41,7 +40,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const defaultValues = {
-  consignee: [{}],
+  consignee: null,
   loadingWeight: 0,
   startKm: 0,
   rate: 0,
@@ -64,7 +63,7 @@ export function SubtripMaterialInfoDialog({
   setShowDialog,
   subtripId,
   vehicleId,
-  consignees,
+  consignees = [],
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
@@ -137,19 +136,10 @@ export function SubtripMaterialInfoDialog({
                 name="consignee"
                 label="consignee"
                 options={consignees.map((c) => ({ label: c.name, value: c.name }))}
-              />
-              {/* <RHFAutocomplete
-                name="consignee"
-                label="Consignee"
-                options={consignees.map((c) => ({ label: c.name, value: c.name }))}
                 getOptionLabel={(option) => option.label}
                 isOptionEqualToValue={(option, value) => option.value === value.value}
-                renderOption={(props, option) => (
-                  <li {...props} key={option.value}>
-                    {option.label}
-                  </li>
-                )}
-              /> */}
+              />
+
               <RHFTextField name="loadingWeight" label="Loading Weight" type="number" />
               <RHFTextField name="startKm" label="Start Km" type="number" />
               <RHFTextField name="rate" label="Rate" type="number" />

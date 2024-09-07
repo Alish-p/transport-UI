@@ -10,7 +10,7 @@ import { Box, CircularProgress, Dialog, DialogActions, Tooltip } from '@mui/mate
 import Label from '../../../../components/label/Label';
 import Iconify from '../../../../components/iconify/Iconify';
 import CustomPopover, { usePopover } from '../../../../components/custom-popover';
-import LRPDF from '../../subtrip/lr/LRPdf';
+import LRPDF from '../../subtrip/pdfs/lorry-reciept-pdf';
 import RouterLink from '../../../../routes/components/router-link';
 
 // ----------------------------------------------------------------------

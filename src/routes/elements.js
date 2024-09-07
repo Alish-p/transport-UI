@@ -22,116 +22,73 @@ export const ResetPasswordPage = Loadable(lazy(() => import('../pages/auth/Reset
 
 // DASHBOARD: GENERAL
 export const GeneralAppPage = Loadable(lazy(() => import('../pages/dashboard/GeneralAppPage')));
-export const GeneralVehiclePage = Loadable(
-  lazy(() => import('../pages/dashboard/GeneralVehiclePage'))
-);
-
-export const GeneralEcommercePage = Loadable(
-  lazy(() => import('../pages/dashboard/GeneralEcommercePage'))
-);
-export const GeneralAnalyticsPage = Loadable(
-  lazy(() => import('../pages/dashboard/GeneralAnalyticsPage'))
-);
-export const GeneralBankingPage = Loadable(
-  lazy(() => import('../pages/dashboard/GeneralBankingPage'))
-);
-export const GeneralBookingPage = Loadable(
-  lazy(() => import('../pages/dashboard/GeneralBookingPage'))
-);
-export const GeneralFilePage = Loadable(lazy(() => import('../pages/dashboard/GeneralFilePage')));
 
 // DASHBOARD: ECOMMERCE
-export const EcommerceShopPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceShopPage'))
-);
-export const EcommerceProductDetailsPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductDetailsPage'))
-);
-export const EcommerceProductListPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductListPage'))
-);
-export const EcommerceProductCreatePage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductCreatePage'))
-);
-export const EcommerceProductEditPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductEditPage'))
-);
-export const EcommerceCheckoutPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceCheckoutPage'))
-);
-
-// DASHBOARD: USER
-export const UserProfilePage = Loadable(lazy(() => import('../pages/dashboard/UserProfilePage')));
-export const UserCardsPage = Loadable(lazy(() => import('../pages/dashboard/UserCardsPage')));
-export const UserListPage = Loadable(lazy(() => import('../pages/dashboard/UserListPage')));
-export const UserAccountPage = Loadable(lazy(() => import('../pages/dashboard/UserAccountPage')));
-export const UserCreatePage = Loadable(lazy(() => import('../pages/dashboard/UserCreatePage')));
-export const UserEditPage = Loadable(lazy(() => import('../pages/dashboard/UserEditPage')));
 
 // DASHBOARD: Vehicle
 export const VehicleListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/vehicle/vehicle-list/vehicle-list-view'))
+  lazy(() => import('../sections/@dashboard/vehicle/views/vehicle-list-view'))
 );
 export const VehicleCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/vehicle/VehicleCreatePage'))
+  lazy(() => import('../sections/@dashboard/vehicle/views/vehicle-create-view'))
 );
 export const VehicleEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/vehicle/VehicleEditPage'))
+  lazy(() => import('../sections/@dashboard/vehicle/views/vehicle-edit-view'))
 );
 
 // DASHBOARD: Transporter
 export const TransporterListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/transporter/transporter-list/transporter-list-view'))
+  lazy(() => import('../sections/@dashboard/transporter/views/transporter-list-view'))
 );
 export const TransporterCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/transporter/TransporterCreatePage'))
+  lazy(() => import('../sections/@dashboard/transporter/views/transporter-create-view'))
 );
 export const TransporterEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/transporter/TransporterEditPage'))
+  lazy(() => import('../sections/@dashboard/transporter/views/transporter-edit-view'))
 );
 
 // DASHBOARD: Customer
 export const CustomerListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/customer/customer-list/customer-list-view'))
+  lazy(() => import('../sections/@dashboard/customer/views/customer-list-view'))
 );
 export const CustomerCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/customer/CustomerCreatePage'))
+  lazy(() => import('../sections/@dashboard/customer/views/customer-create-view'))
 );
 export const CustomerEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/customer/CustomerEditPage'))
+  lazy(() => import('../sections/@dashboard/customer/views/customer-edit-view'))
 );
 
 // DASHBOARD: Driver
 export const DriverListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/driver/driver-list/driver-list-view'))
+  lazy(() => import('../sections/@dashboard/driver/views/driver-list-view'))
 );
 export const DriverCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/driver/DriverCreatePage'))
+  lazy(() => import('../sections/@dashboard/driver/views/driver-create-view'))
 );
 export const DriverEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/driver/DriverEditPage'))
+  lazy(() => import('../sections/@dashboard/driver/views/driver-edit-view'))
 );
 
 // DASHBOARD: Route
 export const RouteListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/route/route-list/route-list-view'))
+  lazy(() => import('../sections/@dashboard/route/views/route-list-view'))
 );
 export const RouteCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/route/RouteCreatePage'))
+  lazy(() => import('../sections/@dashboard/route/views/route-create-view'))
 );
 export const RouteEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/route/RouteEditPage'))
+  lazy(() => import('../sections/@dashboard/route/views/route-edit-view'))
 );
 
 // DASHBOARD: Pump
 export const PumpListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/pump/pump-list/pump-list-view'))
+  lazy(() => import('../sections/@dashboard/pump/views/pump-list-view'))
 );
 export const PumpCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/pump/PumpCreatePage'))
+  lazy(() => import('../sections/@dashboard/pump/views/pump-create-view'))
 );
 export const PumpEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/pump/PumpEditPage'))
+  lazy(() => import('../sections/@dashboard/pump/views/pump-edit-view'))
 );
 
 // DASHBOARD: Invoice
@@ -158,62 +115,43 @@ export const BankEditPage = Loadable(
 );
 
 // DASHBOARD: Trip
-export const TripDetailPage = Loadable(lazy(() => import('../sections/@dashboard/trip/Trip')));
+export const TripDetailPage = Loadable(
+  lazy(() => import('../sections/@dashboard/trip/views/trip-details-view'))
+);
 export const TripListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/trip/trip-list/trip-list-view'))
+  lazy(() => import('../sections/@dashboard/trip/views/trip-list-view'))
 );
 export const TripCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/trip/TripCreatePage'))
+  lazy(() => import('../sections/@dashboard/trip/views/trip-create-view'))
 );
 export const TripEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/trip/TripEditPage'))
+  lazy(() => import('../sections/@dashboard/trip/views/trip-edit-view'))
 );
 
 // DASHBOARD: Subtrip
 export const SubtripDetailPage = Loadable(
-  lazy(() => import('../sections/@dashboard/subtrip/Subtrip'))
+  lazy(() => import('../sections/@dashboard/subtrip/views/subtrip-detail-view'))
 );
 export const SubtripListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/subtrip/subtrip-list/subtrip-list-view'))
+  lazy(() => import('../sections/@dashboard/subtrip/views/subtrip-list-view'))
 );
 export const SubtripCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/subtrip/SubtripCreatePage'))
+  lazy(() => import('../sections/@dashboard/subtrip/views/subtrip-create-view'))
 );
 export const SubtripEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/subtrip/SubtripEditPage'))
+  lazy(() => import('../sections/@dashboard/subtrip/views/subtrip-edit-view'))
 );
 
 // DASHBOARD: Expense
-export const ExpenseDetailPage = Loadable(
-  lazy(() => import('../sections/@dashboard/expense/Expense'))
-);
+
 export const ExpenseListPage = Loadable(
-  lazy(() => import('../sections/@dashboard/expense/expense-list/expense-list-view'))
+  lazy(() => import('../sections/@dashboard/expense/views/expense-list-view'))
 );
 export const ExpenseCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/expense/ExpenseCreatePage'))
+  lazy(() => import('../sections/@dashboard/expense/views/expense-create-view'))
 );
 export const ExpenseEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/expense/ExpenseEditPage'))
-);
-
-// DASHBOARD: BLOG
-export const BlogPostsPage = Loadable(lazy(() => import('../pages/dashboard/BlogPostsPage')));
-export const BlogPostPage = Loadable(lazy(() => import('../pages/dashboard/BlogPostPage')));
-export const BlogNewPostPage = Loadable(lazy(() => import('../pages/dashboard/BlogNewPostPage')));
-
-// DASHBOARD: FILE MANAGER
-export const FileManagerPage = Loadable(lazy(() => import('../pages/dashboard/FileManagerPage')));
-
-// DASHBOARD: APP
-export const ChatPage = Loadable(lazy(() => import('../pages/dashboard/ChatPage')));
-export const MailPage = Loadable(lazy(() => import('../pages/dashboard/MailPage')));
-export const CalendarPage = Loadable(lazy(() => import('../pages/dashboard/CalendarPage')));
-export const KanbanPage = Loadable(lazy(() => import('../pages/dashboard/KanbanPage')));
-
-// TEST RENDER PAGE BY ROLE
-export const PermissionDeniedPage = Loadable(
-  lazy(() => import('../pages/dashboard/PermissionDeniedPage'))
+  lazy(() => import('../sections/@dashboard/expense/views/expense-edit-view'))
 );
 
 // BLANK PAGE
@@ -223,7 +161,6 @@ export const BlankPage = Loadable(lazy(() => import('../pages/dashboard/BlankPag
 export const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 export const Page403 = Loadable(lazy(() => import('../pages/Page403')));
 export const Page404 = Loadable(lazy(() => import('../pages/Page404')));
-export const HomePage = Loadable(lazy(() => import('../pages/HomePage')));
 export const FaqsPage = Loadable(lazy(() => import('../pages/FaqsPage')));
 export const AboutPage = Loadable(lazy(() => import('../pages/AboutPage')));
 export const Contact = Loadable(lazy(() => import('../pages/ContactPage')));
@@ -237,143 +174,4 @@ export const MaintenancePage = Loadable(lazy(() => import('../pages/MaintenanceP
 
 export const ComponentsOverviewPage = Loadable(
   lazy(() => import('../pages/components/ComponentsOverviewPage'))
-);
-
-// FOUNDATION
-export const FoundationColorsPage = Loadable(
-  lazy(() => import('../pages/components/foundation/FoundationColorsPage'))
-);
-export const FoundationTypographyPage = Loadable(
-  lazy(() => import('../pages/components/foundation/FoundationTypographyPage'))
-);
-export const FoundationShadowsPage = Loadable(
-  lazy(() => import('../pages/components/foundation/FoundationShadowsPage'))
-);
-export const FoundationGridPage = Loadable(
-  lazy(() => import('../pages/components/foundation/FoundationGridPage'))
-);
-export const FoundationIconsPage = Loadable(
-  lazy(() => import('../pages/components/foundation/FoundationIconsPage'))
-);
-
-// MUI COMPONENTS
-export const MUIAccordionPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIAccordionPage'))
-);
-export const MUIAlertPage = Loadable(lazy(() => import('../pages/components/mui/MUIAlertPage')));
-export const MUIAutocompletePage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIAutocompletePage'))
-);
-export const MUIAvatarPage = Loadable(lazy(() => import('../pages/components/mui/MUIAvatarPage')));
-export const MUIBadgePage = Loadable(lazy(() => import('../pages/components/mui/MUIBadgePage')));
-export const MUIBreadcrumbsPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIBreadcrumbsPage'))
-);
-export const MUIButtonsPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIButtonsPage'))
-);
-export const MUICheckboxPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUICheckboxPage'))
-);
-export const MUIChipPage = Loadable(lazy(() => import('../pages/components/mui/MUIChipPage')));
-export const MUIDataGridPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIDataGridPage'))
-);
-export const MUIDialogPage = Loadable(lazy(() => import('../pages/components/mui/MUIDialogPage')));
-export const MUIListPage = Loadable(lazy(() => import('../pages/components/mui/MUIListPage')));
-export const MUIMenuPage = Loadable(lazy(() => import('../pages/components/mui/MUIMenuPage')));
-export const MUIPaginationPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIPaginationPage'))
-);
-export const MUIPickersPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIPickersPage'))
-);
-export const MUIPopoverPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIPopoverPage'))
-);
-export const MUIProgressPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIProgressPage'))
-);
-export const MUIRadioButtonsPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIRadioButtonsPage'))
-);
-export const MUIRatingPage = Loadable(lazy(() => import('../pages/components/mui/MUIRatingPage')));
-export const MUISliderPage = Loadable(lazy(() => import('../pages/components/mui/MUISliderPage')));
-export const MUIStepperPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUIStepperPage'))
-);
-export const MUISwitchPage = Loadable(lazy(() => import('../pages/components/mui/MUISwitchPage')));
-export const MUITablePage = Loadable(lazy(() => import('../pages/components/mui/MUITablePage')));
-export const MUITabsPage = Loadable(lazy(() => import('../pages/components/mui/MUITabsPage')));
-export const MUITextFieldPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUITextFieldPage'))
-);
-export const MUITimelinePage = Loadable(
-  lazy(() => import('../pages/components/mui/MUITimelinePage'))
-);
-export const MUITooltipPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUITooltipPage'))
-);
-export const MUITransferListPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUITransferListPage'))
-);
-export const MUITreesViewPage = Loadable(
-  lazy(() => import('../pages/components/mui/MUITreesViewPage'))
-);
-
-// EXTRA
-export const DemoAnimatePage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoAnimatePage'))
-);
-export const DemoCarouselsPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoCarouselsPage'))
-);
-export const DemoChartsPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoChartsPage'))
-);
-export const DemoCopyToClipboardPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoCopyToClipboardPage'))
-);
-export const DemoEditorPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoEditorPage'))
-);
-export const DemoFormValidationPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoFormValidationPage'))
-);
-export const DemoImagePage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoImagePage'))
-);
-export const DemoLabelPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoLabelPage'))
-);
-export const DemoLightboxPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoLightboxPage'))
-);
-export const DemoMapPage = Loadable(lazy(() => import('../pages/components/extra/DemoMapPage')));
-export const DemoMegaMenuPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoMegaMenuPage'))
-);
-export const DemoMultiLanguagePage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoMultiLanguagePage'))
-);
-export const DemoNavigationBarPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoNavigationBarPage'))
-);
-export const DemoOrganizationalChartPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoOrganizationalChartPage'))
-);
-export const DemoScrollbarPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoScrollbarPage'))
-);
-export const DemoSnackbarPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoSnackbarPage'))
-);
-export const DemoTextMaxLinePage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoTextMaxLinePage'))
-);
-export const DemoUploadPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoUploadPage'))
-);
-export const DemoMarkdownPage = Loadable(
-  lazy(() => import('../pages/components/extra/DemoMarkdownPage'))
 );

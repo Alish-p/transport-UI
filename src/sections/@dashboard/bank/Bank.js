@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
 import { paramCase } from 'change-case';
 import { Card, Table, Button, TableBody, Container, TableContainer } from '@mui/material';

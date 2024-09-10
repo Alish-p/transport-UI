@@ -48,7 +48,7 @@ export default function VehicleCard({ vehicle }) {
         }
       />
       <Stack direction="row" sx={{ p: 3 }}>
-        <Avatar src="/assets/truck_avatar.jpg" sx={{ width: 100, height: 100, mr: 2 }} />
+        <Avatar src="/assets/truck.png" sx={{ width: 100, height: 100, mr: 2 }} />
 
         <Stack spacing={0.5} alignItems="flex-start" sx={{ typography: 'body2' }}>
           <Typography variant="subtitle2">{vehicleNo}</Typography>

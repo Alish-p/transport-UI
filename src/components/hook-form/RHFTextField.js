@@ -9,9 +9,10 @@ import { TextField } from '@mui/material';
 RHFTextField.propTypes = {
   name: PropTypes.string,
   helperText: PropTypes.node,
+  showZero: PropTypes.bool,
 };
 
-export default function RHFTextField({ name, helperText, ...other }) {
+export default function RHFTextField({ name, helperText, showZero = false, ...other }) {
   const { control } = useFormContext();
 
   return (
@@ -22,7 +23,9 @@ export default function RHFTextField({ name, helperText, ...other }) {
         <TextField
           {...field}
           fullWidth
-          value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
+          value={
+            !showZero && typeof field.value === 'number' && field.value === 0 ? '' : field.value
+          }
           error={!!error}
           helperText={error ? error?.message : helperText}
           {...other}

@@ -199,7 +199,7 @@ export default function SubtripDashBoardPage() {
       <RecieveSubtripDialog
         showDialog={showRecieveDialog}
         setShowDialog={setShowRecieveDialog}
-        subtripId={id}
+        subtrip={subtripData}
       />
 
       {/* Resolve Subtrip Dialogue */}

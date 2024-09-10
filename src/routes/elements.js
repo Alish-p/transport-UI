@@ -161,11 +161,6 @@ export const BlankPage = Loadable(lazy(() => import('../pages/dashboard/BlankPag
 export const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 export const Page403 = Loadable(lazy(() => import('../pages/Page403')));
 export const Page404 = Loadable(lazy(() => import('../pages/Page404')));
-export const FaqsPage = Loadable(lazy(() => import('../pages/FaqsPage')));
-export const AboutPage = Loadable(lazy(() => import('../pages/AboutPage')));
-export const Contact = Loadable(lazy(() => import('../pages/ContactPage')));
-export const PricingPage = Loadable(lazy(() => import('../pages/PricingPage')));
-export const PaymentPage = Loadable(lazy(() => import('../pages/PaymentPage')));
 export const ComingSoonPage = Loadable(lazy(() => import('../pages/ComingSoonPage')));
 export const MaintenancePage = Loadable(lazy(() => import('../pages/MaintenancePage')));
 

@@ -28,6 +28,8 @@ import { dispatch } from '../../../redux/store';
 
 import { addExpense, updateExpense } from '../../../redux/slices/expense';
 import SvgColor from '../../../components/svg-color';
+import { expenseTypes } from './expense-config';
+import vehicle from '../../../redux/slices/vehicle';
 
 ExpenseForm.propTypes = {
   isEdit: PropTypes.bool,
@@ -48,15 +50,14 @@ export default function ExpenseForm({
   const [expenseCategory, setExpenseCategory] = useState('subtrip');
 
   const ExpenseSchema = Yup.object().shape({
-    tripId: Yup.string().required('Trip ID is required'),
     subtripId: Yup.mixed().required('Subtrip is required').nullable(true),
-    vehicleId: Yup.string().required('Vehicle ID is required'),
+    vehicleId: Yup.mixed().required('Vehicle ID is required').nullable(true),
     date: Yup.date().required('Date is required'),
     expenseType: Yup.string().required('Expense Type is required'),
-    installment: Yup.number().required('Installment is required').min(0),
+    installment: Yup.number().min(0),
     amount: Yup.number().required('Amount is required').min(0),
     slipNo: Yup.string().required('Slip No is required'),
-    pumpCd: Yup.string(),
+    pumpCd: Yup.string().nullable(true),
     remarks: Yup.string(),
     dieselLtr: Yup.number().min(0),
     paidThrough: Yup.string().required('Paid Through is required'),
@@ -65,7 +66,6 @@ export default function ExpenseForm({
 
   const defaultValues = useMemo(
     () => ({
-      tripId: currentExpense?.tripId || '',
       subtripId: currentExpense?.subtripId || null,
       vehicleId: currentExpense?.vehicleId || '',
       date: currentExpense?.date ? new Date(currentExpense?.date) : new Date(),
@@ -73,7 +73,7 @@ export default function ExpenseForm({
       installment: currentExpense?.installment || 0,
       amount: currentExpense?.amount || 0,
       slipNo: currentExpense?.slipNo || '',
-      pumpCd: currentExpense?.pumpCd || '',
+      pumpCd: currentExpense?.pumpCd || null,
       remarks: currentExpense?.remarks || '',
       dieselLtr: currentExpense?.dieselLtr || 0,
       paidThrough: currentExpense?.paidThrough || '',
@@ -107,12 +107,20 @@ export default function ExpenseForm({
     }
   }, [isEdit, currentExpense, reset, defaultValues]);
 
+  // Selecting associated vehicle to subtrip
+
   const onSubmit = async (data) => {
     try {
+      const formData = {
+        ...data,
+        expenseCategory,
+        subtripId: data?.subtripId?.value,
+        vehicleId: data.vehicleId?._id,
+      };
       if (!isEdit) {
-        await dispatch(addExpense(data));
+        await dispatch(addExpense(formData));
       } else {
-        await dispatch(updateExpense(currentExpense._id, data));
+        await dispatch(updateExpense(currentExpense._id, formData));
       }
       reset();
       enqueueSnackbar(!isEdit ? 'Expense added successfully!' : 'Expense edited successfully!');
@@ -166,40 +174,42 @@ export default function ExpenseForm({
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box rowGap={3} columnGap={2} display="grid" gridTemplateColumns="repeat(2, 1fr)">
-              <RHFAutocomplete
-                freeSolo
-                name="subtripId"
-                label="Subtrip"
-                options={subtrips.map((c) => ({ label: c._id, value: c._id }))}
-                getOptionLabel={(option) => option.label}
-                isOptionEqualToValue={(option, value) => option.value === value.value}
-              />
-              <RHFSelect name="vehicleId" label="Vehicle ID">
-                {vehicles.map((vehicle) => (
-                  <MenuItem key={vehicle._id} value={vehicle._id}>
-                    {vehicle.name}
-                  </MenuItem>
-                ))}
-              </RHFSelect>
+              {expenseCategory === 'subtrip' ? (
+                <RHFAutocomplete
+                  freeSolo
+                  name="subtripId"
+                  label="Subtrip"
+                  options={subtrips.map((c) => ({
+                    label: `${c._id} - ${c.routeCd.routeName} (${c.loadingPoint} to ${c.unloadingPoint})`,
+                    value: c._id,
+                  }))}
+                  getOptionLabel={(option) => option.label}
+                  isOptionEqualToValue={(option, value) => option.value === value.value}
+                  helperText="Vehicle MH08AB1233 is associated with this Subtrip"
+                />
+              ) : (
+                <RHFAutocomplete
+                  freeSolo
+                  name="vehicleId"
+                  label="Vehicle ID"
+                  options={vehicles.map((v) => ({ label: v.vehicleNo, value: v._id }))}
+                  getOptionLabel={(option) => option.label}
+                  isOptionEqualToValue={(option, value) => option.value === value.value}
+                />
+              )}
+
               <RHFDatePicker name="date" label="Date" />
               <RHFSelect name="expenseType" label="Expense Type">
-                <MenuItem value="diesel">Diesel</MenuItem>
-                <MenuItem value="adblue">Adblue</MenuItem>
-                <MenuItem value="driver-salary">Driver Salary</MenuItem>
-                <MenuItem value="trip-advance">Driver Advance</MenuItem>
-                <MenuItem value="trip-extra-advance">Extra Advance</MenuItem>
-                <MenuItem value="puncher">Tyre puncher</MenuItem>
-                <MenuItem value="tyre-expense">Tyre Expense</MenuItem>
-                <MenuItem value="police">Police</MenuItem>
-                <MenuItem value="rto">Rto</MenuItem>
-                <MenuItem value="toll">Toll</MenuItem>
-                <MenuItem value="vehicle-repair">Vehicle Repair</MenuItem>
-                <MenuItem value="other">Other</MenuItem>
+                {expenseTypes.map(({ value, label }) => (
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
               </RHFSelect>
               <RHFTextField name="installment" label="Installment" type="number" />
               <RHFTextField name="amount" label="Amount" type="number" />
               <RHFTextField name="slipNo" label="Slip No" />
-              {values.expenseType === 'fuel' && (
+              {values.expenseType === 'diesel' && (
                 <>
                   <RHFTextField name="pumpCd" label="Pump Code" />
                   <RHFTextField name="dieselLtr" label="Diesel Liters" type="number" />

@@ -21,7 +21,7 @@ import { fDate } from '../../../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
-export default function VehicleTableRow({
+export default function ExpenseTableRow({
   row,
   selected,
   onSelectRow,
@@ -32,7 +32,7 @@ export default function VehicleTableRow({
   const {
     tripId,
     subtripId,
-    vehicleId: { vehicleNo },
+    vehicleId: { vehicleNo } = {},
     date,
     expenseType,
     installment,
@@ -57,7 +57,7 @@ export default function VehicleTableRow({
         </TableCell>
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar alt={vehicleNo} sx={{ mr: 2 }}>
-            {vehicleNo.slice(0, 2).toUpperCase()}
+            {vehicleNo ? vehicleNo.slice(0, 2).toUpperCase() : 'NA'}
           </Avatar>
 
           <ListItemText

@@ -8,6 +8,7 @@ import { useSettingsContext } from '../../../../components/settings';
 import CustomBreadcrumbs from '../../../../components/custom-breadcrumbs';
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 import { fetchSubtrips } from '../../../../redux/slices/subtrip';
+import { fetchVehicles } from '../../../../redux/slices/vehicle';
 
 export default function ExpenseCreateView() {
   const { themeStretch } = useSettingsContext();
@@ -15,9 +16,11 @@ export default function ExpenseCreateView() {
 
   useEffect(() => {
     dispatch(fetchSubtrips());
+    dispatch(fetchVehicles());
   }, [dispatch]);
 
-  const { subtrips, isLoading } = useSelector((state) => state.subtrip);
+  const { subtrips } = useSelector((state) => state.subtrip);
+  const { vehicles } = useSelector((state) => state.vehicle);
 
   return (
     <>
@@ -35,7 +38,7 @@ export default function ExpenseCreateView() {
           ]}
         />
 
-        <ExpenseNewForm subtrips={subtrips} />
+        <ExpenseNewForm subtrips={subtrips} vehicles={vehicles} />
       </Container>
     </>
   );

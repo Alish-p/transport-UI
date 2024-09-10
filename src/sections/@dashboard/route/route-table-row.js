@@ -109,36 +109,9 @@ export default function VehicleTableRow({
         </TableCell>
 
         <TableCell>
-          <ListItemText
-            primary={advanceAmt}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-
-        <TableCell>
-          <ListItemText
-            primary={diesel}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-
-        <TableCell>
-          <Label variant="soft" color={adBlue >= 20 ? 'success' : 'error'}>
-            {adBlue}
-          </Label>
-        </TableCell>
-
-        <TableCell>
           <Label variant="soft" color={noOfDays >= 5 ? 'success' : 'error'}>
             {noOfDays}
           </Label>
-        </TableCell>
-
-        <TableCell>
-          <ListItemText
-            primary={driverSalary}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
         </TableCell>
 
         <TableCell>
@@ -149,33 +122,8 @@ export default function VehicleTableRow({
         </TableCell>
 
         <TableCell>
-          <Label variant="soft" color="warning">
-            {fixMilage}
-          </Label>
-        </TableCell>
-
-        <TableCell>
-          <Label variant="soft" color="success">
-            {performanceMilage}
-          </Label>
-        </TableCell>
-
-        <TableCell>
           <ListItemText
             primary={ratePerTon}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-        <TableCell>
-          <ListItemText
-            primary={salary}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          />
-        </TableCell>
-
-        <TableCell>
-          <ListItemText
-            primary={salaryPercentage}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           />
         </TableCell>

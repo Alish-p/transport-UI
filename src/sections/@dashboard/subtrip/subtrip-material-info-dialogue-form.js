@@ -59,14 +59,13 @@ const defaultValues = {
   pumpCd: '',
 };
 
-export function SubtripMaterialInfoDialog({
-  showDialog,
-  setShowDialog,
-  subtripId,
-  vehicleId,
-  consignees = [],
-  route,
-}) {
+export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtrip }) {
+  const { tripId, customerId, routeCd, _id } = subtrip;
+
+  const vehicleId = tripId?.vehicleId?._id;
+  const consignees = customerId?.consignees;
+  const advanceAmt = routeCd?.advanceAmt;
+
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
@@ -89,7 +88,7 @@ export function SubtripMaterialInfoDialog({
     try {
       // Dispatch action to update subtrip with material details\
       await dispatch(
-        addMaterialInfo(subtripId, { ...data, vehicleId, consignee: data?.consignee?.value })
+        addMaterialInfo(_id, { ...data, vehicleId, consignee: data?.consignee?.value })
       );
 
       enqueueSnackbar('Material details added successfully!');
@@ -183,7 +182,7 @@ export function SubtripMaterialInfoDialog({
                 name="driverAdvance"
                 label="Driver Advance"
                 type="number"
-                helperText={`Driver Advance for this Route is usually "${route?.advanceAmt} ₹"`}
+                helperText={`Driver Advance for this Route is usually "${advanceAmt} ₹"`}
               />
             </Box>
             <Box
@@ -229,8 +228,5 @@ export function SubtripMaterialInfoDialog({
 SubtripMaterialInfoDialog.propTypes = {
   showDialog: PropTypes.bool.isRequired,
   setShowDialog: PropTypes.func.isRequired,
-  subtripId: PropTypes.string.isRequired,
-  vehicleId: PropTypes.string.isRequired,
-  consignees: PropTypes.array,
-  route: PropTypes.object,
+  subtrip: PropTypes.object.isRequired,
 };

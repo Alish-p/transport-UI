@@ -242,6 +242,23 @@ export default function Router() {
       ],
     },
 
+    // Main Routes
+    {
+      element: <MainLayout />,
+      children: [
+        { element: <Navigate to="/dashboard/app" replace />, index: true },
+        // { path: 'about-us', element: <AboutPage /> },
+        // { path: 'contact-us', element: <Contact /> },
+        // { path: 'faqs', element: <FaqsPage /> },
+      ],
+    },
+    {
+      element: <SimpleLayout />,
+      children: [
+        // { path: 'pricing', element: <PricingPage /> },
+        // { path: 'payment', element: <PaymentPage /> },
+      ],
+    },
     {
       element: <CompactLayout />,
       children: [

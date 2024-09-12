@@ -19,6 +19,7 @@ import TableContainer from '@mui/material/TableContainer';
 import { paramCase } from 'change-case';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import RouteTableRow from '../route-table-row';
 import RouteTableToolbar from '../route-table-toolbar';
 import RouteTableFiltersResult from '../route-table-filters-result';
@@ -81,6 +82,7 @@ export default function VehicleListView() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -123,6 +125,7 @@ export default function VehicleListView() {
 
   const handleDeleteRow = (id) => {
     dispatch(deleteRoute(id));
+    enqueueSnackbar('Route Deleted successfully!', {});
   };
 
   const handleEditRow = (id) => {

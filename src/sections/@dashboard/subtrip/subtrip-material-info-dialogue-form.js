@@ -7,18 +7,12 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // form components
-import FormProvider, {
-  RHFTextField,
-  RHFDatePicker,
-  RHFSelect,
-  RHFAutocomplete,
-} from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
 import { addMaterialInfo } from '../../../redux/slices/subtrip';
 import { fetchPumps } from '../../../redux/slices/pump';
 import { fetchCustomer } from '../../../redux/slices/customer';
-import RHFSwitch from '../../../components/hook-form/RHFSwitch';
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -122,7 +116,7 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtrip }
       title="Add Material Details"
       content={
         <Box sx={{ marginTop: '6px' }}>
-          <FormProvider methods={methods} onSubmit={onSubmit}>
+          <Form methods={methods} onSubmit={onSubmit}>
             <Box
               rowGap={3}
               columnGap={2}
@@ -132,7 +126,7 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtrip }
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFAutocomplete
+              <Field.Autocomplete
                 freeSolo
                 name="consignee"
                 label="consignee"
@@ -141,18 +135,18 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtrip }
                 isOptionEqualToValue={(option, value) => option.value === value.value}
               />
 
-              <RHFTextField name="loadingWeight" label="Loading Weight" type="number" />
-              <RHFTextField name="startKm" label="Start Km" type="number" />
-              <RHFTextField name="rate" label="Rate" type="number" />
-              <RHFTextField name="invoiceNo" label="Invoice No" />
-              <RHFTextField name="shipmentNo" label="Shipment No" />
-              <RHFTextField name="orderNo" label="Order No" />
-              <RHFTextField name="ewayBill" label="Eway Bill" />
-              <RHFDatePicker name="ewayExpiryDate" label="Eway Expiry Date" />
-              <RHFTextField name="materialType" label="Material Type" />
-              <RHFTextField name="quantity" label="Quantity" type="number" />
-              <RHFTextField name="grade" label="Grade" />
-              <RHFTextField name="tds" label="TDS" type="number" required />
+              <Field.Text name="loadingWeight" label="Loading Weight" type="number" />
+              <Field.Text name="startKm" label="Start Km" type="number" />
+              <Field.Text name="rate" label="Rate" type="number" />
+              <Field.Text name="invoiceNo" label="Invoice No" />
+              <Field.Text name="shipmentNo" label="Shipment No" />
+              <Field.Text name="orderNo" label="Order No" />
+              <Field.Text name="ewayBill" label="Eway Bill" />
+              <Field.DatePicker name="ewayExpiryDate" label="Eway Expiry Date" />
+              <Field.Text name="materialType" label="Material Type" />
+              <Field.Text name="quantity" label="Quantity" type="number" />
+              <Field.Text name="grade" label="Grade" />
+              <Field.Text name="tds" label="TDS" type="number" required />
             </Box>
             <Divider sx={{ marginBlock: '20px' }} />
 
@@ -170,15 +164,15 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtrip }
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFSelect native name="pumpCd" label="Pump">
+              <Field.Select native name="pumpCd" label="Pump">
                 <option value="" />
                 {pumps.map((pump) => (
                   <option key={pump._id} value={pump._id}>
                     {pump.pumpName}
                   </option>
                 ))}
-              </RHFSelect>
-              <RHFTextField
+              </Field.Select>
+              <Field.Text
                 name="driverAdvance"
                 label="Driver Advance"
                 type="number"
@@ -194,16 +188,16 @@ export function SubtripMaterialInfoDialog({ showDialog, setShowDialog, subtrip }
               columnGap={2}
               sx={{ mt: 3 }}
             >
-              <RHFTextField name="dieselLtr" label="Diesel (Ltr)" />
+              <Field.Text name="dieselLtr" label="Diesel (Ltr)" />
               <Typography sx={{ mt: 2, mx: 0, width: 1 }}>OR</Typography>
-              <RHFSwitch
+              <Field.Switch
                 name="isFullTank"
                 label="Full-Tank ?"
                 labelPlacement="top"
                 sx={{ width: 1 }}
               />
             </Box>
-          </FormProvider>
+          </Form>
         </Box>
       }
       action={

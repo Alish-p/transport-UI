@@ -12,7 +12,7 @@ import { Box, Card, Grid, Stack, Typography } from '@mui/material';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, { RHFTextField } from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 // redux
 import { dispatch } from '../../../redux/store';
 import { addPump, updatePump } from '../../../redux/slices/pump';
@@ -93,7 +93,7 @@ export default function PumpForm({ isEdit = false, currentPump }) {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Card sx={{ p: 3 }}>
@@ -106,15 +106,15 @@ export default function PumpForm({ isEdit = false, currentPump }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="pumpName" label="Pump Name" />
-              <RHFTextField name="placeName" label="Place Name" />
-              <RHFTextField name="ownerName" label="Owner Name" />
-              <RHFTextField name="ownerCellNo" label="Owner Cell No" />
-              <RHFTextField name="pumpPhoneNo" label="Pump Phone No" />
-              <RHFTextField name="taluk" label="Taluk" />
-              <RHFTextField name="district" label="District" />
-              <RHFTextField name="contactPerson" label="Contact Person" />
-              <RHFTextField name="address" label="Address" />
+              <Field.Text name="pumpName" label="Pump Name" />
+              <Field.Text name="placeName" label="Place Name" />
+              <Field.Text name="ownerName" label="Owner Name" />
+              <Field.Text name="ownerCellNo" label="Owner Cell No" />
+              <Field.Text name="pumpPhoneNo" label="Pump Phone No" />
+              <Field.Text name="taluk" label="Taluk" />
+              <Field.Text name="district" label="District" />
+              <Field.Text name="contactPerson" label="Contact Person" />
+              <Field.Text name="address" label="Address" />
             </Box>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
@@ -125,6 +125,6 @@ export default function PumpForm({ isEdit = false, currentPump }) {
           </Card>
         </Grid>
       </Grid>
-    </FormProvider>
+    </Form>
   );
 }

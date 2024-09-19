@@ -9,11 +9,7 @@ import { Box, Card, Grid, Stack, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { paramCase } from 'change-case';
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, {
-  RHFTextField,
-  RHFDatePicker,
-  RHFAutocomplete,
-} from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 import { addTrip, updateTrip } from '../../../redux/slices/trip';
 import { fetchDrivers } from '../../../redux/slices/driver';
 import { fetchVehicles } from '../../../redux/slices/vehicle';
@@ -107,7 +103,7 @@ export default function TripForm({ isEdit = false, currentTrip }) {
     }
   };
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       {/* Vehicle & Driver Details */}
       <Grid container spacing={3} sx={{ pt: 10 }}>
         <Grid item xs={12} md={3}>
@@ -124,14 +120,14 @@ export default function TripForm({ isEdit = false, currentTrip }) {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-              <RHFAutocomplete
+              <Field.Autocomplete
                 name="vehicleId"
                 label="Vehicle"
                 options={vehicles.map((c) => ({ label: c.vehicleNo, value: c._id }))}
                 getOptionLabel={(option) => option.label}
                 isOptionEqualToValue={(option, value) => option.value === value.value}
               />
-              <RHFAutocomplete
+              <Field.Autocomplete
                 freeSolo
                 name="driverId"
                 label="Driver"
@@ -140,8 +136,8 @@ export default function TripForm({ isEdit = false, currentTrip }) {
                 isOptionEqualToValue={(option, value) => option.value === value.value}
               />
 
-              <RHFDatePicker name="fromDate" label="From Date" />
-              <RHFTextField name="remarks" label="Remarks" />
+              <Field.DatePicker name="fromDate" label="From Date" />
+              <Field.Text name="remarks" label="Remarks" />
             </Box>
           </Card>
         </Grid>
@@ -152,6 +148,6 @@ export default function TripForm({ isEdit = false, currentTrip }) {
           {!isEdit ? 'Create Trip' : 'Save Changes'}
         </LoadingButton>
       </Stack>
-    </FormProvider>
+    </Form>
   );
 }

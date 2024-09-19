@@ -1,22 +1,13 @@
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
-import {
-  Box,
-  Stack,
-  Button,
-  Divider,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-} from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { Box, Stack, Button, List, ListItem, ListItemText } from '@mui/material';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 // form components
-import FormProvider, { RHFCheckbox } from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
 import { closeTrip } from '../../../redux/slices/subtrip';
@@ -76,7 +67,7 @@ export function SubtripCloseDialog({ showDialog, setShowDialog, subtripId }) {
       title="Close Subtrip"
       content={
         <Box>
-          <FormProvider methods={methods} onSubmit={onSubmit}>
+          <Form methods={methods} onSubmit={onSubmit}>
             <List sx={{ listStyle: 'decimal', pl: 4 }}>
               <ListItem sx={{ display: 'list-item' }}>
                 <ListItemText primary="Please confirm that you have added all the related information and expenses to the sub-trip." />
@@ -90,9 +81,9 @@ export function SubtripCloseDialog({ showDialog, setShowDialog, subtripId }) {
             </List>
 
             <Box mt={3} rowGap={3} columnGap={2} display="grid">
-              <RHFCheckbox name="userConfirm" label="I confirm" />
+              <Field.Checkbox name="userConfirm" label="I confirm" />
             </Box>
-          </FormProvider>
+          </Form>
         </Box>
       }
       action={

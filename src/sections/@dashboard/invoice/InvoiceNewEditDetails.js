@@ -13,7 +13,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 // utils
 // components
 import Iconify from '../../../components/iconify';
-import { RHFTextField, RHFSelect } from '../../../components/hook-form';
+import { Field.Text, Field.Select } from '../../../components/hook-form';
 import { fCurrency } from '../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
@@ -97,35 +97,35 @@ export default function InvoiceNewEditDetails() {
         {fields.map((item, index) => (
           <Stack key={item.id} alignItems="flex-end" spacing={1.5}>
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: 1 }}>
-              <RHFTextField
+              <Field.Text
                 size="small"
                 name={`subtrips[${index}].unloadingPoint`}
                 label="Unloading Point"
                 InputLabelProps={{ shrink: true }}
               />
 
-              <RHFTextField
+              <Field.Text
                 size="small"
                 name={`subtrips[${index}].consignee`}
                 label="Consignee"
                 InputLabelProps={{ shrink: true }}
               />
 
-              <RHFTextField
+              <Field.Text
                 size="small"
                 name={`subtrips[${index}].vehicleNo`}
                 label="Vehicle No"
                 InputLabelProps={{ shrink: true }}
               />
 
-              <RHFTextField
+              <Field.Text
                 size="small"
                 name={`subtrips[${index}]._id`}
                 label="ID"
                 InputLabelProps={{ shrink: true }}
               />
 
-              <RHFTextField
+              <Field.Text
                 size="small"
                 name={`subtrips[${index}].date`}
                 label="Date"
@@ -133,7 +133,7 @@ export default function InvoiceNewEditDetails() {
                 type="date"
               />
 
-              <RHFTextField
+              <Field.Text
                 size="small"
                 type="number"
                 name={`subtrips[${index}].quantity`}
@@ -144,7 +144,7 @@ export default function InvoiceNewEditDetails() {
                 sx={{ maxWidth: { md: 96 } }}
               />
 
-              <RHFTextField
+              <Field.Text
                 size="small"
                 type="number"
                 name={`subtrips[${index}].rate`}
@@ -161,7 +161,7 @@ export default function InvoiceNewEditDetails() {
                 sx={{ maxWidth: { md: 96 } }}
               />
 
-              <RHFTextField
+              <Field.Text
                 disabled
                 size="small"
                 type="number"

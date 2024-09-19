@@ -7,10 +7,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 // form components
-import FormProvider, { RHFTextField, RHFDatePicker } from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
-import RHFSwitch from '../../../components/hook-form/RHFSwitch';
 import { receiveLR } from '../../../redux/slices/subtrip';
 
 // Define the validation schema using Yup
@@ -97,7 +96,7 @@ export function RecieveSubtripDialog({ showDialog, setShowDialog, subtrip }) {
       title="Receive Subtrip"
       content={
         <Box sx={{ marginTop: '6px' }}>
-          <FormProvider methods={methods} onSubmit={onSubmit}>
+          <Form methods={methods} onSubmit={onSubmit}>
             <Box
               rowGap={3}
               columnGap={2}
@@ -107,9 +106,9 @@ export function RecieveSubtripDialog({ showDialog, setShowDialog, subtrip }) {
                 sm: 'repeat(3, 1fr)',
               }}
             >
-              <RHFTextField name="loadingWeight" label="Loading Wt." type="number" disabled />
-              <RHFTextField name="unloadingWeight" label="Unloading Wt." type="number" autoFocus />
-              <RHFTextField
+              <Field.Text name="loadingWeight" label="Loading Wt." type="number" disabled />
+              <Field.Text name="unloadingWeight" label="Unloading Wt." type="number" autoFocus />
+              <Field.Text
                 name="deductedWeight"
                 label="Deducted Weight"
                 type="number"
@@ -117,23 +116,23 @@ export function RecieveSubtripDialog({ showDialog, setShowDialog, subtrip }) {
                 showZero
               />
 
-              <RHFTextField name="startKm" label="Start Km" type="number" disabled />
-              <RHFTextField name="endKm" label="End Km" type="number" />
-              <RHFTextField name="totalKm" label="Total Trip Km" type="number" disabled />
+              <Field.Text name="startKm" label="Start Km" type="number" disabled />
+              <Field.Text name="endKm" label="End Km" type="number" />
+              <Field.Text name="totalKm" label="Total Trip Km" type="number" disabled />
 
-              <RHFDatePicker name="endDate" label="End Date" />
+              <Field.DatePicker name="endDate" label="End Date" />
 
-              <RHFTextField name="detentionTime" label="Detention Time" type="number" />
-              <RHFTextField name="remarks" label="Remarks" type="text" />
+              <Field.Text name="detentionTime" label="Detention Time" type="number" />
+              <Field.Text name="remarks" label="Remarks" type="text" />
             </Box>
 
             <Box sx={{ marginTop: '20px' }}>
-              <RHFSwitch
+              <Field.Switch
                 name="hasError"
                 label={<Typography variant="subtitle2">Recievied With Error ?</Typography>}
               />
             </Box>
-          </FormProvider>
+          </Form>
         </Box>
       }
       action={

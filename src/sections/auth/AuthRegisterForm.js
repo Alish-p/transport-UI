@@ -10,7 +10,7 @@ import { LoadingButton } from '@mui/lab';
 import { useAuthContext } from '../../auth/useAuthContext';
 // components
 import Iconify from '../../components/iconify';
-import FormProvider, { RHFTextField } from '../../components/hook-form';
+import { Form, Field } from '../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -61,18 +61,18 @@ export default function AuthRegisterForm() {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2.5}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name="firstName" label="First name" />
-          <RHFTextField name="lastName" label="Last name" />
+          <Field.Text name="firstName" label="First name" />
+          <Field.Text name="lastName" label="Last name" />
         </Stack>
 
-        <RHFTextField name="email" label="Email address" />
+        <Field.Text name="email" label="Email address" />
 
-        <RHFTextField
+        <Field.Text
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
@@ -106,6 +106,6 @@ export default function AuthRegisterForm() {
           Create account
         </LoadingButton>
       </Stack>
-    </FormProvider>
+    </Form>
   );
 }

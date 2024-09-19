@@ -7,10 +7,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 // form components
-import FormProvider, { RHFTextField, RHFDatePicker } from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
-import RHFSwitch from '../../../components/hook-form/RHFSwitch';
 import { resolveLR } from '../../../redux/slices/subtrip';
 
 // Define the validation schema using Yup
@@ -67,7 +66,7 @@ export function ResolveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
       title="Resolve Subtrip"
       content={
         <Box sx={{ marginTop: '6px' }}>
-          <FormProvider methods={methods} onSubmit={onSubmit}>
+          <Form methods={methods} onSubmit={onSubmit}>
             <Box
               rowGap={3}
               columnGap={2}
@@ -77,9 +76,9 @@ export function ResolveSubtripDialog({ showDialog, setShowDialog, subtripId }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="remarks" label="Remarks" type="text" />
+              <Field.Text name="remarks" label="Remarks" type="text" />
             </Box>
-          </FormProvider>
+          </Form>
         </Box>
       }
       action={

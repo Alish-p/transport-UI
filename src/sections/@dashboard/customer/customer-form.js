@@ -11,7 +11,7 @@ import { Box, Card, Grid, InputAdornment, Stack, Typography, Button, Divider } f
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, { RHFTextField, RHFSelect } from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 // redux
 import { dispatch } from '../../../redux/store';
 import { addCustomer, updateCustomer } from '../../../redux/slices/customer';
@@ -143,7 +143,7 @@ export default function CustomerNewForm({ isEdit = false, currentCustomer }) {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={12}>
           <Card sx={{ p: 3 }}>
@@ -156,14 +156,14 @@ export default function CustomerNewForm({ isEdit = false, currentCustomer }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="customerName" label="Customer Name" />
-              <RHFTextField name="address" label="Address" />
-              <RHFTextField name="place" label="Place" />
-              <RHFTextField name="state" label="State" />
-              <RHFTextField name="pinCode" label="Pin Code" />
-              <RHFTextField name="cellNo" label="Cell No" />
-              <RHFTextField name="GSTNo" label="GST No" />
-              <RHFTextField name="PANNo" label="PAN No" />
+              <Field.Text name="customerName" label="Customer Name" />
+              <Field.Text name="address" label="Address" />
+              <Field.Text name="place" label="Place" />
+              <Field.Text name="state" label="State" />
+              <Field.Text name="pinCode" label="Pin Code" />
+              <Field.Text name="cellNo" label="Cell No" />
+              <Field.Text name="GSTNo" label="GST No" />
+              <Field.Text name="PANNo" label="PAN No" />
             </Box>
 
             <Typography variant="h6" sx={{ color: 'text.disabled', mt: 3 }}>
@@ -182,19 +182,16 @@ export default function CustomerNewForm({ isEdit = false, currentCustomer }) {
                   }}
                 >
                   <Box gridColumn="span 2">
-                    <RHFTextField name={`consignees[${index}].name`} label="Consignee Name" />
+                    <Field.Text name={`consignees[${index}].name`} label="Consignee Name" />
                   </Box>
                   <Box gridColumn="span 2">
-                    <RHFTextField name={`consignees[${index}].address`} label="Consignee Address" />
+                    <Field.Text name={`consignees[${index}].address`} label="Consignee Address" />
                   </Box>
                   <Box gridColumn="span 2">
-                    <RHFTextField name={`consignees[${index}].state`} label="Consignee State" />
+                    <Field.Text name={`consignees[${index}].state`} label="Consignee State" />
                   </Box>
                   <Box gridColumn="span 2">
-                    <RHFTextField
-                      name={`consignees[${index}].pinCode`}
-                      label="Consignee Pin Code"
-                    />
+                    <Field.Text name={`consignees[${index}].pinCode`} label="Consignee Pin Code" />
                   </Box>
                   <Box
                     gridColumn="span 1"
@@ -233,6 +230,6 @@ export default function CustomerNewForm({ isEdit = false, currentCustomer }) {
           </Card>
         </Grid>
       </Grid>
-    </FormProvider>
+    </Form>
   );
 }

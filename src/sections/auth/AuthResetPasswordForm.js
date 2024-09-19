@@ -8,7 +8,7 @@ import { LoadingButton } from '@mui/lab';
 // routes
 import { PATH_AUTH } from '../../routes/paths';
 // components
-import FormProvider, { RHFTextField } from '../../components/hook-form';
+import { Form, Field } from '../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -40,8 +40,8 @@ export default function AuthResetPasswordForm() {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <RHFTextField name="email" label="Email address" />
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <Field.Text name="email" label="Email address" />
 
       <LoadingButton
         fullWidth
@@ -53,6 +53,6 @@ export default function AuthResetPasswordForm() {
       >
         Send Request
       </LoadingButton>
-    </FormProvider>
+    </Form>
   );
 }

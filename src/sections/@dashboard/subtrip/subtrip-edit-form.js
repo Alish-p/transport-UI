@@ -10,12 +10,7 @@ import { useDispatch } from 'react-redux';
 import { paramCase } from 'change-case';
 import { options } from 'numeral';
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, {
-  RHFSelect,
-  RHFTextField,
-  RHFDatePicker,
-  RHFAutocomplete,
-} from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 import { addTrip } from '../../../redux/slices/trip';
 import { fetchDrivers } from '../../../redux/slices/driver';
 import { fetchVehicles } from '../../../redux/slices/vehicle';
@@ -140,7 +135,7 @@ export default function TripForm({ isEdit = false, currentTrip }) {
     }
   };
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       {/* Vehicle & Driver Details */}
 
       {/* Subtrip Info */}
@@ -159,31 +154,31 @@ export default function TripForm({ isEdit = false, currentTrip }) {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-              <RHFSelect native name="routeCd" label="Route">
+              <Field.Select native name="routeCd" label="Route">
                 <option value="" />
                 {routes.map((route) => (
                   <option key={route._id} value={route._id}>
                     {route.routeName}
                   </option>
                 ))}
-              </RHFSelect>
+              </Field.Select>
 
-              <RHFSelect native name="customerId" label="Customer">
+              <Field.Select native name="customerId" label="Customer">
                 <option value="" />
                 {customers.map((customer) => (
                   <option key={customer._id} value={customer._id}>
                     {customer.customerName}
                   </option>
                 ))}
-              </RHFSelect>
+              </Field.Select>
 
-              <RHFTextField name="loadingPoint" label="Loading Point" />
-              <RHFTextField name="unloadingPoint" label="Unloading Point" />
-              <RHFTextField name="startKm" label="Start Km" />
-              <RHFTextField name="rate" label="Rate" />
-              <RHFDatePicker name="subtripStartDate" label="Start Date" />
+              <Field.Text name="loadingPoint" label="Loading Point" />
+              <Field.Text name="unloadingPoint" label="Unloading Point" />
+              <Field.Text name="startKm" label="Start Km" />
+              <Field.Text name="rate" label="Rate" />
+              <Field.DatePicker name="subtripStartDate" label="Start Date" />
 
-              <RHFTextField name="tds" label="TDS" />
+              <Field.Text name="tds" label="TDS" />
             </Box>
           </Card>
         </Grid>
@@ -203,15 +198,15 @@ export default function TripForm({ isEdit = false, currentTrip }) {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-              <RHFTextField name="invoiceNo" label="Invoice No" />
-              <RHFTextField name="shipmentNo" label="Shipment No" />
-              <RHFTextField name="orderNo" label="Order No" />
-              <RHFTextField name="ewayBill" label="E-way Bill" />
-              <RHFDatePicker name="ewayExpiryDate" label="E-way Expiry Date" />
-              <RHFTextField name="materialType" label="Material Type" />
-              <RHFTextField name="quantity" label="Quantity" />
-              <RHFTextField name="grade" label="Grade" />
-              <RHFTextField name="loadingWeight" label="Loading Weight" />
+              <Field.Text name="invoiceNo" label="Invoice No" />
+              <Field.Text name="shipmentNo" label="Shipment No" />
+              <Field.Text name="orderNo" label="Order No" />
+              <Field.Text name="ewayBill" label="E-way Bill" />
+              <Field.DatePicker name="ewayExpiryDate" label="E-way Expiry Date" />
+              <Field.Text name="materialType" label="Material Type" />
+              <Field.Text name="quantity" label="Quantity" />
+              <Field.Text name="grade" label="Grade" />
+              <Field.Text name="loadingWeight" label="Loading Weight" />
             </Box>
           </Card>
         </Grid>
@@ -230,10 +225,10 @@ export default function TripForm({ isEdit = false, currentTrip }) {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-              <RHFDatePicker name="subtripEndDate" label="End Date" />
-              <RHFTextField name="endKm" label="End Km" />
-              <RHFTextField name="detentionTime" label="Detention Time" />
-              <RHFTextField name="unloadingWeight" label="Unloading Weight" />
+              <Field.DatePicker name="subtripEndDate" label="End Date" />
+              <Field.Text name="endKm" label="End Km" />
+              <Field.Text name="detentionTime" label="Detention Time" />
+              <Field.Text name="unloadingWeight" label="Unloading Weight" />
             </Box>
           </Card>
         </Grid>
@@ -244,6 +239,6 @@ export default function TripForm({ isEdit = false, currentTrip }) {
           {!isEdit ? 'Create Trip' : 'Save Changes'}
         </LoadingButton>
       </Stack>
-    </FormProvider>
+    </Form>
   );
 }

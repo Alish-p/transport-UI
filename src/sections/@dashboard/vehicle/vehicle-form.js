@@ -18,8 +18,8 @@ import { engineType, modelType, vehicleCompany, vehicleTypes } from './vehicle-c
 // components
 
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, { RHFSelect, RHFTextField, RHFUpload } from '../../../components/hook-form';
-import RHFDatePickerField from '../../../components/hook-form/RHFDatePicker';
+import { Form, Field } from '../../../components/hook-form';
+
 import { addVehicle, updateVehicle } from '../../../redux/slices/vehicle';
 import { fetchTransporters } from '../../../redux/slices/transporter';
 import { useSelector } from '../../../redux/store';
@@ -149,7 +149,7 @@ export default function VehicleForm({ isEdit = false, currentVehicle }) {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <Card sx={{ pt: 10, pb: 5, px: 3 }}>
@@ -159,7 +159,7 @@ export default function VehicleForm({ isEdit = false, currentVehicle }) {
                   Images
                 </Typography>
 
-                <RHFUpload
+                <Field.Upload
                   multiple
                   thumbnail
                   name="images"
@@ -185,56 +185,56 @@ export default function VehicleForm({ isEdit = false, currentVehicle }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="vehicleNo" label="Vehicle No" />
-              <RHFSelect native name="vehicleType" label="Vehicle Type">
+              <Field.Text name="vehicleNo" label="Vehicle No" />
+              <Field.Select native name="vehicleType" label="Vehicle Type">
                 <option value="" />
                 {vehicleTypes.map(({ key, value }) => (
                   <option key={key} value={key}>
                     {value}
                   </option>
                 ))}
-              </RHFSelect>
-              <RHFSelect native name="modelType" label="Model Type">
+              </Field.Select>
+              <Field.Select native name="modelType" label="Model Type">
                 <option value="" />
                 {modelType.map(({ key, value }) => (
                   <option key={key} value={key}>
                     {value}
                   </option>
                 ))}
-              </RHFSelect>
-              <RHFSelect native name="vehicleCompany" label="Vehicle Company">
+              </Field.Select>
+              <Field.Select native name="vehicleCompany" label="Vehicle Company">
                 <option value="" />
                 {vehicleCompany.map(({ key, value }) => (
                   <option key={key} value={key}>
                     {value}
                   </option>
                 ))}
-              </RHFSelect>
-              <RHFTextField name="noOfTyres" label="No Of Tyres" type="number" />
-              <RHFTextField name="chasisNo" label="Chasis No" />
-              <RHFTextField name="engineNo" label="Engine No" />
-              <RHFTextField name="manufacturingYear" label="Manufacturing Year" type="number" />
-              <RHFTextField name="loadingCapacity" label="Loading Capacity" type="number" />
-              <RHFTextField name="fuelTankCapacity" label="Fuel Tank Capacity" type="number" />
+              </Field.Select>
+              <Field.Text name="noOfTyres" label="No Of Tyres" type="number" />
+              <Field.Text name="chasisNo" label="Chasis No" />
+              <Field.Text name="engineNo" label="Engine No" />
+              <Field.Text name="manufacturingYear" label="Manufacturing Year" type="number" />
+              <Field.Text name="loadingCapacity" label="Loading Capacity" type="number" />
+              <Field.Text name="fuelTankCapacity" label="Fuel Tank Capacity" type="number" />
 
-              <RHFSelect native name="engineType" label="Engine Type">
+              <Field.Select native name="engineType" label="Engine Type">
                 <option value="" />
                 {engineType.map(({ key, value }) => (
                   <option key={key} value={key}>
                     {value}
                   </option>
                 ))}
-              </RHFSelect>
-              <RHFSelect native name="transporter" label="Transport Company">
+              </Field.Select>
+              <Field.Select native name="transporter" label="Transport Company">
                 <option value="" />
                 {transporters.map((transporter) => (
                   <option key={transporter._id} value={transporter._id}>
                     {transporter.transportName}
                   </option>
                 ))}
-              </RHFSelect>
-              <RHFDatePickerField name="fromDate" label="From Date" type="date" />
-              <RHFDatePickerField name="toDate" label="To Date" type="date" />
+              </Field.Select>
+              <Field.DatePickerField name="fromDate" label="From Date" type="date" />
+              <Field.DatePickerField name="toDate" label="To Date" type="date" />
             </Box>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
@@ -245,6 +245,6 @@ export default function VehicleForm({ isEdit = false, currentVehicle }) {
           </Card>
         </Grid>
       </Grid>
-    </FormProvider>
+    </Form>
   );
 }

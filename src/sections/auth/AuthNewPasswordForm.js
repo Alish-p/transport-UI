@@ -12,7 +12,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Iconify from '../../components/iconify';
 import { useSnackbar } from '../../components/snackbar';
-import FormProvider, { RHFTextField, RHFCodes } from '../../components/hook-form';
+import { Form, Field } from '../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -82,16 +82,14 @@ export default function AuthNewPasswordForm() {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        <RHFTextField
+        <Field.Text
           name="email"
           label="Email"
           disabled={!!emailRecovery}
           InputLabelProps={{ shrink: true }}
         />
-
-        <RHFCodes keyName="code" inputs={['code1', 'code2', 'code3', 'code4', 'code5', 'code6']} />
 
         {(!!errors.code1 ||
           !!errors.code2 ||
@@ -104,7 +102,7 @@ export default function AuthNewPasswordForm() {
           </FormHelperText>
         )}
 
-        <RHFTextField
+        <Field.Text
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
@@ -119,7 +117,7 @@ export default function AuthNewPasswordForm() {
           }}
         />
 
-        <RHFTextField
+        <Field.Text
           name="confirmPassword"
           label="Confirm New Password"
           type={showPassword ? 'text' : 'password'}
@@ -145,6 +143,6 @@ export default function AuthNewPasswordForm() {
           Update Password
         </LoadingButton>
       </Stack>
-    </FormProvider>
+    </Form>
   );
 }

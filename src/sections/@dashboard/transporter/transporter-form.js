@@ -12,7 +12,7 @@ import { Box, Card, Grid, InputAdornment, Stack, Typography } from '@mui/materia
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, { RHFTextField, RHFSelect } from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 // redux
 import { dispatch } from '../../../redux/store';
 import { addTransporter, updateTransporter } from '../../../redux/slices/transporter';
@@ -144,7 +144,7 @@ export default function TransporterForm({ isEdit = false, currentTransporter }) 
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={12}>
           <Card sx={{ p: 3 }}>
@@ -157,37 +157,37 @@ export default function TransporterForm({ isEdit = false, currentTransporter }) 
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="transportName" label="Transport Name" />
-              <RHFTextField name="address" label="Address" />
-              <RHFTextField name="place" label="Place" />
-              <RHFTextField name="pinNo" label="Pin No" />
-              <RHFTextField name="cellNo" label="Cell No" />
-              <RHFTextField name="bankCd" label="Bank Code" />
-              <RHFTextField name="ifscCode" label="IFSC Code" />
-              <RHFTextField name="accNo" label="Account No" />
-              <RHFTextField name="paymentMode" label="Payment Mode" />
-              <RHFTextField name="panNo" label="PAN No" />
-              <RHFTextField name="ownerName" label="Owner Name" />
-              <RHFTextField name="gstNo" label="GST No" />
-              <RHFTextField name="bankBranch" label="Bank Branch" />
-              <RHFTextField name="emailId" label="Email ID" />
-              <RHFTextField
+              <Field.Text name="transportName" label="Transport Name" />
+              <Field.Text name="address" label="Address" />
+              <Field.Text name="place" label="Place" />
+              <Field.Text name="pinNo" label="Pin No" />
+              <Field.Text name="cellNo" label="Cell No" />
+              <Field.Text name="bankCd" label="Bank Code" />
+              <Field.Text name="ifscCode" label="IFSC Code" />
+              <Field.Text name="accNo" label="Account No" />
+              <Field.Text name="paymentMode" label="Payment Mode" />
+              <Field.Text name="panNo" label="PAN No" />
+              <Field.Text name="ownerName" label="Owner Name" />
+              <Field.Text name="gstNo" label="GST No" />
+              <Field.Text name="bankBranch" label="Bank Branch" />
+              <Field.Text name="emailId" label="Email ID" />
+              <Field.Text
                 name="phoneNo"
                 label="Phone No"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">+91 - </InputAdornment>,
                 }}
               />
-              <RHFSelect native name="transportType" label="Transport Type">
+              <Field.Select native name="transportType" label="Transport Type">
                 <option value="" />
                 {transportType.map(({ key, value }) => (
                   <option key={key} value={key}>
                     {value}
                   </option>
                 ))}
-              </RHFSelect>
-              <RHFTextField name="agreementNo" label="Agreement No" />
-              <RHFTextField
+              </Field.Select>
+              <Field.Text name="agreementNo" label="Agreement No" />
+              <Field.Text
                 name="tdsPercentage"
                 label="TDS Percentage"
                 type="number"
@@ -205,6 +205,6 @@ export default function TransporterForm({ isEdit = false, currentTransporter }) 
           </Card>
         </Grid>
       </Grid>
-    </FormProvider>
+    </Form>
   );
 }

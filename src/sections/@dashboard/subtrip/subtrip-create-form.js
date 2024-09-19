@@ -9,12 +9,7 @@ import { Box, Card, Divider, Grid, Stack, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { paramCase } from 'change-case';
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, {
-  RHFSelect,
-  RHFTextField,
-  RHFDatePicker,
-  RHFAutocomplete,
-} from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 import { fetchRoutes } from '../../../redux/slices/route';
 import { useSelector } from '../../../redux/store';
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -98,7 +93,7 @@ export default function SubtripCreateForm({ isEdit = false, currentTrip }) {
     }
   };
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       {/* Subtrip Info */}
       <Grid container spacing={3} sx={{ pt: 10 }}>
         <Grid item xs={12} md={3}>
@@ -114,7 +109,7 @@ export default function SubtripCreateForm({ isEdit = false, currentTrip }) {
 
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
-            <RHFAutocomplete
+            <Field.Autocomplete
               sx={{ mb: 2 }}
               name="tripId"
               label="Trip"
@@ -125,16 +120,16 @@ export default function SubtripCreateForm({ isEdit = false, currentTrip }) {
             />
 
             <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-              <RHFSelect native name="routeCd" label="Route">
+              <Field.Select native name="routeCd" label="Route">
                 <option value="" />
                 {routes.map((route) => (
                   <option key={route._id} value={route._id}>
                     {route.routeName}
                   </option>
                 ))}
-              </RHFSelect>
+              </Field.Select>
 
-              <RHFSelect native name="customerId" label="Customer">
+              <Field.Select native name="customerId" label="Customer">
                 <option value="">None</option>
                 <Divider sx={{ borderStyle: 'dashed' }} />
                 {customers.map((customer) => (
@@ -142,11 +137,11 @@ export default function SubtripCreateForm({ isEdit = false, currentTrip }) {
                     {customer.customerName}
                   </option>
                 ))}
-              </RHFSelect>
+              </Field.Select>
 
-              <RHFTextField name="loadingPoint" label="Loading Point" />
-              <RHFTextField name="unloadingPoint" label="Unloading Point" />
-              <RHFDatePicker name="startDate" label="Subtrip Start Date" />
+              <Field.Text name="loadingPoint" label="Loading Point" />
+              <Field.Text name="unloadingPoint" label="Unloading Point" />
+              <Field.DatePicker name="startDate" label="Subtrip Start Date" />
             </Box>
           </Card>
         </Grid>
@@ -157,6 +152,6 @@ export default function SubtripCreateForm({ isEdit = false, currentTrip }) {
           {!isEdit ? 'Create Trip' : 'Save Changes'}
         </LoadingButton>
       </Stack>
-    </FormProvider>
+    </Form>
   );
 }

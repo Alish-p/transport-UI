@@ -22,15 +22,15 @@ import { DatePicker } from '@mui/x-date-pickers';
 import Iconify from '../../../../components/iconify';
 import FormProvider, {
   RHFEditor,
-  RHFSelect,
+  Field.Select,
   RHFUpload,
   RHFSwitch,
   RHFSlider,
   RHFCheckbox,
-  RHFTextField,
+  Field.Text,
   RHFRadioGroup,
   RHFMultiSelect,
-  RHFAutocomplete,
+  Field.Autocomplete,
   RHFMultiCheckbox,
 } from '../../../../components/hook-form';
 //
@@ -151,15 +151,15 @@ export default function ReactHookForm({ debug }) {
           <Grid item xs={12} md={6}>
             <Stack spacing={2}>
               <Block>
-                <RHFTextField name="fullName" label="Full Name" />
+                <Field.Text name="fullName" label="Full Name" />
               </Block>
 
               <Block>
-                <RHFTextField name="email" label="Email address" />
+                <Field.Text name="email" label="Email address" />
               </Block>
 
               <Block>
-                <RHFTextField
+                <Field.Text
                   name="age"
                   label="Age"
                   onChange={(event) =>
@@ -215,7 +215,7 @@ export default function ReactHookForm({ debug }) {
 
               <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
                 <Block>
-                  <RHFTextField
+                  <Field.Text
                     name="password"
                     label="Password"
                     type={showPassword ? 'text' : 'password'}
@@ -232,7 +232,7 @@ export default function ReactHookForm({ debug }) {
                 </Block>
 
                 <Block>
-                  <RHFTextField
+                  <Field.Text
                     name="confirmPassword"
                     label="Confirm Password"
                     type={showPassword ? 'text' : 'password'}
@@ -249,8 +249,8 @@ export default function ReactHookForm({ debug }) {
                 </Block>
               </Stack>
 
-              <Block label="RHFAutocomplete">
-                <RHFAutocomplete
+              <Block label="Field.Autocomplete">
+                <Field.Autocomplete
                   freeSolo
                   name="autocomplete"
                   label="Autocomplete"
@@ -260,8 +260,8 @@ export default function ReactHookForm({ debug }) {
                 />
               </Block>
 
-              <Block label="RHFSelect">
-                <RHFSelect name="singleSelect" label="Single select">
+              <Block label="Field.Select">
+                <Field.Select name="singleSelect" label="Single select">
                   <MenuItem value="">None</MenuItem>
                   <Divider sx={{ borderStyle: 'dashed' }} />
                   {OPTIONS.map((option) => (
@@ -269,7 +269,7 @@ export default function ReactHookForm({ debug }) {
                       {option.label}
                     </MenuItem>
                   ))}
-                </RHFSelect>
+                </Field.Select>
               </Block>
 
               <Block label="RHFMultiSelect">
@@ -383,7 +383,7 @@ Block.propTypes = {
   sx: PropTypes.object,
 };
 
-function Block({ label = 'RHFTextField', sx, children }) {
+function Block({ label = 'Field.Text', sx, children }) {
   return (
     <Stack spacing={1} sx={{ width: 1, ...sx }}>
       <Typography

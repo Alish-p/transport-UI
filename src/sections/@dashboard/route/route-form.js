@@ -12,11 +12,7 @@ import { Box, Card, Grid, Stack, Typography, Button, MenuItem } from '@mui/mater
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, {
-  RHFTextField,
-  RHFDatePicker,
-  RHFSelect,
-} from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 // redux
 import { dispatch } from '../../../redux/store';
 import { addRoute, updateRoute } from '../../../redux/slices/route';
@@ -155,7 +151,7 @@ export default function RouteForm({ isEdit = false, currentRoute }) {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         {/* <Grid item xs={5}>
         </Grid> */}
@@ -170,26 +166,26 @@ export default function RouteForm({ isEdit = false, currentRoute }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="routeName" label="Route Name" />
-              <RHFTextField name="tollAmt" label="Toll Amount" type="number" />
+              <Field.Text name="routeName" label="Route Name" />
+              <Field.Text name="tollAmt" label="Toll Amount" type="number" />
 
-              <RHFTextField name="fromPlace" label="From Place" />
-              <RHFTextField name="toPlace" label="To Place" />
-              <RHFTextField name="noOfDays" label="Number of Days" type="number" />
+              <Field.Text name="fromPlace" label="From Place" />
+              <Field.Text name="toPlace" label="To Place" />
+              <Field.Text name="noOfDays" label="Number of Days" type="number" />
 
-              <RHFSelect native name="tripType" label="Trip Type">
+              <Field.Select native name="tripType" label="Trip Type">
                 <option value="" />
                 {tripType.map(({ key, value }) => (
                   <option key={key} value={key}>
                     {value}
                   </option>
                 ))}
-              </RHFSelect>
+              </Field.Select>
 
-              <RHFTextField name="distance" label="Distance" type="number" />
-              <RHFDatePicker name="validFromDate" label="Valid From Date" />
-              <RHFTextField name="transportType" label="Transport Type" />
-              <RHFDatePicker name="validTillDate" label="Valid Till Date" />
+              <Field.Text name="distance" label="Distance" type="number" />
+              <Field.DatePicker name="validFromDate" label="Valid From Date" />
+              <Field.Text name="transportType" label="Transport Type" />
+              <Field.DatePicker name="validTillDate" label="Valid Till Date" />
             </Box>
 
             <Typography variant="h6" sx={{ color: 'text.disabled', mt: 3 }}>
@@ -209,42 +205,42 @@ export default function RouteForm({ isEdit = false, currentRoute }) {
                   sx={{ p: 2, border: '1px dashed grey', borderRadius: '15px', m: 5 }}
                 >
                   <Box gridColumn="span 3">
-                    <RHFSelect name={`salary[${index}].vehicleType`} label="Vehicle Type">
+                    <Field.Select name={`salary[${index}].vehicleType`} label="Vehicle Type">
                       {vehicleTypes.map(({ value, key }) => (
                         <MenuItem key={key} value={value}>
                           {value}
                         </MenuItem>
                       ))}
-                    </RHFSelect>
+                    </Field.Select>
                   </Box>
 
                   <Box gridColumn="span 3">
-                    <RHFTextField name={`salary[${index}].fixedSalary`} label="Fixed Salary" />
+                    <Field.Text name={`salary[${index}].fixedSalary`} label="Fixed Salary" />
                   </Box>
                   <Box gridColumn="span 3">
-                    <RHFTextField
+                    <Field.Text
                       name={`salary[${index}].percentageSalary`}
                       label="Percentage Salary"
                     />
                   </Box>
 
                   <Box gridColumn="span 2">
-                    <RHFTextField name={`salary[${index}].fixMilage`} label="Fix Milage" />
+                    <Field.Text name={`salary[${index}].fixMilage`} label="Fix Milage" />
                   </Box>
                   <Box gridColumn="span 3">
-                    <RHFTextField
+                    <Field.Text
                       name={`salary[${index}].performanceMilage`}
                       label="Performance Milage"
                     />
                   </Box>
                   <Box gridColumn="span 3">
-                    <RHFTextField name={`salary[${index}].advanceAmt`} label="Advance Amtount" />
+                    <Field.Text name={`salary[${index}].advanceAmt`} label="Advance Amtount" />
                   </Box>
                   <Box gridColumn="span 3">
-                    <RHFTextField name={`salary[${index}].diesel`} label="diesel" />
+                    <Field.Text name={`salary[${index}].diesel`} label="diesel" />
                   </Box>
                   <Box gridColumn="span 2">
-                    <RHFTextField name={`salary[${index}].adBlue`} label="Adblue" />
+                    <Field.Text name={`salary[${index}].adBlue`} label="Adblue" />
                   </Box>
 
                   <Box
@@ -283,6 +279,6 @@ export default function RouteForm({ isEdit = false, currentRoute }) {
           </Card>
         </Grid>
       </Grid>
-    </FormProvider>
+    </Form>
   );
 }

@@ -12,11 +12,7 @@ import { Box, Card, Grid, InputAdornment, Stack, Typography } from '@mui/materia
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, {
-  RHFTextField,
-  RHFDatePicker,
-  RHFUpload,
-} from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 // redux
 import { dispatch } from '../../../redux/store';
 import { addDriver, updateDriver } from '../../../redux/slices/driver';
@@ -156,7 +152,7 @@ export default function DriverForm({ isEdit = false, currentDriver }) {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Card sx={{ pt: 10, pb: 5, px: 3 }}>
@@ -166,7 +162,7 @@ export default function DriverForm({ isEdit = false, currentDriver }) {
                   Images
                 </Typography>
 
-                <RHFUpload
+                <Field.Upload
                   multiple
                   thumbnail
                   name="images"
@@ -191,28 +187,28 @@ export default function DriverForm({ isEdit = false, currentDriver }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="driverName" label="Driver Name" />
-              <RHFTextField name="driverLicenceNo" label="Driver Licence No" />
-              <RHFTextField name="driverPresentAddress" label="Driver Present Address" />
-              <RHFTextField
+              <Field.Text name="driverName" label="Driver Name" />
+              <Field.Text name="driverLicenceNo" label="Driver Licence No" />
+              <Field.Text name="driverPresentAddress" label="Driver Present Address" />
+              <Field.Text
                 name="driverCellNo"
                 label="Driver Cell No"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">+91 - </InputAdornment>,
                 }}
               />
-              <RHFDatePicker name="licenseFrom" label="License From" />
-              <RHFDatePicker name="licenseTo" label="License To" />
-              <RHFTextField name="aadharNo" label="Aadhar No" />
-              <RHFTextField name="guarantorName" label="Guarantor Name" />
-              <RHFTextField
+              <Field.DatePicker name="licenseFrom" label="License From" />
+              <Field.DatePicker name="licenseTo" label="License To" />
+              <Field.Text name="aadharNo" label="Aadhar No" />
+              <Field.Text name="guarantorName" label="Guarantor Name" />
+              <Field.Text
                 name="guarantorCellNo"
                 label="Guarantor Cell No"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">+91 - </InputAdornment>,
                 }}
               />
-              <RHFTextField
+              <Field.Text
                 name="experience"
                 label="Experience"
                 type="number"
@@ -220,10 +216,10 @@ export default function DriverForm({ isEdit = false, currentDriver }) {
                   endAdornment: <InputAdornment position="end">years</InputAdornment>,
                 }}
               />
-              <RHFDatePicker name="dob" label="Date of Birth" />
-              <RHFTextField name="permanentAddress" label="Permanent Address" />
-              <RHFTextField name="bankCd" label="Bank Code" />
-              <RHFTextField name="accNo" label="Account No" />
+              <Field.DatePicker name="dob" label="Date of Birth" />
+              <Field.Text name="permanentAddress" label="Permanent Address" />
+              <Field.Text name="bankCd" label="Bank Code" />
+              <Field.Text name="accNo" label="Account No" />
             </Box>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
@@ -234,6 +230,6 @@ export default function DriverForm({ isEdit = false, currentDriver }) {
           </Card>
         </Grid>
       </Grid>
-    </FormProvider>
+    </Form>
   );
 }

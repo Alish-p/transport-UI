@@ -68,11 +68,6 @@ import {
   PumpCreatePage,
   PumpEditPage,
 
-  // Dashboard:Bank
-  BankListPage,
-  BankCreatePage,
-  BankEditPage,
-
   // Dashboard: Invoice
   InvoiceDetailPage,
   InvoiceListPage,
@@ -216,15 +211,6 @@ export default function Router() {
             { path: 'list', element: <PumpListPage /> },
             { path: 'new', element: <PumpCreatePage /> },
             { path: ':id/edit', element: <PumpEditPage /> },
-          ],
-        },
-        {
-          path: 'bank',
-          children: [
-            { element: <Navigate to="/dashboard/bank/list" replace />, index: true },
-            { path: 'list', element: <BankListPage /> },
-            { path: 'new', element: <BankCreatePage /> },
-            { path: ':id/edit', element: <BankEditPage /> },
           ],
         },
         {

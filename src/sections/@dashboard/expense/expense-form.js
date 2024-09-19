@@ -2,28 +2,13 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
-import {
-  Box,
-  Card,
-  Grid,
-  InputAdornment,
-  Stack,
-  Typography,
-  MenuItem,
-  Tabs,
-  Tab,
-} from '@mui/material';
+import { Box, Card, Grid, Stack, Typography, MenuItem, Tabs, Tab } from '@mui/material';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import { useSnackbar } from '../../../components/snackbar';
-import FormProvider, {
-  RHFTextField,
-  RHFSelect,
-  RHFDatePicker,
-  RHFAutocomplete,
-} from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 import { dispatch } from '../../../redux/store';
 
 import { addExpense, updateExpense } from '../../../redux/slices/expense';
@@ -83,6 +68,7 @@ export default function ExpenseForm({
   );
 
   const methods = useForm({
+    mode: 'all',
     resolver: yupResolver(ExpenseSchema),
     defaultValues,
   });
@@ -130,7 +116,7 @@ export default function ExpenseForm({
     }
   };
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid
         container
         justifyContent="center"
@@ -175,7 +161,7 @@ export default function ExpenseForm({
           <Card sx={{ p: 3 }}>
             <Box rowGap={3} columnGap={2} display="grid" gridTemplateColumns="repeat(2, 1fr)">
               {expenseCategory === 'subtrip' ? (
-                <RHFAutocomplete
+                <Field.Autocomplete
                   freeSolo
                   name="subtripId"
                   label="Subtrip"
@@ -188,7 +174,7 @@ export default function ExpenseForm({
                   helperText="Vehicle MH08AB1233 is associated with this Subtrip"
                 />
               ) : (
-                <RHFAutocomplete
+                <Field.Autocomplete
                   freeSolo
                   name="vehicleId"
                   label="Vehicle ID"
@@ -198,26 +184,26 @@ export default function ExpenseForm({
                 />
               )}
 
-              <RHFDatePicker name="date" label="Date" />
-              <RHFSelect name="expenseType" label="Expense Type">
+              <Field.DatePicker name="date" label="Date" />
+              <Field.Select name="expenseType" label="Expense Type">
                 {expenseTypes.map(({ value, label }) => (
                   <MenuItem key={value} value={value}>
                     {label}
                   </MenuItem>
                 ))}
-              </RHFSelect>
-              <RHFTextField name="installment" label="Installment" type="number" />
-              <RHFTextField name="amount" label="Amount" type="number" />
-              <RHFTextField name="slipNo" label="Slip No" />
+              </Field.Select>
+              <Field.Text name="installment" label="Installment" type="number" />
+              <Field.Text name="amount" label="Amount" type="number" />
+              <Field.Text name="slipNo" label="Slip No" />
               {values.expenseType === 'diesel' && (
                 <>
-                  <RHFTextField name="pumpCd" label="Pump Code" />
-                  <RHFTextField name="dieselLtr" label="Diesel Liters" type="number" />
+                  <Field.Text name="pumpCd" label="Pump Code" />
+                  <Field.Text name="dieselLtr" label="Diesel Liters" type="number" />
                 </>
               )}
-              <RHFTextField name="remarks" label="Remarks" />
-              <RHFTextField name="paidThrough" label="Paid Through" />
-              <RHFTextField name="authorisedBy" label="Authorised By" />
+              <Field.Text name="remarks" label="Remarks" />
+              <Field.Text name="paidThrough" label="Paid Through" />
+              <Field.Text name="authorisedBy" label="Authorised By" />
             </Box>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
@@ -228,6 +214,6 @@ export default function ExpenseForm({
           </Card>
         </Grid>
       </Grid>
-    </FormProvider>
+    </Form>
   );
 }

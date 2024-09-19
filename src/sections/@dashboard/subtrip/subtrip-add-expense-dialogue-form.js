@@ -7,11 +7,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // form components
-import FormProvider, {
-  RHFTextField,
-  RHFDatePicker,
-  RHFSelect,
-} from '../../../components/hook-form';
+import { Form, Field } from '../../../components/hook-form';
 import ConfirmDialog from '../../../components/confirm-dialog';
 import { useSnackbar } from '../../../components/snackbar';
 import { addExpense } from '../../../redux/slices/subtrip';
@@ -109,7 +105,7 @@ export function AddExpenseDialog({ showDialog, setShowDialog, subtripId, vehicle
       title="Add Expense"
       content={
         <Box sx={{ marginTop: '6px' }}>
-          <FormProvider methods={methods} onSubmit={onSubmit}>
+          <Form methods={methods} onSubmit={onSubmit}>
             <Box
               rowGap={3}
               columnGap={2}
@@ -119,8 +115,8 @@ export function AddExpenseDialog({ showDialog, setShowDialog, subtripId, vehicle
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFDatePicker name="date" label="Date" />
-              <RHFSelect name="expenseType" label="Expense Type">
+              <Field.DatePicker name="date" label="Date" />
+              <Field.Select name="expenseType" label="Expense Type">
                 <MenuItem value="diesel">Diesel</MenuItem>
                 <MenuItem value="adblue">Adblue</MenuItem>
                 <MenuItem value="driver-salary">Driver Salary</MenuItem>
@@ -133,28 +129,28 @@ export function AddExpenseDialog({ showDialog, setShowDialog, subtripId, vehicle
                 <MenuItem value="toll">Toll</MenuItem>
                 <MenuItem value="vehicle-repair">Vehicle Repair</MenuItem>
                 <MenuItem value="other">Other</MenuItem>
-              </RHFSelect>
-              <RHFTextField name="amount" label="Amount" type="number" />
-              <RHFTextField name="slipNo" label="Slip No" />
+              </Field.Select>
+              <Field.Text name="amount" label="Amount" type="number" />
+              <Field.Text name="slipNo" label="Slip No" />
               {expenseType === 'diesel' && (
                 <>
-                  <RHFSelect native name="pumpCd" label="Pump">
+                  <Field.Select native name="pumpCd" label="Pump">
                     <option value="" />
                     {pumps.map((pump) => (
                       <option key={pump._id} value={pump._id}>
                         {pump.pumpName}
                       </option>
                     ))}
-                  </RHFSelect>
+                  </Field.Select>
 
-                  <RHFTextField name="dieselLtr" label="Diesel Liters" type="number" />
+                  <Field.Text name="dieselLtr" label="Diesel Liters" type="number" />
                 </>
               )}
-              <RHFTextField name="remarks" label="Remarks" />
-              <RHFTextField name="paidThrough" label="Paid Through" />
-              <RHFTextField name="authorisedBy" label="Authorised By" />
+              <Field.Text name="remarks" label="Remarks" />
+              <Field.Text name="paidThrough" label="Paid Through" />
+              <Field.Text name="authorisedBy" label="Authorised By" />
             </Box>
-          </FormProvider>
+          </Form>
         </Box>
       }
       action={

@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { fetchCustomers } from '../../../redux/slices/customer';
 import { fetchClosedTripsByCustomerAndDate } from '../../../redux/slices/subtrip';
-import { RHFDatePicker, RHFMultiSelect, RHFSelect } from '../../../components/hook-form';
+import { Field } from '../../../components/hook-form';
 
 export default function SubtripsSelectors() {
   const { setValue, handleSubmit, watch } = useFormContext();
@@ -35,7 +35,7 @@ export default function SubtripsSelectors() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={3}>
-            <RHFSelect name="customerId" label="Customer">
+            <Field.Select name="customerId" label="Customer">
               <MenuItem value="">Select Customer</MenuItem>
               {isLoading ? (
                 <MenuItem>Loading...</MenuItem>
@@ -46,13 +46,13 @@ export default function SubtripsSelectors() {
                   </MenuItem>
                 ))
               )}
-            </RHFSelect>
+            </Field.Select>
           </Grid>
           <Grid item xs={12} md={2}>
-            <RHFDatePicker name="fromDate" label="From Date" />
+            <Field.DatePicker name="fromDate" label="From Date" />
           </Grid>
           <Grid item xs={12} md={2}>
-            <RHFDatePicker name="toDate" label="To Date" />
+            <Field.DatePicker name="toDate" label="To Date" />
           </Grid>
           <Grid item xs={12} md={1}>
             <Button
@@ -66,7 +66,7 @@ export default function SubtripsSelectors() {
           </Grid>
           <Grid item xs={12} md={4}>
             {subtrips.length > 0 && (
-              <RHFMultiSelect
+              <Field.MultiSelect
                 checkbox
                 name="selectedSubtrips"
                 label="Subtrips"

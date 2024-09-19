@@ -10,7 +10,7 @@ import { LoadingButton } from '@mui/lab';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import { useSnackbar } from '../../components/snackbar';
-import FormProvider, { RHFCodes } from '../../components/hook-form';
+import { Form } from '../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -60,10 +60,8 @@ export default function AuthVerifyCodeForm() {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        <RHFCodes keyName="code" inputs={['code1', 'code2', 'code3', 'code4', 'code5', 'code6']} />
-
         {(!!errors.code1 ||
           !!errors.code2 ||
           !!errors.code3 ||
@@ -86,6 +84,6 @@ export default function AuthVerifyCodeForm() {
           Verify
         </LoadingButton>
       </Stack>
-    </FormProvider>
+    </Form>
   );
 }

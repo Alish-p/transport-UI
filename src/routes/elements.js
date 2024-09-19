@@ -105,15 +105,6 @@ export const InvoiceDetailPage = Loadable(
   lazy(() => import('../sections/@dashboard/invoice/views/invoice-details-view'))
 );
 
-// DASHBOARD: Bank
-export const BankListPage = Loadable(lazy(() => import('../sections/@dashboard/bank/Bank')));
-export const BankCreatePage = Loadable(
-  lazy(() => import('../sections/@dashboard/bank/BankCreatePage'))
-);
-export const BankEditPage = Loadable(
-  lazy(() => import('../sections/@dashboard/bank/BankEditPage'))
-);
-
 // DASHBOARD: Trip
 export const TripDetailPage = Loadable(
   lazy(() => import('../sections/@dashboard/trip/views/trip-details-view'))

@@ -13,7 +13,7 @@ import { PATH_AUTH } from '../../routes/paths';
 import { useAuthContext } from '../../auth/useAuthContext';
 // components
 import Iconify from '../../components/iconify';
-import FormProvider, { RHFTextField } from '../../components/hook-form';
+import { Form, Field } from '../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -58,13 +58,13 @@ export default function AuthLoginForm() {
   };
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="email" label="Email address" />
+        <Field.Text name="email" label="Email address" />
 
-        <RHFTextField
+        <Field.Text
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
@@ -110,6 +110,6 @@ export default function AuthLoginForm() {
       >
         Login
       </LoadingButton>
-    </FormProvider>
+    </Form>
   );
 }

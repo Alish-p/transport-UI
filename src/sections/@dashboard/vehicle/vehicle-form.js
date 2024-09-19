@@ -3,14 +3,13 @@ import * as Yup from 'yup';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 // form
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Grid, Stack, Typography, FormControlLabel } from '@mui/material';
+import { Box, Card, Grid, Stack, Typography } from '@mui/material';
 // utils
 import { useDispatch } from 'react-redux';
-import { fData } from '../../../utils/formatNumber';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // assets
@@ -19,7 +18,6 @@ import { engineType, modelType, vehicleCompany, vehicleTypes } from './vehicle-c
 
 import { useSnackbar } from '../../../components/snackbar';
 import { Form, Field } from '../../../components/hook-form';
-
 import { addVehicle, updateVehicle } from '../../../redux/slices/vehicle';
 import { fetchTransporters } from '../../../redux/slices/transporter';
 import { useSelector } from '../../../redux/store';
@@ -233,8 +231,8 @@ export default function VehicleForm({ isEdit = false, currentVehicle }) {
                   </option>
                 ))}
               </Field.Select>
-              <Field.DatePickerField name="fromDate" label="From Date" type="date" />
-              <Field.DatePickerField name="toDate" label="To Date" type="date" />
+              <Field.DatePicker name="fromDate" label="From Date" type="date" />
+              <Field.DatePicker name="toDate" label="To Date" type="date" />
             </Box>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
